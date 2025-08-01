@@ -1,0 +1,87 @@
+version: '3'
+
+tasks:
+  # ============================================================================
+  # DEVELOPMENT WORKFLOW TASKS
+  # ============================================================================
+
+  workflow-dev:
+    desc: Complete development workflow (setup, start services, dev server)
+    deps: [setup, supabase-start]
+    cmds:
+      - |
+        echo "🎯 Starting development workflow..."
+        echo "✅ Setup complete, starting development server..."
+        task dev
+
+  workflow-reset:
+    desc: Reset development environment (stop services, clean, restart)
+    cmds:
+      - |
+        echo "🔄 Resetting development environment..."
+        supabase stop
+        task clean
+        task setup
+        echo "✅ Environment reset complete"
+        echo "🚀 Run 'task workflow-dev' to start development"
+
+  # ============================================================================
+  # DEPLOYMENT TASKS (Future use)
+  # ============================================================================
+
+  deploy-staging:
+    desc: Deploy to staging environment
+    cmds:
+      - |
+        echo "🚀 Deploying to staging..."
+        echo "⚠️  Deployment not configured yet"
+
+  deploy-production:
+    desc: Deploy to production environment
+    cmds:
+      - |
+        echo "🚀 Deploying to production..."
+        echo "⚠️  Deployment not configured yet"
+
+  # ============================================================================
+  # ADVANCED WORKFLOW TASKS
+  # ============================================================================
+
+  workflow-full-reset:
+    desc: Complete environment reset (stop, clean-all, reinstall, restart)
+    cmds:
+      - |
+        echo "🔄 Complete environment reset..."
+        supabase stop
+        task clean-all
+        task install-deps
+        task setup-supabase
+        echo "✅ Complete reset finished"
+        echo "🚀 Run 'task dev-full' to start development"
+
+  workflow-db-reset:
+    desc: Reset database and regenerate types
+    cmds:
+      - |
+        echo "🔄 Resetting database and types..."
+        supabase db reset --seed
+        task db-types
+        echo "✅ Database reset and types regenerated"
+
+  workflow-code-quality:
+    desc: Run all code quality checks
+    cmds:
+      - |
+        echo "🔍 Running code quality checks..."
+        task dev:format-check
+        task dev:lint
+        task dev:type-check
+        echo "✅ Code quality checks complete"
+
+  workflow-code-fix:
+    desc: Fix all code quality issues (formatting and linting)
+    cmds:
+      - |
+        echo "🔧 Fixing code quality issues..."
+        task dev:format-fix
+        echo "✅ Code quality fixes complete" 

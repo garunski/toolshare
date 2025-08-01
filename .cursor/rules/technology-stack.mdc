@@ -1,0 +1,61 @@
+description: Technology stack and architecture guidelines for the entire project
+globs:
+  - **/*.tsx
+  - **/*.ts
+alwaysApply: true
+---
+
+# Technology Stack & Architecture
+
+## Frontend
+- **Framework**: Next.js 15 with App Router
+- **UI Library**: Catalyst UI (shadcn/ui based)
+- **Styling**: Tailwind CSS with Catalyst presets
+- **Language**: TypeScript (strict mode)
+
+## Backend & Database
+- **Backend**: Supabase Cloud
+- **Database**: PostgreSQL via Supabase
+- **Authentication**: Supabase Auth
+- **Storage**: Supabase Storage for images
+- **Real-time**: Supabase subscriptions
+
+## Notifications
+- **Service**: Novu Cloud
+- **Channels**: Email, SMS, In-app notifications
+- **Integration**: React notification center
+
+## Development Workflow
+**IMPORTANT: All development operations MUST be run using Taskfile commands.**
+- Use `task dev` to start the development server
+- Use `task dev-full` to start full stack (Next.js + Supabase)
+- Use `task setup` for initial project setup
+- Use `task status` to check project status
+
+## Development Tools
+- **Package Manager**: npm or yarn
+- **Linting**: ESLint with custom rules
+- **Type Generation**: `task database:db-types`
+- **Deployment**: Vercel (recommended) or Digital Ocean
+
+## Project Structure
+```
+src/
+├── app/                 # Next.js App Router pages
+├── components/          # React components
+│   ├── primitives/     # Catalyst UI components (DO NOT MODIFY)
+│   └── custom/         # Custom components
+├── lib/                # Utility functions
+│   ├── operations/     # Business logic operations
+│   ├── validators/     # Zod validation schemas
+│   ├── formatters/     # Data formatting functions
+│   └── calculators/    # Calculation functions
+├── types/              # TypeScript type definitions
+└── hooks/              # Custom React hooks
+```
+
+## Key Dependencies
+- `@supabase/supabase-js` - Supabase client
+- `@novu/notification-center` - Novu notifications
+- `zod` - Runtime validation
+- `@catalyst-ui/react` - UI components

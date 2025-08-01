@@ -1,0 +1,58 @@
+---
+description: Code quality standards and file organization rules
+globs:
+  - **/*.ts
+  - **/*.tsx
+  - **/*.js
+  - **/*.jsx
+alwaysApply: true
+---
+
+# Code Quality Standards
+
+## Development Workflow
+**IMPORTANT: All code quality operations MUST be run using Taskfile commands.**
+- Use `task dev:lint` to run ESLint
+- Use `task dev:lint-fix` to automatically fix linting issues
+- Use `task dev:type-check` to run TypeScript checks
+- Use `task dev:format` to format code with Prettier
+- Use `task dev:format-check` to check code formatting
+- Use `task dev:format-fix` to format code and fix linting issues
+- Use `task workflow:workflow-code-quality` to run all code quality checks
+- Use `task workflow:workflow-code-fix` to fix all code quality issues
+
+## File Size Limit
+- All files MUST be under 150 lines
+- If a file exceeds 150 lines, break it into smaller, focused files
+- Each file should have a single, clear responsibility
+
+## TypeScript Standards
+- Use TypeScript with strict mode enabled
+- Always define proper types and interfaces
+- Avoid `any` type - use proper typing
+- Use Zod for runtime validation
+- Export types from dedicated type files
+
+## Validation Standards
+- Use Zod schemas for all data validation
+- Validate all user inputs and API responses
+- Create specific validation functions for each data type
+- Example: `userProfileValidator.ts`, `toolDataValidator.ts`
+
+## Component Standards
+- Use existing components from `src/primitives/` 
+- DO NOT modify third-party UI components
+- Create custom components only when necessary
+- Follow Catalyst UI design patterns
+
+## Error Handling
+- Implement proper error boundaries
+- Use try-catch blocks for async operations
+- Provide meaningful error messages
+- Log errors appropriately
+
+## Performance
+- Use React.memo for expensive components
+- Implement proper loading states
+- Optimize images and assets
+- Use lazy loading where appropriate

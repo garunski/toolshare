@@ -1,0 +1,88 @@
+description: React component patterns and Catalyst UI integration
+globs:
+  - src/components/**/*.tsx
+  - src/app/**/*.tsx
+alwaysApply: false
+---
+
+# React Component Standards
+
+## Development Workflow
+**IMPORTANT: All React development operations MUST be run using Taskfile commands.**
+- Use `task dev` to start the development server
+- Use `task dev:build` to build the application
+- Use `task dev:test` to run tests
+- Use `task dev:type-check` to run TypeScript checks
+- Use `task dev:lint` to check code quality
+- Use `task dev:format` to format code
+
+## Component Structure
+- Use functional components with hooks
+- Keep components under 150 lines
+- Use TypeScript for all component props
+- Implement proper prop validation with Zod
+
+## Catalyst UI Integration
+- Import components from `@catalyst-ui/react`
+- DO NOT modify third-party UI components
+- Extend components using composition, not modification
+- Follow Catalyst UI design patterns and spacing
+
+## Component Patterns
+
+### Page Component
+```typescript
+// app/tools/page.tsx
+import { ToolGrid } from '@/components/custom/ToolGrid'
+import { ToolSearch } from '@/components/custom/ToolSearch'
+
+export default function ToolsPage() {
+  return (
+    <div className="container mx-auto p-6">
+      <ToolSearch />
+      <ToolGrid />
+    </div>
+  )
+}
+```
+
+### Custom Component
+```typescript
+// components/custom/ToolCard.tsx
+import { Card, CardContent, CardHeader } from '@catalyst-ui/react'
+import { toolSchema, type Tool } from '@/commons/validators/toolValidator'
+
+interface ToolCardProps {
+  tool: Tool
+  onBorrow: (toolId: string) => void
+}
+
+export function ToolCard({ tool, onBorrow }: ToolCardProps) {
+  return (
+    <Card>
+      <CardHeader>{tool.name}</CardHeader>
+      <CardContent>
+        {/* Component content */}
+      </CardContent>
+    </Card>
+  )
+}
+```
+
+## State Management
+- Use React hooks for local state
+- Use Supabase subscriptions for real-time data
+- Implement proper loading and error states
+- Use React.memo for expensive components
+
+## Performance
+- Implement lazy loading for images
+- Use proper key props for lists
+- Avoid unnecessary re-renders
+- Use useCallback and useMemo appropriately
+
+## Accessibility
+- Include proper ARIA labels
+- Ensure keyboard navigation
+- Use semantic HTML elements
+- Test with screen readers

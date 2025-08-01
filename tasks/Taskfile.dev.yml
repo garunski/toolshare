@@ -1,0 +1,82 @@
+version: '3'
+
+tasks:
+  # ============================================================================
+  # DEVELOPMENT TASKS
+  # ============================================================================
+
+  build:
+    desc: Build the application for production
+    cmds:
+      - |
+        echo "🔨 Building application..."
+        npm run build
+        echo "✅ Build complete"
+
+  start:
+    desc: Start production server
+    deps: [build]
+    cmds:
+      - |
+        echo "🚀 Starting production server..."
+        npm start
+
+  lint:
+    desc: Run ESLint to check code quality
+    cmds:
+      - |
+        echo "🔍 Running ESLint..."
+        npm run lint
+
+  lint-fix:
+    desc: Run ESLint and automatically fix issues
+    cmds:
+      - |
+        echo "🔧 Fixing linting issues..."
+        npm run lint:fix
+
+  format:
+    desc: Format code with Prettier
+    cmds:
+      - |
+        echo "🎨 Formatting code with Prettier..."
+        npm run format
+
+  format-check:
+    desc: Check if code is formatted correctly with Prettier
+    cmds:
+      - |
+        echo "🔍 Checking code formatting..."
+        npm run format:check
+
+  format-fix:
+    desc: Format code and fix linting issues
+    deps: [format, lint-fix]
+    cmds:
+      - |
+        echo "✨ Code formatting and linting complete!"
+
+  type-check:
+    desc: Run TypeScript type checking
+    cmds:
+      - |
+        echo "🔍 Running TypeScript type check..."
+        npx tsc --noEmit
+
+  # ============================================================================
+  # TESTING TASKS
+  # ============================================================================
+
+  test:
+    desc: Run all tests
+    cmds:
+      - |
+        echo "🧪 Running tests..."
+        echo "⚠️  No tests configured yet"
+
+  test-watch:
+    desc: Run tests in watch mode
+    cmds:
+      - |
+        echo "🧪 Running tests in watch mode..."
+        echo "⚠️  No tests configured yet" 

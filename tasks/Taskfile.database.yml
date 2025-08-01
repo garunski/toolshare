@@ -1,0 +1,92 @@
+version: '3'
+
+tasks:
+  # ============================================================================
+  # SUPABASE DATABASE TASKS
+  # ============================================================================
+
+  supabase-start:
+    desc: Start Supabase services locally
+    cmds:
+      - |
+        echo "🚀 Starting Supabase..."
+        supabase start --exclude vector
+        echo "✅ Supabase started"
+        echo "📊 Studio: http://localhost:54323"
+        echo "🔗 API: http://localhost:54321"
+
+  supabase-stop:
+    desc: Stop Supabase services
+    cmds:
+      - |
+        echo "🛑 Stopping Supabase..."
+        supabase stop
+        echo "✅ Supabase stopped"
+
+  supabase-status:
+    desc: Check Supabase service status
+    cmds:
+      - |
+        echo "📊 Supabase Status:"
+        supabase status
+
+  supabase-reset:
+    desc: "Reset Supabase database (WARNING: This will delete all data)"
+    cmds:
+      - |
+        echo "⚠️  Resetting Supabase database..."
+        echo "This will delete all data. Are you sure? (y/N)"
+        read -r response
+        if [[ "$response" =~ ^[Yy]$ ]]; then
+          supabase db reset
+          echo "✅ Database reset complete"
+        else
+          echo "❌ Database reset cancelled"
+        fi
+
+  db-migrate:
+    desc: Apply database migrations
+    cmds:
+      - |
+        echo "🔄 Applying database migrations..."
+        supabase db push
+        echo "✅ Migrations applied"
+
+  db-migrate-new:
+    desc: Create a new migration file
+    cmds:
+      - |
+        echo "📝 Creating new migration..."
+        echo "Enter migration name:"
+        read -r migration_name
+        supabase migration new "$migration_name"
+
+  db-seed:
+    desc: Seed the database with initial data
+    cmds:
+      - |
+        echo "🌱 Seeding database..."
+        supabase db reset --seed
+        echo "✅ Database seeded"
+
+  db-types:
+    desc: Generate TypeScript types from database schema
+    cmds:
+      - |
+        echo "📝 Generating TypeScript types..."
+        supabase gen types typescript --local > src/types/supabase.ts
+        echo "✅ Types generated at src/types/supabase.ts"
+
+  logs:
+    desc: Show Supabase logs
+    cmds:
+      - |
+        echo "📋 Supabase logs:"
+        supabase logs
+
+  studio:
+    desc: Open Supabase Studio in browser
+    cmds:
+      - |
+        echo "🌐 Opening Supabase Studio..."
+        open http://localhost:54323 

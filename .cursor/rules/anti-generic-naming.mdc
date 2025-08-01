@@ -1,0 +1,44 @@
+---
+description: Anti-generic naming conventions and file organization rules
+globs:
+  - **/*.tsx
+  - **/*.ts
+alwaysApply: false
+---
+
+# Anti-Generic Naming Rule (MANDATORY)
+
+## Development Workflow
+**IMPORTANT: All development operations MUST be run using Taskfile commands.**
+- Use `task dev:lint` to check code quality and naming conventions
+- Use `task dev:format` to format code
+- Use `task workflow:workflow-code-quality` to run all code quality checks
+
+## NEVER Use Generic Names
+- "util", "utils", "helper", "helpers", "manager", "service", "common", "shared", "misc", "lib"
+- These names are banned and indicate poor code organization
+
+## ALWAYS Use Specific Names
+Examples of good naming:
+- `profileImageUploader.ts` - handles profile image uploads
+- `borrowingRequestValidator.ts` - validates borrowing requests
+- `toolAvailabilityCalculator.ts` - calculates tool availability
+- `loanStatusTracker.ts` - tracks loan status changes
+- `notificationWorkflowManager.ts` - manages notification workflows
+
+## Directory Structure
+Use these specific directories for organization:
+- `/operations` - business logic operations
+- `/validators` - data validation functions
+- `/formatters` - data formatting functions
+- `/generators` - code/data generators
+- `/parsers` - data parsing functions
+- `/transformers` - data transformation functions
+- `/calculators` - calculation functions
+
+## File Naming Convention
+- Use camelCase for file names
+- Be descriptive and specific about the file's purpose
+- Include the main action or responsibility in the name
+- Example: `userProfileImageProcessor.ts` not `imageHelper.ts`
+---

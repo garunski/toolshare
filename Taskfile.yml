@@ -1,0 +1,80 @@
+version: '3'
+
+vars:
+  PROJECT_NAME: toolshare
+  NEXT_PORT: 3000
+  SUPABASE_PORT: 54321
+  SUPABASE_STUDIO_PORT: 54323
+  SUPABASE_DB_PORT: 54322
+
+includes:
+  setup: ./tasks/Taskfile.setup.yml
+  dev: ./tasks/Taskfile.dev.yml
+  database: ./tasks/Taskfile.database.yml
+  utils: ./tasks/Taskfile.utils.yml
+  workflow: ./tasks/Taskfile.workflow.yml
+
+tasks:
+  # ============================================================================
+  # MAIN TASKS (Entry points)
+  # ============================================================================
+  
+  setup:
+    desc: Complete project setup - installs dependencies, sets up environment, and initializes Supabase
+    deps: [setup:install-deps, setup:setup-env, setup:fix-docker-auth, setup:setup-supabase]
+    cmds:
+      - |
+        echo "🎉 Project setup complete! Run 'task dev' to start development"
+
+  dev-full:
+    desc: Start development server with Supabase (full stack)
+    deps: [database:supabase-start]
+    cmds:
+      - |
+        echo "🚀 Starting full development stack..."
+        task dev
+
+  # ============================================================================
+  # QUICK ACCESS TASKS
+  # ============================================================================
+
+  help:
+    desc: Show detailed help information
+    cmds:
+      - |
+        echo "🔧 {{.PROJECT_NAME}} - Task Management"
+        echo "======================================"
+        echo ""
+        echo "🚀 QUICK START:"
+        echo "  task setup         - Complete project setup"
+        echo "  task dev           - Start development server"
+        echo "  task dev-full      - Start full stack (Next.js + Supabase)"
+        echo "  task status        - Show project status"
+        echo ""
+        echo "📁 TASK FILES:"
+        echo "  tasks/Taskfile.setup.yml     - Setup & initialization tasks"
+        echo "  tasks/Taskfile.dev.yml       - Development & build tasks"
+        echo "  tasks/Taskfile.database.yml  - Database & Supabase tasks"
+        echo "  tasks/Taskfile.utils.yml     - Utility & maintenance tasks"
+        echo "  tasks/Taskfile.workflow.yml  - Workflow & deployment tasks"
+        echo ""
+        echo "💡 TIP: Use 'task --list-all' to see all available tasks"
+
+  status:
+    desc: Show project status and available services
+    cmds:
+      - |
+        echo "📊 {{.PROJECT_NAME}} Project Status"
+        echo "=================================="
+        echo "🌐 Next.js Dev Server: http://localhost:{{.NEXT_PORT}}"
+        echo "📊 Supabase Studio: http://localhost:{{.SUPABASE_STUDIO_PORT}}"
+        echo "🔗 Supabase API: http://localhost:{{.SUPABASE_PORT}}"
+        echo "🗄️  Database Port: {{.SUPABASE_DB_PORT}}"
+        echo ""
+        echo "📋 Quick Commands:"
+        echo "  task dev          - Start development server"
+        echo "  task dev-full     - Start full stack (Next.js + Supabase)"
+        echo "  task supabase-start - Start Supabase services"
+        echo "  task studio       - Open Supabase Studio"
+        echo "  task db-migrate   - Apply database migrations"
+        echo "  task db-types     - Generate TypeScript types"
