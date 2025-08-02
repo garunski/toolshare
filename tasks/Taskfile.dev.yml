@@ -5,6 +5,13 @@ tasks:
   # DEVELOPMENT TASKS
   # ============================================================================
 
+  dev-only:
+    desc: Start Next.js development server only (without Supabase)
+    cmds:
+      - |
+        echo "🚀 Starting Next.js development server..."
+        npm run dev
+
   build:
     desc: Build the application for production
     cmds:

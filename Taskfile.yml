@@ -26,13 +26,12 @@ tasks:
       - |
         echo "🎉 Project setup complete! Run 'task dev' to start development"
 
-  dev-full:
+  dev:
     desc: Start development server with Supabase (full stack)
-    deps: [database:supabase-start]
+    deps: [database:supabase-start, dev:dev-only]
     cmds:
       - |
-        echo "🚀 Starting full development stack..."
-        task dev
+        echo "🚀 Full development stack started!"
 
   # ============================================================================
   # QUICK ACCESS TASKS
@@ -47,8 +46,7 @@ tasks:
         echo ""
         echo "🚀 QUICK START:"
         echo "  task setup         - Complete project setup"
-        echo "  task dev           - Start development server"
-        echo "  task dev-full      - Start full stack (Next.js + Supabase)"
+        echo "  task dev           - Start full stack (Next.js + Supabase)"
         echo "  task status        - Show project status"
         echo ""
         echo "📁 TASK FILES:"
@@ -72,8 +70,7 @@ tasks:
         echo "🗄️  Database Port: {{.SUPABASE_DB_PORT}}"
         echo ""
         echo "📋 Quick Commands:"
-        echo "  task dev          - Start development server"
-        echo "  task dev-full     - Start full stack (Next.js + Supabase)"
+        echo "  task dev          - Start full stack (Next.js + Supabase)"
         echo "  task supabase-start - Start Supabase services"
         echo "  task studio       - Open Supabase Studio"
         echo "  task db-migrate   - Apply database migrations"

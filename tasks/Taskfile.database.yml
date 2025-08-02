@@ -69,6 +69,16 @@ tasks:
         supabase db reset --seed
         echo "✅ Database seeded"
 
+  db-seed-users:
+    desc: Create test users and sample data
+    cmds:
+      - |
+        echo "👥 Creating test users..."
+        node scripts/create-test-users.js
+        echo "📦 Creating sample data..."
+        node scripts/create-sample-data.js
+        echo "✅ Test data creation complete!"
+
   db-types:
     desc: Generate TypeScript types from database schema
     cmds:
