@@ -86,13 +86,13 @@ If you prefer to set up manually:
    ```bash
    # Start Supabase locally
    task database:supabase-start
-   
+
    # Apply migrations
    task database:db-migrate
-   
+
    # Generate TypeScript types
    task database:db-types
-   
+
    # Seed with test data
    task database:db-seed-users
    ```

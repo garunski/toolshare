@@ -70,13 +70,9 @@ function FormItem({ className, ...props }: React.ComponentProps<"div">) {
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div
-        data-slot="form-item"
-        className={className}
-        {...props}
-      />
+      <div data-slot="form-item" className={className} {...props} />
     </FormItemContext.Provider>
   );
 }
 
-export { FormField, FormItem, FormItemContext, useFormField }; 
+export { FormField, FormItem, FormItemContext, useFormField };

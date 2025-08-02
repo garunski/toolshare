@@ -37,4 +37,4 @@ export interface ProfileCreationData {
   phone?: string;
   address?: string;
   bio?: string;
-} 
+}

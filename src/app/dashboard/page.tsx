@@ -11,7 +11,8 @@ const dashboardCards = [
   {
     title: "My Tools",
     description: "Manage your tool inventory",
-    content: "Add, edit, and manage the tools you want to share with your community.",
+    content:
+      "Add, edit, and manage the tools you want to share with your community.",
     buttonText: "View My Tools",
     href: "/tools",
   },

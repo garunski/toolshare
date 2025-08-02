@@ -5,6 +5,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { supabase } from "@/common/supabase";
+import {
+  registerFormSchema,
+  type RegisterFormData,
+} from "@/common/validators/authenticationFormValidator";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,11 +19,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import { supabase } from "@/common/supabase";
-import {
-  registerFormSchema,
-  type RegisterFormData,
-} from "@/common/validators/authenticationFormValidator";
 
 import { RegisterFormFields } from "./RegisterFormFields";
 
@@ -108,4 +108,4 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       </CardContent>
     </Card>
   );
-} 
+}

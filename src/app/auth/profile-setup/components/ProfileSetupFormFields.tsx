@@ -2,16 +2,18 @@
 
 import { useFormContext } from "react-hook-form";
 
+import { type ProfileCreationData } from "@/common/validators/authenticationFormValidator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { type ProfileCreationData } from "@/common/validators/authenticationFormValidator";
 
 interface ProfileSetupFormFieldsProps {
   isLoading: boolean;
 }
 
-export function ProfileSetupFormFields({ isLoading }: ProfileSetupFormFieldsProps) {
+export function ProfileSetupFormFields({
+  isLoading,
+}: ProfileSetupFormFieldsProps) {
   const form = useFormContext<ProfileCreationData>();
 
   return (
@@ -96,4 +98,4 @@ export function ProfileSetupFormFields({ isLoading }: ProfileSetupFormFieldsProp
       </div>
     </>
   );
-} 
+}

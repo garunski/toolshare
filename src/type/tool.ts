@@ -3,7 +3,7 @@ export interface Tool {
   name: string;
   description: string;
   category: string;
-  condition: 'excellent' | 'good' | 'fair' | 'poor';
+  condition: "excellent" | "good" | "fair" | "poor";
   owner_id: string;
   is_available: boolean;
   location?: string;
@@ -23,4 +23,4 @@ export interface ToolSearchFilters {
   condition?: string;
   location?: string;
   available?: boolean;
-} 
+}

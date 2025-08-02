@@ -4,6 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { supabase } from "@/common/supabase";
+import {
+  profileCreationSchema,
+  type ProfileCreationData,
+} from "@/common/validators/authenticationFormValidator";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,11 +18,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import { supabase } from "@/common/supabase";
-import {
-  profileCreationSchema,
-  type ProfileCreationData,
-} from "@/common/validators/authenticationFormValidator";
 
 import { ProfileSetupFormFields } from "./ProfileSetupFormFields";
 
@@ -96,4 +96,4 @@ export function ProfileSetupForm({ userId, onSuccess }: ProfileSetupFormProps) {
       </CardContent>
     </Card>
   );
-} 
+}
