@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { cn } from "@/commons/classNameMerger";
+import { cn } from "@/common/classNameMerger";
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (

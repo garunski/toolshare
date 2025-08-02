@@ -74,9 +74,9 @@ tasks:
     cmds:
       - |
         echo "👥 Creating test users..."
-        node scripts/create-test-users.js
+        node supabase/seed-users.ts
         echo "📦 Creating sample data..."
-        node scripts/create-sample-data.js
+        node supabase/seed-data.ts
         echo "✅ Test data creation complete!"
 
   db-types:
@@ -84,8 +84,8 @@ tasks:
     cmds:
       - |
         echo "📝 Generating TypeScript types..."
-        supabase gen types typescript --local > src/types/supabase.ts
-        echo "✅ Types generated at src/types/supabase.ts"
+        supabase gen types typescript --local > src/type/supabase.ts
+        echo "✅ Types generated at src/type/supabase.ts"
 
   logs:
     desc: Show Supabase logs

@@ -3,14 +3,54 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hook/useAuth";
+
+import { DashboardCard } from "./components/DashboardCard";
+
+const dashboardCards = [
+  {
+    title: "My Tools",
+    description: "Manage your tool inventory",
+    content: "Add, edit, and manage the tools you want to share with your community.",
+    buttonText: "View My Tools",
+    href: "/tools",
+  },
+  {
+    title: "Find Tools",
+    description: "Discover tools from your community",
+    content: "Browse and search for tools available in your neighborhood.",
+    buttonText: "Browse Tools",
+    href: "/tools/browse",
+  },
+  {
+    title: "My Loans",
+    description: "Track your borrowing activity",
+    content: "View your current loans and borrowing history.",
+    buttonText: "View Loans",
+    href: "/loans",
+  },
+  {
+    title: "Community",
+    description: "Connect with neighbors",
+    content: "Build your network and connect with trusted community members.",
+    buttonText: "View Community",
+    href: "/community",
+  },
+  {
+    title: "Messages",
+    description: "Communicate with other users",
+    content: "Chat with tool owners and borrowers.",
+    buttonText: "View Messages",
+    href: "/messages",
+  },
+  {
+    title: "Profile",
+    description: "Manage your account",
+    content: "Update your profile information and preferences.",
+    buttonText: "Edit Profile",
+    href: "/profile",
+  },
+];
 
 export default function DashboardPage() {
   const { user, signOut, loading } = useAuth();
@@ -55,98 +95,9 @@ export default function DashboardPage() {
       <main className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader>
-                <CardTitle>My Tools</CardTitle>
-                <CardDescription>Manage your tool inventory</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-sm text-gray-600">
-                  Add, edit, and manage the tools you want to share with your
-                  community.
-                </p>
-                <Link href="/tools">
-                  <Button className="w-full">View My Tools</Button>
-                </Link>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Find Tools</CardTitle>
-                <CardDescription>
-                  Discover tools from your community
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-sm text-gray-600">
-                  Browse and search for tools available in your neighborhood.
-                </p>
-                <Link href="/tools/browse">
-                  <Button className="w-full">Browse Tools</Button>
-                </Link>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>My Loans</CardTitle>
-                <CardDescription>Track your borrowing activity</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-sm text-gray-600">
-                  View your current loans and borrowing history.
-                </p>
-                <Link href="/loans">
-                  <Button className="w-full">View Loans</Button>
-                </Link>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Community</CardTitle>
-                <CardDescription>Connect with neighbors</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-sm text-gray-600">
-                  Build your network and connect with trusted community members.
-                </p>
-                <Link href="/community">
-                  <Button className="w-full">View Community</Button>
-                </Link>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Messages</CardTitle>
-                <CardDescription>Communicate with other users</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-sm text-gray-600">
-                  Chat with tool owners and borrowers.
-                </p>
-                <Link href="/messages">
-                  <Button className="w-full">View Messages</Button>
-                </Link>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Profile</CardTitle>
-                <CardDescription>Manage your account</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-sm text-gray-600">
-                  Update your profile information and preferences.
-                </p>
-                <Link href="/profile">
-                  <Button className="w-full">Edit Profile</Button>
-                </Link>
-              </CardContent>
-            </Card>
+            {dashboardCards.map((card) => (
+              <DashboardCard key={card.title} {...card} />
+            ))}
           </div>
         </div>
       </main>

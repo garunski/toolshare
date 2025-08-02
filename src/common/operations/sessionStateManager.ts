@@ -1,6 +1,6 @@
 import { Session, User } from "@supabase/supabase-js";
 
-import { supabase } from "@/commons/supabase";
+import { supabase } from "@/common/supabase";
 
 export interface SessionState {
   user: User | null;

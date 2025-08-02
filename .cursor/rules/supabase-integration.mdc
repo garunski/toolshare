@@ -33,7 +33,7 @@ alwaysApply: false
 ```typescript
 // commons/operations/toolOperations.ts
 import { createClient } from '@supabase/supabase-js'
-import { toolSchema, type Tool } from '@/commons/validators/toolValidator'
+import { toolSchema, type Tool } from '@/common/validators/toolValidator'
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
 

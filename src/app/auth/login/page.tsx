@@ -16,11 +16,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { supabase } from "@/commons/supabase";
+import { supabase } from "@/common/supabase";
 import {
   loginFormSchema,
   type LoginFormData,
-} from "@/commons/validators/authenticationFormValidator";
+} from "@/common/validators/authenticationFormValidator";
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -119,7 +119,7 @@ export default function LoginPage() {
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link
                   href="/auth/register"
                   className="font-medium text-blue-600 hover:text-blue-500"

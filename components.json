@@ -12,10 +12,9 @@
   },
   "aliases": {
     "components": "@/components",
-    "utils": "@/commons/classNameMerger",
     "ui": "@/components/ui",
-    "commons": "@/commons",
-    "hooks": "@/hooks"
+    "common": "@/common",
+    "hooks": "@/hook"
   },
   "iconLibrary": "lucide"
 }

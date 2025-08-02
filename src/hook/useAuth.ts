@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import {
   SessionState,
   SessionStateManager,
-} from "@/commons/operations/sessionStateManager";
+} from "@/common/operations/sessionStateManager";
 
 export function useAuth() {
   const [authState, setAuthState] = useState<SessionState>({

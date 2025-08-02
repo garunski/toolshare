@@ -1,4 +1,4 @@
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
 // Supabase configuration for local development
 const supabaseUrl = 'http://127.0.0.1:54321';
@@ -63,7 +63,7 @@ async function createTestUsers() {
         }
       }
 
-      console.log(`✅ Created user: ${user.email} (ID: ${authData.user.id})`);
+      console.log(`✅ Created user: ${user.email} (ID: ${authData.user?.id})`);
 
       // Update profile with additional information
       const { error: profileError } = await supabase
@@ -73,7 +73,7 @@ async function createTestUsers() {
           address: user.address,
           bio: user.bio
         })
-        .eq('id', authData.user.id);
+        .eq('id', authData.user?.id);
 
       if (profileError) {
         console.error(`⚠️  Error updating profile for ${user.email}:`, profileError.message);
@@ -82,7 +82,7 @@ async function createTestUsers() {
       }
 
     } catch (error) {
-      console.error(`❌ Unexpected error creating user ${user.email}:`, error.message);
+      console.error(`❌ Unexpected error creating user ${user.email}:`, (error as Error).message);
     }
   }
 

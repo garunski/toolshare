@@ -1,0 +1,76 @@
+description: Component placement standards for organizing React components in the ToolShare codebase
+globs:
+  - src/app/**/*.tsx
+  - src/components/**/*.tsx
+alwaysApply: false
+---
+
+# Component Placement Standards
+
+## Page-Specific Components
+**Page-specific components that are not reused should be co-located with their pages.**
+
+### Directory Structure
+```
+src/app/
+├── auth/
+│   ├── login/
+│   │   ├── page.tsx
+│   │   └── components/
+│   │       ├── LoginForm.tsx
+│   │       └── LoginFormFields.tsx
+│   ├── register/
+│   │   ├── page.tsx
+│   │   └── components/
+│   │       ├── RegisterForm.tsx
+│   │       └── RegisterFormFields.tsx
+│   └── profile-setup/
+│       ├── page.tsx
+│       └── components/
+│           ├── ProfileSetupForm.tsx
+│           └── ProfileSetupFormFields.tsx
+├── dashboard/
+│   ├── page.tsx
+│   └── components/
+│       └── DashboardCard.tsx
+└── tools/
+    ├── page.tsx
+    └── components/
+        ├── ToolGrid.tsx
+        ├── ToolCard.tsx
+        └── ToolSearch.tsx
+```
+
+## Component Categories
+
+### 1. Page-Specific Components (Co-located)
+- Components used only by a single page
+- Form components specific to a page
+- Layout components for a specific page
+- Place in `src/app/[page]/components/`
+
+### 2. Shared Components (src/components/)
+- Components used across multiple pages
+- Reusable UI patterns
+- Business logic components
+- Place in `src/components/custom/` or `src/components/ui/`
+
+### 3. Third-Party Components
+- Catalyst UI components
+- External library components
+- DO NOT modify these components
+- Import from their respective packages
+
+## Naming Conventions
+- Page components: `page.tsx`
+- Page-specific components: `[Feature]Component.tsx`
+- Shared components: `[Feature]Component.tsx`
+- Form components: `[Feature]Form.tsx`
+- Field components: `[Feature]FormFields.tsx`
+
+## Benefits of Co-location
+- Easier to find related code
+- Better code organization
+- Reduced coupling between pages
+- Clearer ownership of components
+- Easier refactoring and maintenance

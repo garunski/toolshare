@@ -1,4 +1,4 @@
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
 // Supabase configuration for local development
 const supabaseUrl = 'http://127.0.0.1:54321';
@@ -176,7 +176,7 @@ async function createSampleData() {
     console.log('🎉 Sample data creation complete!');
 
   } catch (error) {
-    console.error('❌ Unexpected error:', error.message);
+    console.error('❌ Unexpected error:', (error as Error).message);
   }
 }
 

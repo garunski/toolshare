@@ -50,7 +50,7 @@ export default function ToolsPage() {
 ```typescript
 // components/custom/ToolCard.tsx
 import { Card, CardContent, CardHeader } from '@catalyst-ui/react'
-import { toolSchema, type Tool } from '@/commons/validators/toolValidator'
+import { toolSchema, type Tool } from '@/common/validators/toolValidator'
 
 interface ToolCardProps {
   tool: Tool
