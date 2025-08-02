@@ -34,7 +34,7 @@ const eslintConfig = [
     },
   },
   {
-    files: ["src/type/supabase.ts"],
+    files: ["src/types/supabase.ts"],
     rules: {
       // Disable max-lines for auto-generated Supabase types
       "max-lines": "off",

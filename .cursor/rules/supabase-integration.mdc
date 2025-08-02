@@ -2,7 +2,7 @@ description: Supabase integration patterns and database operations
 globs:
   - src/common/operations/**/*.ts
   - src/common/supabase.ts
-  - src/hook/useAuth.ts
+  - src/hooks/useAuth.ts
   - src/app/auth/**/*.tsx
 alwaysApply: false
 ---

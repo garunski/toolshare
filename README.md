@@ -134,8 +134,8 @@ src/
 │   └── calculators/       # Calculation functions
 ├── components/            # Shared components
 │   └── ui/               # UI components (camelCase)
-├── hook/                 # Custom React hooks (singular)
-└── type/                 # TypeScript type definitions (singular)
+├── hooks/                # Custom React hooks (plural)
+└── types/                # TypeScript type definitions (plural)
 
 supabase/
 ├── migrations/           # Database migrations

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useAuth } from "@/hook/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 
 import { ProfileSetupForm } from "./components/ProfileSetupForm";
 

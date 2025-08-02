@@ -84,8 +84,8 @@ tasks:
     cmds:
       - |
         echo "📝 Generating TypeScript types..."
-        supabase gen types typescript --local > src/type/supabase.ts
-        echo "✅ Types generated at src/type/supabase.ts"
+        supabase gen types typescript --local > src/types/supabase.ts
+        echo "✅ Types generated at src/types/supabase.ts"
 
   logs:
     desc: Show Supabase logs
