@@ -15,12 +15,13 @@ A community-driven tool sharing platform that connects neighbors and friends to 
 ## Tech Stack
 
 - **Frontend**: Next.js 15 with App Router
-- **UI Components**: shadcn/ui (based on Radix UI)
-- **Styling**: Tailwind CSS
-- **Backend**: Supabase (PostgreSQL, Auth, Storage, Real-time)
-- **Notifications**: Novu
-- **Language**: TypeScript
+- **UI Components**: Catalyst UI (shadcn/ui based)
+- **Styling**: Tailwind CSS with Catalyst presets
+- **Backend**: Supabase Cloud (PostgreSQL, Auth, Storage, Real-time)
+- **Notifications**: Novu Cloud
+- **Language**: TypeScript (strict mode)
 - **Forms**: React Hook Form with Zod validation
+- **Development**: Taskfile for streamlined workflows
 
 ## Getting Started
 
@@ -28,7 +29,6 @@ A community-driven tool sharing platform that connects neighbors and friends to 
 
 - Node.js 18+
 - npm or yarn
-- Docker Desktop
 - Supabase CLI
 - Novu account (for notifications)
 
@@ -40,11 +40,11 @@ The easiest way to get started is using the included Taskfile:
 # Install Taskfile (if not already installed)
 brew install go-task
 
-# Complete environment setup
-task setup:env
+# Complete project setup
+task setup
 
 # Start development server with Supabase
-task dev:with:supabase
+task dev
 ```
 
 ### Manual Setup
@@ -83,96 +83,27 @@ If you prefer to set up manually:
 
 4. **Set up Supabase Database**
 
-   Create a new Supabase project and run the following SQL in the SQL editor:
-
-   ```sql
-   -- Create profiles table
-   CREATE TABLE profiles (
-     id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
-     first_name TEXT NOT NULL,
-     last_name TEXT NOT NULL,
-     phone TEXT,
-     address TEXT,
-     bio TEXT,
-     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-   );
-
-   -- Create tools table
-   CREATE TABLE tools (
-     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-     owner_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
-     name TEXT NOT NULL,
-     description TEXT,
-     category TEXT,
-     condition TEXT,
-     images TEXT[],
-     is_available BOOLEAN DEFAULT true,
-     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-   );
-
-   -- Create loans table
-   CREATE TABLE loans (
-     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-     tool_id UUID REFERENCES tools(id) ON DELETE CASCADE NOT NULL,
-     borrower_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
-     lender_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
-     status TEXT DEFAULT 'pending',
-     start_date DATE,
-     end_date DATE,
-     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-   );
-
-   -- Create messages table
-   CREATE TABLE messages (
-     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-     sender_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
-     receiver_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
-     content TEXT NOT NULL,
-     loan_id UUID REFERENCES loans(id) ON DELETE CASCADE,
-     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-   );
-
-   -- Enable Row Level Security
-   ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
-   ALTER TABLE tools ENABLE ROW LEVEL SECURITY;
-   ALTER TABLE loans ENABLE ROW LEVEL SECURITY;
-   ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
-
-   -- RLS Policies
-   -- Profiles: Users can read all profiles, update their own
-   CREATE POLICY "Users can view all profiles" ON profiles FOR SELECT USING (true);
-   CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
-   CREATE POLICY "Users can insert own profile" ON profiles FOR INSERT WITH CHECK (auth.uid() = id);
-
-   -- Tools: Users can read all available tools, manage their own
-   CREATE POLICY "Users can view available tools" ON tools FOR SELECT USING (is_available = true);
-   CREATE POLICY "Users can manage own tools" ON tools FOR ALL USING (auth.uid() = owner_id);
-
-   -- Loans: Users can view loans they're involved in
-   CREATE POLICY "Users can view own loans" ON loans FOR SELECT USING (auth.uid() = borrower_id OR auth.uid() = lender_id);
-   CREATE POLICY "Users can create loans" ON loans FOR INSERT WITH CHECK (auth.uid() = borrower_id);
-
-   -- Messages: Users can view messages they're involved in
-   CREATE POLICY "Users can view own messages" ON messages FOR SELECT USING (auth.uid() = sender_id OR auth.uid() = receiver_id);
-   CREATE POLICY "Users can send messages" ON messages FOR INSERT WITH CHECK (auth.uid() = sender_id);
-   ```
-
-5. **Generate TypeScript types**
-
    ```bash
-   npx supabase gen types typescript --project-id your-project-id > src/types/database.ts
+   # Start Supabase locally
+   task database:supabase-start
+   
+   # Apply migrations
+   task database:db-migrate
+   
+   # Generate TypeScript types
+   task database:db-types
+   
+   # Seed with test data
+   task database:db-seed-users
    ```
 
-6. **Run the development server**
+5. **Run the development server**
 
    ```bash
    npm run dev
    ```
 
-7. **Open your browser**
+6. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## Project Structure
@@ -181,37 +112,60 @@ If you prefer to set up manually:
 src/
 ├── app/                    # Next.js App Router pages
 │   ├── auth/              # Authentication pages
-│   ├── dashboard/         # Main dashboard
-│   └── ...
-├── components/
-│   ├── ui/               # shadcn/ui components
-│   ├── catalyst/         # Catalyst UI components
-│   └── custom/           # Custom components
-├── lib/
-│   ├── operations/       # Business logic operations
-│   ├── validators/       # Zod validation schemas
-│   ├── formatters/       # Data formatting functions
-│   ├── generators/       # Content generation
-│   ├── parsers/          # Data parsing
-│   ├── transformers/     # Data transformation
-│   └── calculators/      # Calculation functions
-├── hooks/                # Custom React hooks
-└── types/                # TypeScript type definitions
+│   │   ├── login/
+│   │   │   ├── page.tsx
+│   │   │   └── components/     # Page-specific components
+│   │   ├── register/
+│   │   │   ├── page.tsx
+│   │   │   └── components/
+│   │   └── profile-setup/
+│   │       ├── page.tsx
+│   │       └── components/
+│   └── dashboard/
+│       ├── page.tsx
+│       └── components/
+├── common/                 # Shared utilities (singular)
+│   ├── validators/        # Zod validation schemas
+│   ├── operations/        # Business logic operations
+│   ├── formatters/        # Data formatting functions
+│   ├── generators/        # Content generation
+│   ├── parsers/           # Data parsing
+│   ├── transformers/      # Data transformation
+│   └── calculators/       # Calculation functions
+├── components/            # Shared components
+│   └── ui/               # UI components (camelCase)
+├── hook/                 # Custom React hooks (singular)
+└── type/                 # TypeScript type definitions (singular)
+
+supabase/
+├── migrations/           # Database migrations
+├── seed.sql             # SQL seed data
+├── seed-users.ts        # TypeScript user seeding
+├── seed-data.ts         # TypeScript data seeding
+└── config.toml          # Supabase configuration
 ```
 
 ## Development Standards
+
+### Component Placement
+
+- **Page-specific components**: Co-located in `src/app/[page]/components/`
+- **Shared components**: Located in `src/components/`
+- **UI components**: Located in `src/components/ui/`
+- **Third-party components**: Imported from their packages
+
+### Code Quality Standards
+
+- **File Size**: All files MUST be under 150 lines
+- **TypeScript**: Strict mode with proper typing
+- **Validation**: Comprehensive Zod schemas for all data
+- **Naming**: Consistent camelCase/PascalCase conventions
+- **Organization**: Single responsibility principle
 
 ### Anti-Generic Naming Rule
 
 - **NEVER use generic names**: "util", "utils", "helper", "helpers", "manager", "service", "common", "shared", "misc", "lib"
 - **USE specific names**: `profileImageUploader.ts`, `borrowingRequestValidator.ts`, `toolAvailabilityCalculator.ts`
-
-### Code Quality Standards
-
-- All files MUST be under 150 lines
-- TypeScript with strict typing
-- Comprehensive Zod validation
-- Use existing components from `src/components/ui/` (DO NOT modify third-party UI components)
 
 ## Taskfile Commands
 
@@ -219,44 +173,93 @@ The project includes a comprehensive Taskfile for common development tasks:
 
 ### 🚀 Setup & Development
 
-- `task setup:env` - Complete environment setup
-- `task dev` - Start development server
-- `task dev:with:supabase` - Start dev server with Supabase
+- `task setup` - Complete project setup
+- `task dev` - Start development server with Supabase
+- `task dev:dev-only` - Start Next.js dev server only
+- `task dev:build` - Build for production
+- `task dev:start` - Start production server
 
 ### 🗄️ Database
 
-- `task supabase:setup` - Setup Supabase locally
-- `task supabase:start` - Start Supabase services
-- `task supabase:stop` - Stop Supabase services
-- `task supabase:db:setup` - Setup database schema
-- `task supabase:db:seed` - Seed database with sample data
-- `task supabase:types:generate` - Generate TypeScript types
+- `task database:supabase-start` - Start Supabase services
+- `task database:supabase-stop` - Stop Supabase services
+- `task database:supabase-status` - Check Supabase status
+- `task database:supabase-reset` - Reset Supabase database
+- `task database:db-migrate` - Apply database migrations
+- `task database:db-migrate-new` - Create new migration
+- `task database:db-seed` - Seed database with initial data
+- `task database:db-seed-users` - Create test users and sample data
+- `task database:db-types` - Generate TypeScript types
 
-### 🧪 Testing
+### 🧪 Testing & Quality
 
-- `task test` - Run tests
-- `task test:watch` - Run tests in watch mode
-
-### 🧹 Maintenance
-
-- `task clean` - Clean build artifacts
-- `task clean:all` - Complete cleanup
-- `task lint` - Run ESLint
-- `task lint:fix` - Fix ESLint issues
+- `task dev:lint` - Run ESLint
+- `task dev:lint-fix` - Fix ESLint issues
+- `task dev:format` - Format code with Prettier
+- `task dev:format-check` - Check code formatting
+- `task dev:format-fix` - Format and fix linting
+- `task dev:type-check` - Run TypeScript checks
+- `task workflow:workflow-code-quality` - Run all quality checks
+- `task workflow:workflow-code-fix` - Fix all quality issues
 
 ### 📊 Utilities
 
 - `task status` - Show project status
-- `task logs` - Show application logs
-- `task help` - Show all available tasks
+- `task database:logs` - Show Supabase logs
+- `task database:studio` - Open Supabase Studio
+- `task help` - Show detailed help
+
+## Development Workflow
+
+### Code Quality Operations
+
+**IMPORTANT: All code quality operations MUST be run using Taskfile commands.**
+
+```bash
+# Run all quality checks
+task workflow:workflow-code-quality
+
+# Fix all quality issues
+task workflow:workflow-code-fix
+
+# Individual operations
+task dev:lint          # Run ESLint
+task dev:lint-fix      # Fix linting issues
+task dev:type-check    # Run TypeScript checks
+task dev:format        # Format code
+```
+
+### Component Development
+
+1. **Page-specific components**: Create in `src/app/[page]/components/`
+2. **Shared components**: Create in `src/components/`
+3. **UI components**: Use existing components from `src/components/ui/`
+4. **Follow naming conventions**: PascalCase for components, camelCase for utilities
+
+### Database Development
+
+```bash
+# Create new migration
+task database:db-migrate-new
+
+# Apply migrations
+task database:db-migrate
+
+# Generate types
+task database:db-types
+
+# Seed data
+task database:db-seed-users
+```
 
 ## Contributing
 
-1. Follow the anti-generic naming rules
+1. Follow the component placement rules
 2. Keep files under 150 lines
 3. Use TypeScript with strict typing
 4. Implement comprehensive Zod validation
 5. Follow the established project structure
+6. Use Taskfile commands for all development operations
 
 ## License
 

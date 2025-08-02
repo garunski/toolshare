@@ -33,8 +33,8 @@ alwaysApply: false
 ### Page Component
 ```typescript
 // app/tools/page.tsx
-import { ToolGrid } from '@/components/custom/ToolGrid'
-import { ToolSearch } from '@/components/custom/ToolSearch'
+import { ToolGrid } from '@/components/ToolGrid'
+import { ToolSearch } from '@/components/ToolSearch'
 
 export default function ToolsPage() {
   return (
@@ -48,7 +48,7 @@ export default function ToolsPage() {
 
 ### Custom Component
 ```typescript
-// components/custom/ToolCard.tsx
+// components/ToolCard.tsx
 import { Card, CardContent, CardHeader } from '@catalyst-ui/react'
 import { toolSchema, type Tool } from '@/common/validators/toolValidator'
 

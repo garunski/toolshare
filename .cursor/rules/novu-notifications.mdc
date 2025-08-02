@@ -1,6 +1,6 @@
 description: Novu notification integration patterns and workflows
 globs:
-  - src/commons/operations/**/*novu*.ts
+  - src/common/operations/**/*novu*.ts
   - src/components/**/*notification*.tsx
 alwaysApply: false
 ---
@@ -24,7 +24,7 @@ alwaysApply: false
 
 ### Subscriber Management
 ```typescript
-// commons/operations/novuSubscriberHandler.ts
+// common/operations/novuSubscriberHandler.ts
 import { Novu } from '@novu/node'
 
 const novu = new Novu(process.env.NOVU_API_KEY!)
@@ -41,7 +41,7 @@ export async function createSubscriber(userId: string, userData: UserData) {
 
 ### Trigger Notifications
 ```typescript
-// commons/operations/loanReminderDispatcher.ts
+// common/operations/loanReminderDispatcher.ts
 export async function sendLoanReminder(loanId: string, userId: string) {
   await novu.trigger('loan-reminder', {
     to: {
@@ -60,7 +60,7 @@ export async function sendLoanReminder(loanId: string, userId: string) {
 
 ### Notification Center
 ```typescript
-// components/custom/NotificationCenter.tsx
+// components/NotificationCenter.tsx
 import { NovuProvider, PopoverNotificationCenter, NotificationBell } from '@novu/notification-center'
 
 export function NotificationCenter() {

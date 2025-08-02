@@ -40,7 +40,7 @@ alwaysApply: true
 - Example: `userProfileValidator.ts`, `toolDataValidator.ts`
 
 ## Component Standards
-- Use existing components from `src/primitives/` 
+- Use existing components from `src/components/ui/` 
 - DO NOT modify third-party UI components
 - Create custom components only when necessary
 - Follow Catalyst UI design patterns

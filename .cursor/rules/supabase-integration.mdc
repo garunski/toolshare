@@ -1,8 +1,8 @@
 description: Supabase integration patterns and database operations
 globs:
-  - src/commons/operations/**/*.ts
-  - src/commons/supabase.ts
-  - src/hooks/useAuth.ts
+  - src/common/operations/**/*.ts
+  - src/common/supabase.ts
+  - src/hook/useAuth.ts
   - src/app/auth/**/*.tsx
 alwaysApply: false
 ---
@@ -31,7 +31,7 @@ alwaysApply: false
 
 ### Query Patterns
 ```typescript
-// commons/operations/toolOperations.ts
+// common/operations/toolOperations.ts
 import { createClient } from '@supabase/supabase-js'
 import { toolSchema, type Tool } from '@/common/validators/toolValidator'
 
@@ -52,7 +52,7 @@ export async function fetchToolsByUserId(userId: string): Promise<Tool[]> {
 
 ### Real-time Subscriptions
 ```typescript
-// commons/operations/loanStatusTracker.ts
+// common/operations/loanStatusTracker.ts
 export function subscribeToLoanUpdates(loanId: string, callback: (loan: Loan) => void) {
   return supabase
     .channel(`loan-${loanId}`)
