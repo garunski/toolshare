@@ -1,36 +1,43 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
 import { useAuth } from "@/hooks/useAuth";
-import type { SocialProfile } from "@/types/social";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
+import type { SocialProfile } from "@/types/social";
 
 interface ProfileCardProps {
   userId: string;
+  isOwnProfile: boolean;
+  friendshipStatus: "none" | "friends" | "pending_sent" | "pending_received";
+  sendingRequest: boolean;
+  onSendFriendRequest: () => Promise<void>;
+  onAcceptRequest: () => Promise<void>;
+  onRejectRequest: () => Promise<void>;
+  onMessage: () => void;
 }
 
-export function ProfileCard({ userId }: ProfileCardProps) {
+export function ProfileCard({
+  userId,
+  isOwnProfile,
+  friendshipStatus,
+  sendingRequest,
+  onSendFriendRequest,
+  onAcceptRequest,
+  onRejectRequest,
+  onMessage,
+}: ProfileCardProps) {
   const { user } = useAuth();
   const [profile, setProfile] = useState<SocialProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFriend, setIsFriend] = useState(false);
 
-  useEffect(() => {
-    if (user?.id) {
-      loadProfile();
-    }
-  }, [user?.id, userId]);
-
-  const loadProfile = async () => {
-    if (!user?.id) return;
-
+  const loadProfile = useCallback(async () => {
     try {
       const result = await SocialConnectionProcessor.getProfile(userId);
-      if (result.success) {
+      if (result.success && result.data) {
         setProfile(result.data);
       }
     } catch (error) {
@@ -38,20 +45,11 @@ export function ProfileCard({ userId }: ProfileCardProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [userId]);
 
-  const sendFriendRequest = async () => {
-    if (!user?.id || !profile) return;
-
-    try {
-      const result = await SocialConnectionProcessor.sendFriendRequest(user.id, profile.id);
-      if (result.success) {
-        // Handle success
-      }
-    } catch (error) {
-      console.error("Failed to send friend request:", error);
-    }
-  };
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
 
   if (isLoading) {
     return (
@@ -72,23 +70,53 @@ export function ProfileCard({ userId }: ProfileCardProps) {
   return (
     <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
       <div className="flex items-center space-x-4">
-        <div className="h-16 w-16 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+        <div className="h-20 w-20 rounded-full bg-zinc-300 dark:bg-zinc-600" />
         <div className="flex-1">
-          <Heading level={2} className="text-xl font-semibold">
+          <Heading level={2} className="text-2xl font-bold">
             {profile.first_name} {profile.last_name}
           </Heading>
-          {profile.bio && (
-            <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
-              {profile.bio}
+          <Text className="text-zinc-600 dark:text-zinc-400">
+            {profile.bio || "No bio available"}
+          </Text>
+        </div>
+      </div>
+
+      {!isOwnProfile && user && (
+        <div className="mt-6 flex space-x-3">
+          {friendshipStatus === "none" && (
+            <Button
+              onClick={onSendFriendRequest}
+              disabled={sendingRequest}
+              className="flex-1"
+            >
+              {sendingRequest ? "Sending..." : "Send Friend Request"}
+            </Button>
+          )}
+
+          {friendshipStatus === "pending_sent" && (
+            <Text className="text-zinc-600 dark:text-zinc-400">
+              Friend request sent
             </Text>
           )}
+
+          {friendshipStatus === "pending_received" && (
+            <>
+              <Button onClick={onAcceptRequest} className="flex-1">
+                Accept Request
+              </Button>
+              <Button outline onClick={onRejectRequest} className="flex-1">
+                Decline Request
+              </Button>
+            </>
+          )}
+
+          {friendshipStatus === "friends" && (
+            <Button onClick={onMessage} className="flex-1">
+              Send Message
+            </Button>
+          )}
         </div>
-        {user?.id !== userId && (
-          <Button onClick={sendFriendRequest}>
-            {isFriend ? "Friends" : "Add Friend"}
-          </Button>
-        )}
-      </div>
+      )}
     </div>
   );
 }

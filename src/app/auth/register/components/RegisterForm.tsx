@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 
-import { FormBuilder } from "@/components/forms";
-import { registerFormConfig } from "@/components/forms/configs/registerFormConfig";
+import { FormBuilder } from "@/common/forms";
+import { registerFormConfig } from "@/common/forms/configs/registerFormConfig";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
@@ -22,7 +22,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           Create your account to start sharing tools with your community
         </Text>
       </div>
-      
+
       <FormBuilder
         config={{
           ...registerFormConfig,

@@ -1,7 +1,7 @@
 "use client";
 
-import { FormBuilder } from "@/components/forms";
-import { profileSetupFormConfig } from "@/components/forms/configs/profileSetupFormConfig";
+import { FormBuilder } from "@/common/forms";
+import { profileSetupFormConfig } from "@/common/forms/configs/profileSetupFormConfig";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
@@ -21,7 +21,7 @@ export function ProfileSetupForm({ userId, onSuccess }: ProfileSetupFormProps) {
           Tell us a bit about yourself to help build trust in the community
         </Text>
       </div>
-      
+
       <FormBuilder
         config={{
           ...profileSetupFormConfig,

@@ -1,33 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { MessageThreadHandler } from "@/common/operations/messageThreadHandler";
+import { MessageOperations } from "@/common/operations/messageOperations";
 import { useAuth } from "@/hooks/useAuth";
-import type { Message } from "@/types/social";
 import { Text } from "@/primitives/text";
+import type { Message } from "@/types/social";
 
 interface MessageListProps {
-  userId: string;
   otherUserId: string;
 }
 
-export function MessageList({ userId, otherUserId }: MessageListProps) {
+export function MessageList({ otherUserId }: MessageListProps) {
   const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (user?.id) {
-      loadMessages();
-    }
-  }, [user?.id, otherUserId]);
-
-  const loadMessages = async () => {
+  const loadMessages = useCallback(async () => {
     if (!user?.id) return;
 
     try {
-      const result = await MessageThreadHandler.getMessages(userId, otherUserId);
+      const result = await MessageOperations.getMessages(user.id, otherUserId);
       if (result.success) {
         setMessages(result.data || []);
       }
@@ -36,11 +29,17 @@ export function MessageList({ userId, otherUserId }: MessageListProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user?.id, otherUserId]);
+
+  useEffect(() => {
+    if (user?.id) {
+      loadMessages();
+    }
+  }, [loadMessages, user?.id]);
 
   if (isLoading) {
     return (
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex items-center justify-center p-4">
         <Text>Loading messages...</Text>
       </div>
     );
@@ -48,28 +47,30 @@ export function MessageList({ userId, otherUserId }: MessageListProps) {
 
   if (messages.length === 0) {
     return (
-      <div className="flex-1 overflow-y-auto p-4">
-        <Text className="text-center text-zinc-500">No messages yet. Start the conversation!</Text>
+      <div className="flex items-center justify-center p-4">
+        <Text>No messages yet. Start a conversation!</Text>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+    <div className="space-y-4">
       {messages.map((message) => (
         <div
           key={message.id}
-          className={`flex ${message.sender_id === userId ? 'justify-end' : 'justify-start'}`}
+          className={`flex ${
+            message.sender_id === user?.id ? "justify-end" : "justify-start"
+          }`}
         >
           <div
             className={`max-w-xs rounded-lg px-4 py-2 ${
-              message.sender_id === userId
-                ? 'bg-blue-600 text-white'
-                : 'bg-zinc-200 text-zinc-900 dark:bg-zinc-700 dark:text-white'
+              message.sender_id === user?.id
+                ? "bg-blue-500 text-white"
+                : "bg-zinc-100 text-zinc-900 dark:bg-zinc-700 dark:text-zinc-100"
             }`}
           >
             <Text className="text-sm">{message.content}</Text>
-            <Text className="text-xs opacity-70 mt-1">
+            <Text className="text-xs opacity-70">
               {new Date(message.created_at).toLocaleTimeString()}
             </Text>
           </div>

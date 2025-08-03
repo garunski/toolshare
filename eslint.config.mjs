@@ -41,7 +41,7 @@ const eslintConfig = [
     },
   },
   {
-    files: ["src/components/forms/**/*"],
+    files: ["src/common/forms/**/*"],
     rules: {
       // Disable max-lines for form builder components
       // These are core components that need to be comprehensive

@@ -1,5 +1,5 @@
-import type { SocialConnection, SocialProfile } from "@/types/social";
 import { supabase } from "@/common/supabase";
+import type { SocialConnection, SocialProfile } from "@/types/social";
 
 export class FriendOperations {
   static async getFriends(userId: string): Promise<SocialConnection[]> {
@@ -110,5 +110,34 @@ export class FriendOperations {
     }
 
     return "none";
+  }
+
+  static async sendFriendRequest(
+    senderId: string,
+    receiverId: string,
+  ): Promise<void> {
+    const { error } = await supabase.from("friend_requests").insert({
+      sender_id: senderId,
+      receiver_id: receiverId,
+      status: "pending",
+    });
+
+    if (error) {
+      throw new Error(`Failed to send friend request: ${error.message}`);
+    }
+  }
+
+  static async getProfile(userId: string): Promise<SocialProfile> {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      throw new Error(`Failed to get profile: ${error.message}`);
+    }
+
+    return data;
   }
 }

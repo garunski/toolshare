@@ -1,5 +1,9 @@
 import { FormConfig } from "../FormBuilder";
-import { nameValidator, phoneValidator, maxLengthValidator } from "../validators";
+import {
+  maxLengthValidator,
+  nameValidator,
+  phoneValidator,
+} from "../validators";
 
 export const profileSetupFormConfig: FormConfig = {
   fields: [
@@ -65,5 +69,6 @@ export const profileSetupFormConfig: FormConfig = {
   loadingText: "Saving profile...",
   endpoint: "/api/profiles",
   method: "POST",
-  containerClassName: "rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900",
-}; 
+  containerClassName:
+    "rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900",
+};

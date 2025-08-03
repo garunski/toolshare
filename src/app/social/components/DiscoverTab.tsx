@@ -1,30 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
 import { useAuth } from "@/hooks/useAuth";
-import type { SocialProfile } from "@/types/social";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
+import type { SocialProfile } from "@/types/social";
 
 export function DiscoverTab() {
   const { user } = useAuth();
   const [suggestedFriends, setSuggestedFriends] = useState<SocialProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (user?.id) {
-      loadSuggestedFriends();
-    }
-  }, [user?.id]);
-
-  const loadSuggestedFriends = async () => {
+  const loadSuggestedFriends = useCallback(async () => {
     if (!user?.id) return;
 
     try {
-      const result = await SocialConnectionProcessor.getSuggestedFriends(user.id);
+      const result = await SocialConnectionProcessor.getSuggestedFriends(
+        user.id,
+      );
       if (result.success) {
         setSuggestedFriends(result.data || []);
       }
@@ -33,16 +29,27 @@ export function DiscoverTab() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (user?.id) {
+      loadSuggestedFriends();
+    }
+  }, [loadSuggestedFriends, user?.id]);
 
   const sendFriendRequest = async (friendId: string) => {
     if (!user?.id) return;
 
     try {
-      const result = await SocialConnectionProcessor.sendFriendRequest(user.id, friendId);
+      const result = await SocialConnectionProcessor.sendFriendRequest(
+        user.id,
+        friendId,
+      );
       if (result.success) {
         // Remove the friend from suggested list
-        setSuggestedFriends(prev => prev.filter(friend => friend.id !== friendId));
+        setSuggestedFriends((prev) =>
+          prev.filter((friend) => friend.id !== friendId),
+        );
       }
     } catch (error) {
       console.error("Failed to send friend request:", error);
@@ -89,11 +96,10 @@ export function DiscoverTab() {
             </div>
             <div className="mt-3">
               <Button
-                size="sm"
                 onClick={() => sendFriendRequest(friend.id)}
                 className="w-full"
               >
-                Add Friend
+                Send Friend Request
               </Button>
             </div>
           </div>

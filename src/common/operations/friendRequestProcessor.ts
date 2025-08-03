@@ -1,139 +1,114 @@
+import { friendRequestResponseValidator } from "@/common/validators/socialFeatureValidator";
 import type { FriendRequest, FriendRequestFormData } from "@/types/social";
-import { supabase } from "@/common/supabase";
-import {
-  friendRequestResponseValidator,
-  friendRequestValidator,
-} from "@/common/validators/socialFeatureValidator";
+
+import { FriendRequestQueries } from "./friendRequestQueries";
+import { FriendRequestValidator } from "./friendRequestValidator";
 
 export class FriendRequestProcessor {
   static async sendFriendRequest(
     formData: FriendRequestFormData,
     senderId: string,
-  ): Promise<FriendRequest> {
-    const validatedData = friendRequestValidator.parse(formData);
-
-    // Check if request already exists
-    const existingRequest = await supabase
-      .from("friend_requests")
-      .select("*")
-      .eq("sender_id", senderId)
-      .eq("receiver_id", validatedData.receiver_id)
-      .single();
-
-    if (existingRequest.data) {
-      throw new Error("Friend request already exists");
+  ): Promise<{ success: boolean; data: FriendRequest }> {
+    try {
+      const validatedData = FriendRequestValidator.validateFormData(formData);
+      await FriendRequestValidator.validateRequest(
+        senderId,
+        validatedData.receiver_id,
+      );
+      const data = await FriendRequestQueries.createRequest(
+        senderId,
+        validatedData,
+      );
+      return { success: true, data };
+    } catch (error) {
+      console.error("Failed to send friend request:", error);
+      return { success: false, data: null as any };
     }
-
-    // Check if users are already friends
-    const existingConnection = await supabase
-      .from("social_connections")
-      .select("*")
-      .eq("user_id", senderId)
-      .eq("friend_id", validatedData.receiver_id)
-      .single();
-
-    if (existingConnection.data) {
-      throw new Error("Users are already friends");
-    }
-
-    const { data, error } = await supabase
-      .from("friend_requests")
-      .insert({
-        sender_id: senderId,
-        receiver_id: validatedData.receiver_id,
-        message: validatedData.message,
-      })
-      .select("*")
-      .single();
-
-    if (error) {
-      throw new Error(`Failed to send friend request: ${error.message}`);
-    }
-
-    return data;
   }
 
   static async respondToFriendRequest(
     requestId: string,
     action: "accept" | "reject",
     userId: string,
-  ): Promise<void> {
-    const validatedData = friendRequestResponseValidator.parse({
-      request_id: requestId,
+  ): Promise<{ success: boolean }> {
+    try {
+      friendRequestResponseValidator.parse({ request_id: requestId, action });
+      await this.processResponse(requestId, action);
+      return { success: true };
+    } catch (error) {
+      console.error("Failed to respond to friend request:", error);
+      return { success: false };
+    }
+  }
+
+  private static async processResponse(
+    requestId: string,
+    action: "accept" | "reject",
+  ) {
+    const { error } = await FriendRequestQueries.processResponse(
+      requestId,
       action,
-    });
+    );
+    if (error)
+      throw new Error(`Failed to ${action} friend request: ${error.message}`);
+  }
 
-    if (action === "accept") {
-      const { error } = await supabase.rpc("accept_friend_request", {
-        request_id: requestId,
-      });
-
-      if (error) {
-        throw new Error(`Failed to accept friend request: ${error.message}`);
-      }
-    } else {
-      const { error } = await supabase.rpc("reject_friend_request", {
-        request_id: requestId,
-      });
-
-      if (error) {
-        throw new Error(`Failed to reject friend request: ${error.message}`);
-      }
+  static async getPendingRequests(
+    userId: string,
+  ): Promise<{ success: boolean; data: FriendRequest[] }> {
+    try {
+      const { data, error } = await FriendRequestQueries.fetchRequests(
+        userId,
+        "receiver_id",
+      );
+      if (error)
+        throw new Error(`Failed to fetch pending requests: ${error.message}`);
+      return { success: true, data: data || [] };
+    } catch (error) {
+      console.error("Failed to get pending requests:", error);
+      return { success: false, data: [] };
     }
   }
 
-  static async getPendingRequests(userId: string): Promise<FriendRequest[]> {
-    const { data, error } = await supabase
-      .from("friend_requests")
-      .select(
-        `
-        *,
-        sender:profiles!friend_requests_sender_id_fkey(*)
-      `,
-      )
-      .eq("receiver_id", userId)
-      .eq("status", "pending")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      throw new Error(`Failed to fetch pending requests: ${error.message}`);
+  static async getSentRequests(
+    userId: string,
+  ): Promise<{ success: boolean; data: FriendRequest[] }> {
+    try {
+      const { data, error } = await FriendRequestQueries.fetchRequests(
+        userId,
+        "sender_id",
+      );
+      if (error)
+        throw new Error(`Failed to fetch sent requests: ${error.message}`);
+      return { success: true, data: data || [] };
+    } catch (error) {
+      console.error("Failed to get sent requests:", error);
+      return { success: false, data: [] };
     }
-
-    return data || [];
-  }
-
-  static async getSentRequests(userId: string): Promise<FriendRequest[]> {
-    const { data, error } = await supabase
-      .from("friend_requests")
-      .select(
-        `
-        *,
-        receiver:profiles!friend_requests_receiver_id_fkey(*)
-      `,
-      )
-      .eq("sender_id", userId)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      throw new Error(`Failed to fetch sent requests: ${error.message}`);
-    }
-
-    return data || [];
   }
 
   static async cancelFriendRequest(
     requestId: string,
     userId: string,
-  ): Promise<void> {
-    const { error } = await supabase
-      .from("friend_requests")
-      .delete()
-      .eq("id", requestId)
-      .eq("sender_id", userId)
-      .eq("status", "pending");
-
-    if (error) {
-      throw new Error(`Failed to cancel friend request: ${error.message}`);
+  ): Promise<{ success: boolean }> {
+    try {
+      const { error } = await FriendRequestQueries.cancelRequest(
+        requestId,
+        userId,
+      );
+      if (error)
+        throw new Error(`Failed to cancel friend request: ${error.message}`);
+      return { success: true };
+    } catch (error) {
+      console.error("Failed to cancel friend request:", error);
+      return { success: false };
     }
+  }
+
+  static async processRequest(
+    requestId: string,
+    action: "accept" | "reject",
+  ): Promise<{ success: boolean }> {
+    return this.respondToFriendRequest(requestId, action, "");
   }
 }

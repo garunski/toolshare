@@ -1,5 +1,9 @@
 import { FormConfig } from "../FormBuilder";
-import { requiredValidator, minLengthValidator, maxLengthValidator } from "../validators";
+import {
+  maxLengthValidator,
+  minLengthValidator,
+  requiredValidator,
+} from "../validators";
 
 export const addToolFormConfig: FormConfig = {
   fields: [
@@ -71,11 +75,16 @@ export const addToolFormConfig: FormConfig = {
       placeholder: "Upload tool images",
       accept: "image/*",
       multiple: true,
+      validate: (value) => {
+        // File validation logic
+        return undefined;
+      },
     },
   ],
   submitText: "Create Tool",
   loadingText: "Creating...",
   endpoint: "/api/tools",
   method: "POST",
-  containerClassName: "rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900",
-}; 
+  containerClassName:
+    "rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900",
+};

@@ -1,50 +1,36 @@
 "use client";
 
-import { useState } from "react";
-
 import { Button } from "@/primitives/button";
-import { DiscoverTab } from "./DiscoverTab";
-import { FriendsTab } from "./FriendsTab";
-import { MessagesTab } from "./MessagesTab";
-import { RequestsTab } from "./RequestsTab";
 
-type TabType = "discover" | "friends" | "messages" | "requests";
+interface SocialTabsProps {
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+}
 
-export function SocialTabs() {
-  const [activeTab, setActiveTab] = useState<TabType>("discover");
-
+export function SocialTabs({ activeTab, onTabChange }: SocialTabsProps) {
   const tabs = [
-    { id: "discover" as const, label: "Discover", component: DiscoverTab },
-    { id: "friends" as const, label: "Friends", component: FriendsTab },
-    { id: "messages" as const, label: "Messages", component: MessagesTab },
-    { id: "requests" as const, label: "Requests", component: RequestsTab },
+    { id: "friends", label: "Friends" },
+    { id: "discover", label: "Discover" },
+    { id: "messages", label: "Messages" },
+    { id: "requests", label: "Requests" },
   ];
 
-  const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component;
-
   return (
-    <div className="space-y-6">
-      <div className="flex space-x-1 rounded-lg bg-zinc-100 p-1 dark:bg-zinc-800">
-        {tabs.map((tab) => (
-          <Button
-            key={tab.id}
-            size="sm"
-            plain
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 ${
-              activeTab === tab.id
-                ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-700 dark:text-white"
-                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-            }`}
-          >
-            {tab.label}
-          </Button>
-        ))}
-      </div>
-
-      <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
-        {ActiveComponent && <ActiveComponent />}
-      </div>
+    <div className="flex space-x-1 border-b border-zinc-200 dark:border-zinc-700">
+      {tabs.map((tab) => (
+        <Button
+          key={tab.id}
+          plain
+          onClick={() => onTabChange(tab.id)}
+          className={`flex-1 rounded-none border-b-2 px-4 py-2 ${
+            activeTab === tab.id
+              ? "border-blue-500 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+              : "border-transparent text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+          }`}
+        >
+          {tab.label}
+        </Button>
+      ))}
     </div>
   );
 }

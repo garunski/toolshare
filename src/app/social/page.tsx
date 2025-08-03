@@ -1,136 +1,51 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
-import { FriendRequestProcessor } from "@/common/operations/friendRequestProcessor";
-import { MessageThreadHandler } from "@/common/operations/messageThreadHandler";
-import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
-import { useAuth } from "@/hooks/useAuth";
-import type {
-  Conversation,
-  FriendRequest,
-  SocialProfile,
-  SocialStats,
-} from "@/types/social";
-
+import { DiscoverTab } from "./components/DiscoverTab";
+import { FriendsTab } from "./components/FriendsTab";
+import { MessagesTab } from "./components/MessagesTab";
+import { RequestsTab } from "./components/RequestsTab";
 import { SocialHeader } from "./components/SocialHeader";
 import { SocialTabs } from "./components/SocialTabs";
 
 export default function SocialPage() {
-  const { user } = useAuth();
-  const [friends, setFriends] = useState<SocialProfile[]>([]);
-  const [pendingRequests, setPendingRequests] = useState<FriendRequest[]>([]);
-  const [sentRequests, setSentRequests] = useState<FriendRequest[]>([]);
-  const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [suggestedFriends, setSuggestedFriends] = useState<SocialProfile[]>([]);
-  const [socialStats, setSocialStats] = useState<SocialStats | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("friends");
+  const [socialStats, setSocialStats] = useState(null);
 
-  const loadSocialData = useCallback(async () => {
-    if (!user) return;
-
-    try {
-      setLoading(true);
-      const [
-        friendsData,
-        pendingRequestsData,
-        sentRequestsData,
-        conversationsData,
-        suggestedFriendsData,
-        socialStatsData,
-      ] = await Promise.all([
-        SocialConnectionProcessor.getFriends(user.id),
-        FriendRequestProcessor.getPendingRequests(user.id),
-        FriendRequestProcessor.getSentRequests(user.id),
-        MessageThreadHandler.getConversations(user.id),
-        SocialConnectionProcessor.getSuggestedFriends(user.id),
-        SocialConnectionProcessor.getSocialStats(user.id),
-      ]);
-
-      setFriends(friendsData.map((conn: any) => conn.friend!));
-      setPendingRequests(pendingRequestsData);
-      setSentRequests(sentRequestsData);
-      setConversations(conversationsData);
-      setSuggestedFriends(suggestedFriendsData);
-      setSocialStats(socialStatsData);
-    } catch (error) {
-      console.error("Failed to load social data:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (user) {
-      loadSocialData();
-    }
-  }, [user, loadSocialData]);
-
-  const handleAcceptRequest = async (requestId: string) => {
-    if (!user) return;
-
-    try {
-      await FriendRequestProcessor.respondToFriendRequest(
-        requestId,
-        "accept",
-        user.id,
-      );
-      await loadSocialData();
-    } catch (error) {
-      console.error("Failed to accept friend request:", error);
+  const renderActiveTab = () => {
+    switch (activeTab) {
+      case "friends":
+        return <FriendsTab />;
+      case "discover":
+        return <DiscoverTab />;
+      case "messages":
+        return <MessagesTab />;
+      case "requests":
+        return <RequestsTab />;
+      default:
+        return <FriendsTab />;
     }
   };
-
-  const handleRejectRequest = async (requestId: string) => {
-    if (!user) return;
-
-    try {
-      await FriendRequestProcessor.respondToFriendRequest(
-        requestId,
-        "reject",
-        user.id,
-      );
-      await loadSocialData();
-    } catch (error) {
-      console.error("Failed to reject friend request:", error);
-    }
-  };
-
-  const handleCancelRequest = async (requestId: string) => {
-    if (!user) return;
-
-    try {
-      await FriendRequestProcessor.cancelFriendRequest(requestId, user.id);
-      await loadSocialData();
-    } catch (error) {
-      console.error("Failed to cancel friend request:", error);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="container mx-auto p-6">
-        <div className="flex h-64 items-center justify-center">
-          <div className="text-lg">Loading social network...</div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="container mx-auto max-w-6xl p-6">
-      <SocialHeader socialStats={socialStats} />
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">
+          Social
+        </h1>
+        <p className="text-zinc-600 dark:text-zinc-400">
+          Connect with friends and discover new people
+        </p>
+      </div>
 
-      <SocialTabs
-        friends={friends}
-        pendingRequests={pendingRequests}
-        sentRequests={sentRequests}
-        conversations={conversations}
-        suggestedFriends={suggestedFriends}
-        onAcceptRequest={handleAcceptRequest}
-        onRejectRequest={handleRejectRequest}
-        onCancelRequest={handleCancelRequest}
-      />
+      <div className="space-y-6">
+        <SocialHeader socialStats={socialStats} />
+        <SocialTabs activeTab={activeTab} onTabChange={setActiveTab} />
+        <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
+          {renderActiveTab()}
+        </div>
+      </div>
     </div>
   );
 }

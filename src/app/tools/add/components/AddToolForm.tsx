@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 
-import { MultiStepFormBuilder } from "@/components/forms";
-import { addToolFormSteps } from "@/components/forms/configs/addToolFormSteps";
+import { MultiStepFormBuilder } from "@/common/forms";
+import { addToolFormSteps } from "@/common/forms/configs/addToolFormSteps";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 

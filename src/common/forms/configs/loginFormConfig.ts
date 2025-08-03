@@ -22,5 +22,6 @@ export const loginFormConfig: FormConfig = {
   submitText: "Sign In",
   loadingText: "Signing in...",
   endpoint: "auth/signIn",
-  containerClassName: "rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900",
-}; 
+  containerClassName:
+    "rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900",
+};

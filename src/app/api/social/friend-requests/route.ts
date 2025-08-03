@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { processFormError } from "@/common/forms/FormErrorProcessor";
 import { supabase } from "@/common/supabase";
-import { processFormError } from "@/components/forms/FormErrorProcessor";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     if (!senderId || !receiverId) {
       return NextResponse.json(
         { error: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -30,17 +30,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (error) {
     const { fieldErrors, generalError } = processFormError(error);
-    
+
     if (Object.keys(fieldErrors).length > 0) {
       return NextResponse.json(
-        { details: { errors: Object.entries(fieldErrors).map(([field, message]) => ({ field, message })) } },
-        { status: 400 }
+        {
+          details: {
+            errors: Object.entries(fieldErrors).map(([field, message]) => ({
+              field,
+              message,
+            })),
+          },
+        },
+        { status: 400 },
       );
     }
 
     return NextResponse.json(
       { error: generalError || "An error occurred" },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

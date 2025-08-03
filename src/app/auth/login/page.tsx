@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { FormBuilder } from "@/components/forms";
-import { loginFormConfig } from "@/components/forms/configs/loginFormConfig";
+import { FormBuilder } from "@/common/forms";
+import { loginFormConfig } from "@/common/forms/configs/loginFormConfig";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
@@ -32,7 +32,7 @@ export default function LoginPage() {
               Enter your email and password to access your account
             </Text>
           </div>
-          
+
           <FormBuilder
             config={{
               ...loginFormConfig,

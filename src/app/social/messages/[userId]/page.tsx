@@ -1,98 +1,75 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { MessageThreadHandler } from "@/common/operations/messageThreadHandler";
+import { MessageOperations } from "@/common/operations/messageOperations";
+import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
 import { useAuth } from "@/hooks/useAuth";
 import type { Message, SocialProfile } from "@/types/social";
 
 import { MessageContainer } from "./components/MessageContainer";
 import { MessageHeader } from "./components/MessageHeader";
 
-export default function MessagePage() {
+export default function MessagesPage() {
   const params = useParams();
   const router = useRouter();
   const { user } = useAuth();
+  const otherUserId = params.userId as string;
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [otherUser, setOtherUser] = useState<SocialProfile | null>(null);
   const [newMessage, setNewMessage] = useState("");
-  const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
-  const subscriptionRef = useRef<any>(null);
-
-  const otherUserId = params.userId as string;
-
-  const fetchOtherUserProfile =
-    useCallback(async (): Promise<SocialProfile> => {
-      return {
-        id: otherUserId,
-        first_name: "User",
-        last_name: otherUserId.slice(0, 8),
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-    }, [otherUserId]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const loadMessages = useCallback(async () => {
-    if (!user || !otherUserId) return;
+    if (!user?.id) return;
 
     try {
-      setLoading(true);
-      const [messagesData, otherUserData] = await Promise.all([
-        MessageThreadHandler.getMessages(user.id, otherUserId),
-        fetchOtherUserProfile(),
-      ]);
-
-      setMessages(messagesData);
-      setOtherUser(otherUserData);
+      const result = await MessageOperations.getMessages(user.id, otherUserId);
+      if (result.success) {
+        setMessages(result.data || []);
+      }
     } catch (error) {
       console.error("Failed to load messages:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  }, [user, otherUserId, fetchOtherUserProfile]);
+  }, [user?.id, otherUserId]);
 
-  const setupSubscription = useCallback(() => {
-    if (!user || !otherUserId) return;
-
-    subscriptionRef.current = MessageThreadHandler.subscribeToConversation(
-      user.id,
-      otherUserId,
-      (newMessage: Message) => {
-        setMessages((prev) => [...prev, newMessage]);
-      },
-    );
-  }, [user, otherUserId]);
+  const loadOtherUser = useCallback(async () => {
+    try {
+      const result = await SocialConnectionProcessor.getProfile(otherUserId);
+      if (result.success && result.data) {
+        setOtherUser(result.data);
+      }
+    } catch (error) {
+      console.error("Failed to load other user:", error);
+    }
+  }, [otherUserId]);
 
   useEffect(() => {
-    if (user && otherUserId) {
+    if (user?.id) {
       loadMessages();
-      setupSubscription();
+      loadOtherUser();
     }
-
-    return () => {
-      if (subscriptionRef.current) {
-        subscriptionRef.current.unsubscribe();
-      }
-    };
-  }, [user, otherUserId, loadMessages, setupSubscription]);
+  }, [loadMessages, loadOtherUser, user?.id]);
 
   const handleSendMessage = async () => {
-    if (!user || !otherUserId || !newMessage.trim() || sending) return;
+    if (!newMessage.trim() || !user?.id) return;
 
+    setSending(true);
     try {
-      setSending(true);
-      const message = await MessageThreadHandler.sendMessage(
-        {
-          receiver_id: otherUserId,
-          content: newMessage.trim(),
-        },
+      const result = await MessageOperations.sendMessage(
         user.id,
+        otherUserId,
+        newMessage,
       );
-
-      setMessages((prev) => [...prev, message]);
-      setNewMessage("");
+      if (result.success && result.data) {
+        setMessages((prev) => [...prev, result.data]);
+        setNewMessage("");
+      }
     } catch (error) {
       console.error("Failed to send message:", error);
     } finally {
@@ -107,13 +84,15 @@ export default function MessagePage() {
     }
   };
 
-  const handleBack = () => router.back();
+  const handleBack = () => {
+    router.back();
+  };
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex h-64 items-center justify-center">
-          <div className="text-lg">Loading conversation...</div>
+      <div className="container mx-auto max-w-4xl p-6">
+        <div className="flex items-center justify-center p-8">
+          <p>Loading messages...</p>
         </div>
       </div>
     );
@@ -121,21 +100,10 @@ export default function MessagePage() {
 
   return (
     <div className="container mx-auto max-w-4xl p-6">
-      <MessageHeader
-        otherUser={otherUser}
-        messageCount={messages.length}
-        onBack={handleBack}
-      />
-
-      <MessageContainer
-        messages={messages}
-        currentUserId={user?.id || ""}
-        newMessage={newMessage}
-        sending={sending}
-        onMessageChange={setNewMessage}
-        onSendMessage={handleSendMessage}
-        onKeyPress={handleKeyPress}
-      />
+      <div className="flex h-[600px] flex-col rounded-lg border border-zinc-200 bg-white shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
+        <MessageHeader otherUserId={otherUserId} onBack={handleBack} />
+        <MessageContainer otherUserId={otherUserId} />
+      </div>
     </div>
   );
 }

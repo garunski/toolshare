@@ -1,26 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { FriendRequestProcessor } from "@/common/operations/friendRequestProcessor";
 import { useAuth } from "@/hooks/useAuth";
-import type { SocialProfile } from "@/types/social";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
+import type { FriendRequest } from "@/types/social";
 
 export function RequestsTab() {
   const { user } = useAuth();
-  const [friendRequests, setFriendRequests] = useState<Array<{ id: string; sender: SocialProfile; message?: string }>>([]);
+  const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (user?.id) {
-      loadFriendRequests();
-    }
-  }, [user?.id]);
-
-  const loadFriendRequests = async () => {
+  const loadFriendRequests = useCallback(async () => {
     if (!user?.id) return;
 
     try {
@@ -33,19 +27,33 @@ export function RequestsTab() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user?.id]);
 
-  const handleRequest = async (requestId: string, action: 'accept' | 'decline') => {
+  useEffect(() => {
+    if (user?.id) {
+      loadFriendRequests();
+    }
+  }, [loadFriendRequests, user?.id]);
+
+  const handleRequest = async (
+    requestId: string,
+    action: "accept" | "reject",
+  ) => {
     if (!user?.id) return;
 
     try {
-      const result = await FriendRequestProcessor.processRequest(requestId, action);
+      const result = await FriendRequestProcessor.processRequest(
+        requestId,
+        action,
+      );
       if (result.success) {
         // Remove the request from the list
-        setFriendRequests(prev => prev.filter(req => req.id !== requestId));
+        setFriendRequests((prev) =>
+          prev.filter((request) => request.id !== requestId),
+        );
       }
     } catch (error) {
-      console.error(`Failed to ${action} friend request:`, error);
+      console.error("Failed to process request:", error);
     }
   };
 
@@ -76,35 +84,33 @@ export function RequestsTab() {
             key={request.id}
             className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800"
           >
-            <div className="flex items-center space-x-3">
-              <div className="h-10 w-10 rounded-full bg-zinc-300 dark:bg-zinc-600" />
-              <div className="flex-1">
-                <Text className="font-medium">
-                  {request.sender.first_name} {request.sender.last_name}
-                </Text>
-                {request.message && (
-                  <Text className="text-sm text-zinc-600 dark:text-zinc-400">
-                    {request.message}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="h-10 w-10 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+                <div>
+                  <Text className="font-medium">
+                    {request.sender?.first_name} {request.sender?.last_name}
                   </Text>
-                )}
+                  <Text className="text-sm text-zinc-600 dark:text-zinc-400">
+                    {request.message || "Wants to be your friend"}
+                  </Text>
+                </div>
               </div>
-            </div>
-            <div className="mt-3 flex space-x-2">
-              <Button
-                size="sm"
-                onClick={() => handleRequest(request.id, 'accept')}
-                className="flex-1"
-              >
-                Accept
-              </Button>
-              <Button
-                size="sm"
-                outline
-                onClick={() => handleRequest(request.id, 'decline')}
-                className="flex-1"
-              >
-                Decline
-              </Button>
+              <div className="flex space-x-2">
+                <Button
+                  onClick={() => handleRequest(request.id, "accept")}
+                  className="px-4"
+                >
+                  Accept
+                </Button>
+                <Button
+                  outline
+                  onClick={() => handleRequest(request.id, "reject")}
+                  className="px-4"
+                >
+                  Decline
+                </Button>
+              </div>
             </div>
           </div>
         ))}

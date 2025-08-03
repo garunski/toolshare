@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Button } from "@/primitives/button";
 import { supabase } from "@/common/supabase";
+import { Button } from "@/primitives/button";
 
 import { processFormError } from "./FormErrorProcessor";
 import { FormField, type FormField as FormFieldType } from "./FormField";
@@ -34,7 +34,11 @@ interface FormBuilderProps {
   onGeneralError?: (error: string | null) => void;
 }
 
-async function handleApiCall(endpoint: string, method: string, data: Record<string, unknown>) {
+async function handleApiCall(
+  endpoint: string,
+  method: string,
+  data: Record<string, unknown>,
+) {
   const response = await fetch(endpoint, {
     method: method || "POST",
     headers: { "Content-Type": "application/json" },
@@ -49,9 +53,12 @@ async function handleApiCall(endpoint: string, method: string, data: Record<stri
   return response.json();
 }
 
-async function handleSupabaseCall(endpoint: string, formData: Record<string, string>) {
+async function handleSupabaseCall(
+  endpoint: string,
+  formData: Record<string, string>,
+) {
   switch (endpoint) {
-    case 'auth/signUp':
+    case "auth/signUp":
       return await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -62,7 +69,7 @@ async function handleSupabaseCall(endpoint: string, formData: Record<string, str
           },
         },
       });
-    case 'auth/signIn':
+    case "auth/signIn":
       return await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
@@ -118,9 +125,13 @@ export function FormBuilder({
     try {
       // Handle different endpoints based on the config
       let response;
-      
-      if (config.endpoint.startsWith('/api/')) {
-        response = await handleApiCall(config.endpoint, config.method || "POST", { ...formData, ...additionalData });
+
+      if (config.endpoint.startsWith("/api/")) {
+        response = await handleApiCall(
+          config.endpoint,
+          config.method || "POST",
+          { ...formData, ...additionalData },
+        );
       } else {
         response = await handleSupabaseCall(config.endpoint, formData);
       }
@@ -214,4 +225,4 @@ export function FormBuilder({
       </form>
     </div>
   );
-} 
+}

@@ -37,4 +37,4 @@ export function processFormError(error: unknown) {
   }
 
   return { fieldErrors, generalError };
-} 
+}

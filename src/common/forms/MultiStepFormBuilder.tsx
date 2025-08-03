@@ -19,14 +19,21 @@ interface MultiStepFormBuilderProps {
   onCancel?: () => void;
 }
 
-export function MultiStepFormBuilder({ steps, onComplete, onCancel }: MultiStepFormBuilderProps) {
+export function MultiStepFormBuilder({
+  steps,
+  onComplete,
+  onCancel,
+}: MultiStepFormBuilderProps) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [formData, setFormData] = useState<Record<string, string>>({});
 
   const currentStep = steps[currentStepIndex];
   const isLastStep = currentStepIndex === steps.length - 1;
 
-  const handleStepSuccess = (data: unknown, stepData: Record<string, string> | undefined) => {
+  const handleStepSuccess = (
+    data: unknown,
+    stepData: Record<string, string> | undefined,
+  ) => {
     const newFormData = { ...formData, ...(stepData || {}) };
     setFormData(newFormData);
 
@@ -60,7 +67,9 @@ export function MultiStepFormBuilder({ steps, onComplete, onCancel }: MultiStepF
                 {index + 1}
               </div>
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-900">{step.title}</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {step.title}
+                </p>
                 <p className="text-xs text-gray-500">{step.description}</p>
               </div>
               {index < steps.length - 1 && (
@@ -98,4 +107,4 @@ export function MultiStepFormBuilder({ steps, onComplete, onCancel }: MultiStepF
       </div>
     </div>
   );
-} 
+}

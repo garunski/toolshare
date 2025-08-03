@@ -1,30 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { MessageThreadHandler } from "@/common/operations/messageThreadHandler";
+import { ConversationOperations } from "@/common/operations/conversationOperations";
 import { useAuth } from "@/hooks/useAuth";
-import type { Message, SocialProfile } from "@/types/social";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
+import type { Conversation } from "@/types/social";
 
 export function MessagesTab() {
   const { user } = useAuth();
-  const [conversations, setConversations] = useState<Array<{ user: SocialProfile; lastMessage: Message }>>([]);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (user?.id) {
-      loadConversations();
-    }
-  }, [user?.id]);
-
-  const loadConversations = async () => {
+  const loadConversations = useCallback(async () => {
     if (!user?.id) return;
 
     try {
-      const result = await MessageThreadHandler.getConversations(user.id);
+      const result = await ConversationOperations.getConversations(user.id);
       if (result.success) {
         setConversations(result.data || []);
       }
@@ -33,7 +27,13 @@ export function MessagesTab() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (user?.id) {
+      loadConversations();
+    }
+  }, [loadConversations, user?.id]);
 
   if (isLoading) {
     return (
@@ -46,7 +46,7 @@ export function MessagesTab() {
   if (conversations.length === 0) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Text>No conversations yet. Start messaging your friends!</Text>
+        <Text>No conversations found.</Text>
       </div>
     );
   }
@@ -59,7 +59,7 @@ export function MessagesTab() {
       <div className="space-y-2">
         {conversations.map((conversation) => (
           <div
-            key={conversation.user.id}
+            key={conversation.id}
             className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800"
           >
             <div className="flex items-center justify-between">
@@ -67,18 +67,20 @@ export function MessagesTab() {
                 <div className="h-10 w-10 rounded-full bg-zinc-300 dark:bg-zinc-600" />
                 <div>
                   <Text className="font-medium">
-                    {conversation.user.first_name} {conversation.user.last_name}
+                    {conversation.participants?.[0]?.profiles?.first_name}{" "}
+                    {conversation.participants?.[0]?.profiles?.last_name}
                   </Text>
                   <Text className="text-sm text-zinc-600 dark:text-zinc-400">
-                    {conversation.lastMessage.content}
+                    {conversation.last_message?.content || "No messages yet"}
                   </Text>
                 </div>
               </div>
               <Button
-                size="sm"
-                onClick={() => {/* Navigate to conversation */}}
+                onClick={() => {
+                  /* Navigate to conversation */
+                }}
               >
-                Open
+                Open Chat
               </Button>
             </div>
           </div>

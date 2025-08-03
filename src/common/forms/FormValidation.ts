@@ -30,4 +30,4 @@ export function hasValidationErrors(
   errors: Record<string, string | undefined>,
 ) {
   return Object.values(errors).some(Boolean);
-} 
+}

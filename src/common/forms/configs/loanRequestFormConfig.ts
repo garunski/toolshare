@@ -1,5 +1,4 @@
 import { FormConfig } from "../FormBuilder";
-import { maxLengthValidator } from "../validators";
 
 export const loanRequestFormConfig: FormConfig = {
   fields: [
@@ -54,5 +53,6 @@ export const loanRequestFormConfig: FormConfig = {
   loadingText: "Sending request...",
   endpoint: "/api/loans",
   method: "POST",
-  containerClassName: "rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900",
-}; 
+  containerClassName:
+    "rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900",
+};

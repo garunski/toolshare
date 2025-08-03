@@ -20,6 +20,10 @@ export interface Conversation {
   id: string;
   other_user: SocialProfile;
   last_message?: Message;
+  participants?: Array<{
+    user_id: string;
+    profiles?: SocialProfile;
+  }>;
   created_at: string;
   updated_at: string;
 }

@@ -1,5 +1,9 @@
 import { FormConfig } from "../FormBuilder";
-import { requiredValidator, minLengthValidator, maxLengthValidator } from "../validators";
+import {
+  maxLengthValidator,
+  minLengthValidator,
+  requiredValidator,
+} from "../validators";
 
 export const addToolFormSteps: Array<{
   key: string;
@@ -122,8 +126,8 @@ export const addToolFormSteps: Array<{
           required: false,
           rows: 3,
           validate: (value) => {
-            if (value && value.trim()) {
-              return maxLengthValidator(300)(value);
+            if (value && value.length > 300) {
+              return "Message must be less than 300 characters";
             }
             return undefined;
           },
@@ -135,4 +139,4 @@ export const addToolFormSteps: Array<{
       method: "POST",
     },
   },
-]; 
+];
