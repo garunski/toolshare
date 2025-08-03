@@ -67,7 +67,4 @@ tasks:
         echo ""
         echo "📋 Quick Commands:"
         echo "  task dev          - Start full stack (Next.js + Supabase)"
-        echo "  task supabase-start - Start Supabase services"
-        echo "  task studio       - Open Supabase Studio"
-        echo "  task db-migrate   - Apply database migrations"
-        echo "  task db-types     - Generate TypeScript types"
+        echo "  task db-reset     - Reset database, types, and seed data"
