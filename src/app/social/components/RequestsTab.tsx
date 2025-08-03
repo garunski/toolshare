@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { useAuth } from "@/common/hooks/useAuth";
 import { FriendRequestProcessor } from "@/common/operations/friendRequestProcessor";
-import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";

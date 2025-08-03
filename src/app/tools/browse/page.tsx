@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { useAuth } from "@/common/hooks/useAuth";
 import { ToolDataProcessor } from "@/common/operations/toolDataProcessor";
-import { useAuth } from "@/hooks/useAuth";
 import type { Database } from "@/types/supabase";
 
 import { ToolGrid } from "./components/ToolGrid";

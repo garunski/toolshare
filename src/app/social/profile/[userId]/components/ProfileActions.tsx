@@ -3,7 +3,7 @@
 import type {
   FriendshipStatus,
   ProfileActionHandlers,
-} from "@/hooks/useProfileActions";
+} from "@/common/hooks/useProfileActions";
 
 import { ProfileActionButtons } from "./shared/ProfileActionButtons";
 

@@ -3,8 +3,8 @@
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
+import { useAuth } from "@/common/hooks/useAuth";
 import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
-import { useAuth } from "@/hooks/useAuth";
 import type { SocialProfile, SocialStats } from "@/types/social";
 
 import { ProfileActions } from "./components/ProfileActions";

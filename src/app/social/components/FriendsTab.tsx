@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { useAuth } from "@/common/hooks/useAuth";
 import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
-import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";

@@ -4,11 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { useAuth } from "@/common/hooks/useAuth";
 import {
   BorrowingRequest,
   borrowingRequestSchema,
 } from "@/common/validators/borrowingRequestValidator";
-import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/primitives/button";
 import { Tool } from "@/types/tool";
 

@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
+import { useAuth } from "@/common/hooks/useAuth";
 import { ToolDataProcessor } from "@/common/operations/toolDataProcessor";
-import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";

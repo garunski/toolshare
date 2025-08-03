@@ -4,7 +4,7 @@ import {
   useProfileActions,
   type FriendshipStatus,
   type ProfileActionHandlers,
-} from "@/hooks/useProfileActions";
+} from "@/common/hooks/useProfileActions";
 import { Button } from "@/primitives/button";
 import { Text } from "@/primitives/text";
 

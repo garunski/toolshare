@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { useAuth } from "@/common/hooks/useAuth";
 import { MessageOperations } from "@/common/operations/messageOperations";
-import { useAuth } from "@/hooks/useAuth";
 import { Text } from "@/primitives/text";
 import type { Message } from "@/types/social";
 

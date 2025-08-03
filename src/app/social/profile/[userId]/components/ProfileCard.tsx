@@ -2,12 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/common/hooks/useAuth";
 import type {
   FriendshipStatus,
   ProfileActionHandlers,
-} from "@/hooks/useProfileActions";
+} from "@/common/hooks/useProfileActions";
+import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 import type { SocialProfile } from "@/types/social";

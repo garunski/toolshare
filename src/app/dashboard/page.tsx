@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/common/hooks/useAuth";
 import { Button } from "@/primitives/button";
 
 import { DashboardCard } from "./components/DashboardCard";
