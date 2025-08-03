@@ -11,7 +11,6 @@ includes:
   setup: ./tasks/Taskfile.setup.yml
   dev: ./tasks/Taskfile.dev.yml
   database: ./tasks/Taskfile.database.yml
-  utils: ./tasks/Taskfile.utils.yml
   workflow: ./tasks/Taskfile.workflow.yml
 
 tasks:
@@ -53,7 +52,6 @@ tasks:
         echo "  tasks/Taskfile.setup.yml     - Setup & initialization tasks"
         echo "  tasks/Taskfile.dev.yml       - Development & build tasks"
         echo "  tasks/Taskfile.database.yml  - Database & Supabase tasks"
-        echo "  tasks/Taskfile.utils.yml     - Utility & maintenance tasks"
         echo "  tasks/Taskfile.workflow.yml  - Workflow & deployment tasks"
         echo ""
         echo "💡 TIP: Use 'task --list-all' to see all available tasks"
@@ -75,15 +73,3 @@ tasks:
         echo "  task studio       - Open Supabase Studio"
         echo "  task db-migrate   - Apply database migrations"
         echo "  task db-types     - Generate TypeScript types"
-        echo "  task db-reset     - Reset database, types, and seed data"
-
-  db-reset:
-    desc: Reset database, generate types, and seed data
-    cmds:
-      - |
-        echo "🔄 Resetting database, types, and seed data..."
-        supabase db reset
-        supabase gen types typescript --local > src/types/supabase.ts
-        npx tsx supabase/seed-users.ts
-        npx tsx supabase/seed-data.ts
-        echo "✅ Database reset complete with types and seed data"
