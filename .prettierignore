@@ -112,4 +112,7 @@ yarn.lock
 pnpm-lock.yaml
 
 # Old Prettier config
-.prettierrc 
+.prettierrc
+
+# Protected primitives folder - NEVER modify
+src/primitives/ 

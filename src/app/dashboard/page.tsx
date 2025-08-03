@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/primitives/button";
 
 import { DashboardCard } from "./components/DashboardCard";
 
@@ -31,18 +31,19 @@ const dashboardCards = [
     href: "/loans",
   },
   {
-    title: "Community",
-    description: "Connect with neighbors",
-    content: "Build your network and connect with trusted community members.",
-    buttonText: "View Community",
-    href: "/community",
+    title: "Social Network",
+    description: "Connect with friends",
+    content:
+      "Build your network, manage friend requests, and discover new connections.",
+    buttonText: "View Social",
+    href: "/social",
   },
   {
     title: "Messages",
     description: "Communicate with other users",
     content: "Chat with tool owners and borrowers.",
     buttonText: "View Messages",
-    href: "/messages",
+    href: "/social",
   },
   {
     title: "Profile",
@@ -86,7 +87,7 @@ export default function DashboardPage() {
               <h1 className="text-3xl font-bold text-gray-900">ToolShare</h1>
               <p className="text-gray-600">Welcome back, {user.email}</p>
             </div>
-            <Button onClick={signOut} variant="outline">
+            <Button onClick={signOut} outline>
               Sign Out
             </Button>
           </div>

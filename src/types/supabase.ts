@@ -34,6 +34,103 @@ export type Database = {
   };
   public: {
     Tables: {
+      friend_requests: {
+        Row: {
+          created_at: string | null;
+          id: string;
+          message: string | null;
+          receiver_id: string;
+          sender_id: string;
+          status: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          id?: string;
+          message?: string | null;
+          receiver_id: string;
+          sender_id: string;
+          status?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          id?: string;
+          message?: string | null;
+          receiver_id?: string;
+          sender_id?: string;
+          status?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "friend_requests_receiver_id_fkey";
+            columns: ["receiver_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "friend_requests_sender_id_fkey";
+            columns: ["sender_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      loan_ratings: {
+        Row: {
+          comment: string | null;
+          created_at: string | null;
+          id: string;
+          loan_id: string;
+          rated_user_id: string;
+          rater_id: string;
+          rating: number;
+        };
+        Insert: {
+          comment?: string | null;
+          created_at?: string | null;
+          id?: string;
+          loan_id: string;
+          rated_user_id: string;
+          rater_id: string;
+          rating: number;
+        };
+        Update: {
+          comment?: string | null;
+          created_at?: string | null;
+          id?: string;
+          loan_id?: string;
+          rated_user_id?: string;
+          rater_id?: string;
+          rating?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "loan_ratings_loan_id_fkey";
+            columns: ["loan_id"];
+            isOneToOne: false;
+            referencedRelation: "loans";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "loan_ratings_rated_user_id_fkey";
+            columns: ["rated_user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "loan_ratings_rater_id_fkey";
+            columns: ["rater_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       loans: {
         Row: {
           borrower_id: string;
@@ -174,6 +271,42 @@ export type Database = {
         };
         Relationships: [];
       };
+      social_connections: {
+        Row: {
+          created_at: string | null;
+          friend_id: string;
+          id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string | null;
+          friend_id: string;
+          id?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string | null;
+          friend_id?: string;
+          id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "social_connections_friend_id_fkey";
+            columns: ["friend_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "social_connections_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       tools: {
         Row: {
           category: string | null;
@@ -221,12 +354,63 @@ export type Database = {
           },
         ];
       };
+      user_reputation: {
+        Row: {
+          average_rating: number | null;
+          created_at: string | null;
+          failed_loans: number | null;
+          id: string;
+          successful_loans: number | null;
+          total_loans: number | null;
+          trust_score: number | null;
+          updated_at: string | null;
+          user_id: string;
+        };
+        Insert: {
+          average_rating?: number | null;
+          created_at?: string | null;
+          failed_loans?: number | null;
+          id?: string;
+          successful_loans?: number | null;
+          total_loans?: number | null;
+          trust_score?: number | null;
+          updated_at?: string | null;
+          user_id: string;
+        };
+        Update: {
+          average_rating?: number | null;
+          created_at?: string | null;
+          failed_loans?: number | null;
+          id?: string;
+          successful_loans?: number | null;
+          total_loans?: number | null;
+          trust_score?: number | null;
+          updated_at?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_reputation_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: true;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      accept_friend_request: {
+        Args: { request_id: string };
+        Returns: undefined;
+      };
+      reject_friend_request: {
+        Args: { request_id: string };
+        Returns: undefined;
+      };
     };
     Enums: {
       [_ in never]: never;

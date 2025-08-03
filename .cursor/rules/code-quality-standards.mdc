@@ -45,6 +45,13 @@ alwaysApply: true
 - Create custom components only when necessary
 - Follow Catalyst UI design patterns
 
+## Primitives Protection
+**CRITICAL: NEVER modify any files in `src/primitives/`**
+- All files in `src/primitives/` are protected and must remain unchanged
+- These are foundational UI primitives that should not be altered
+- If you need to modify component behavior, create new components in `src/components/ui/` or appropriate page-specific directories
+- The primitives folder contains core building blocks that other components depend on
+
 ## Error Handling
 - Implement proper error boundaries
 - Use try-catch blocks for async operations

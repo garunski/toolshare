@@ -11,16 +11,10 @@ import {
   loginFormSchema,
   type LoginFormData,
 } from "@/common/validators/authenticationFormValidator";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/primitives/button";
+import { Heading } from "@/primitives/heading";
+import { Input } from "@/primitives/input";
+import { Text } from "@/primitives/text";
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,21 +55,32 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900">ToolShare</h1>
-          <p className="mt-2 text-sm text-gray-600">Sign in to your account</p>
+          <Heading level={1} className="text-3xl font-bold text-gray-900">
+            ToolShare
+          </Heading>
+          <Text className="mt-2 text-sm text-gray-600">
+            Sign in to your account
+          </Text>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Sign In</CardTitle>
-            <CardDescription>
+        <div className="rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900">
+          <div className="mb-6">
+            <Heading level={2} className="text-xl font-semibold">
+              Sign In
+            </Heading>
+            <Text className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
               Enter your email and password to access your account
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+            </Text>
+          </div>
+          <div>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-zinc-900 dark:text-white"
+                >
+                  Email
+                </label>
                 <Input
                   id="email"
                   type="email"
@@ -84,14 +89,19 @@ export default function LoginPage() {
                   disabled={isLoading}
                 />
                 {form.formState.errors.email && (
-                  <p className="text-sm text-red-600">
+                  <Text className="text-sm text-red-600">
                     {form.formState.errors.email.message}
-                  </p>
+                  </Text>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-zinc-900 dark:text-white"
+                >
+                  Password
+                </label>
                 <Input
                   id="password"
                   type="password"
@@ -100,14 +110,14 @@ export default function LoginPage() {
                   disabled={isLoading}
                 />
                 {form.formState.errors.password && (
-                  <p className="text-sm text-red-600">
+                  <Text className="text-sm text-red-600">
                     {form.formState.errors.password.message}
-                  </p>
+                  </Text>
                 )}
               </div>
 
               {error && (
-                <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">
+                <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
                   {error}
                 </div>
               )}
@@ -118,18 +128,18 @@ export default function LoginPage() {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
+              <Text className="text-sm text-gray-600 dark:text-gray-400">
                 Don&apos;t have an account?{" "}
                 <Link
                   href="/auth/register"
-                  className="font-medium text-blue-600 hover:text-blue-500"
+                  className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
                 >
                   Sign up
                 </Link>
-              </p>
+              </Text>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

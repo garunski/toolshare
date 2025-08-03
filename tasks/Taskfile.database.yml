@@ -74,9 +74,9 @@ tasks:
     cmds:
       - |
         echo "👥 Creating test users..."
-        node supabase/seed-users.ts
+        npx tsx supabase/seed-users.ts
         echo "📦 Creating sample data..."
-        node supabase/seed-data.ts
+        npx tsx supabase/seed-data.ts
         echo "✅ Test data creation complete!"
 
   db-types:

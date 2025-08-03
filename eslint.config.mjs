@@ -40,6 +40,24 @@ const eslintConfig = [
       "max-lines": "off",
     },
   },
+  {
+    files: ["src/primitives/**/*"],
+    rules: {
+      // COMPLETELY DISABLE ALL LINTING FOR PRIMITIVES FOLDER
+      // This folder is protected and should never be modified
+      "max-lines": "off",
+      "import/order": "off",
+      "prettier/prettier": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "react/prop-types": "off",
+      "react/no-unescaped-entities": "off",
+      "react/display-name": "off",
+      // Disable ALL rules for primitives
+      "*": "off",
+    },
+  },
 ];
 
 export default eslintConfig;

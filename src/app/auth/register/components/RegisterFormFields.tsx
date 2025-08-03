@@ -3,8 +3,8 @@
 import { useFormContext } from "react-hook-form";
 
 import { type RegisterFormData } from "@/common/validators/authenticationFormValidator";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Input } from "@/primitives/input";
+import { Text } from "@/primitives/text";
 
 interface RegisterFormFieldsProps {
   isLoading: boolean;
@@ -17,7 +17,12 @@ export function RegisterFormFields({ isLoading }: RegisterFormFieldsProps) {
     <>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="firstName">First Name</Label>
+          <label
+            htmlFor="firstName"
+            className="block text-sm font-medium text-zinc-900 dark:text-white"
+          >
+            First Name
+          </label>
           <Input
             id="firstName"
             placeholder="Enter your first name"
@@ -25,14 +30,19 @@ export function RegisterFormFields({ isLoading }: RegisterFormFieldsProps) {
             disabled={isLoading}
           />
           {form.formState.errors.firstName && (
-            <p className="text-sm text-red-600">
+            <Text className="text-sm text-red-600">
               {form.formState.errors.firstName.message}
-            </p>
+            </Text>
           )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="lastName">Last Name</Label>
+          <label
+            htmlFor="lastName"
+            className="block text-sm font-medium text-zinc-900 dark:text-white"
+          >
+            Last Name
+          </label>
           <Input
             id="lastName"
             placeholder="Enter your last name"
@@ -40,15 +50,20 @@ export function RegisterFormFields({ isLoading }: RegisterFormFieldsProps) {
             disabled={isLoading}
           />
           {form.formState.errors.lastName && (
-            <p className="text-sm text-red-600">
+            <Text className="text-sm text-red-600">
               {form.formState.errors.lastName.message}
-            </p>
+            </Text>
           )}
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-zinc-900 dark:text-white"
+        >
+          Email
+        </label>
         <Input
           id="email"
           type="email"
@@ -57,14 +72,19 @@ export function RegisterFormFields({ isLoading }: RegisterFormFieldsProps) {
           disabled={isLoading}
         />
         {form.formState.errors.email && (
-          <p className="text-sm text-red-600">
+          <Text className="text-sm text-red-600">
             {form.formState.errors.email.message}
-          </p>
+          </Text>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-zinc-900 dark:text-white"
+        >
+          Password
+        </label>
         <Input
           id="password"
           type="password"
@@ -73,14 +93,19 @@ export function RegisterFormFields({ isLoading }: RegisterFormFieldsProps) {
           disabled={isLoading}
         />
         {form.formState.errors.password && (
-          <p className="text-sm text-red-600">
+          <Text className="text-sm text-red-600">
             {form.formState.errors.password.message}
-          </p>
+          </Text>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="confirmPassword">Confirm Password</Label>
+        <label
+          htmlFor="confirmPassword"
+          className="block text-sm font-medium text-zinc-900 dark:text-white"
+        >
+          Confirm Password
+        </label>
         <Input
           id="confirmPassword"
           type="password"
@@ -89,9 +114,9 @@ export function RegisterFormFields({ isLoading }: RegisterFormFieldsProps) {
           disabled={isLoading}
         />
         {form.formState.errors.confirmPassword && (
-          <p className="text-sm text-red-600">
+          <Text className="text-sm text-red-600">
             {form.formState.errors.confirmPassword.message}
-          </p>
+          </Text>
         )}
       </div>
     </>

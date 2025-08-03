@@ -3,9 +3,9 @@
 import { useFormContext } from "react-hook-form";
 
 import { type ProfileCreationData } from "@/common/validators/authenticationFormValidator";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/primitives/input";
+import { Text } from "@/primitives/text";
+import { Textarea } from "@/primitives/textarea";
 
 interface ProfileSetupFormFieldsProps {
   isLoading: boolean;
@@ -20,7 +20,12 @@ export function ProfileSetupFormFields({
     <>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="firstName">First Name</Label>
+          <label
+            htmlFor="firstName"
+            className="block text-sm font-medium text-zinc-900 dark:text-white"
+          >
+            First Name
+          </label>
           <Input
             id="firstName"
             placeholder="Enter your first name"
@@ -28,14 +33,19 @@ export function ProfileSetupFormFields({
             disabled={isLoading}
           />
           {form.formState.errors.firstName && (
-            <p className="text-sm text-red-600">
+            <Text className="text-sm text-red-600">
               {form.formState.errors.firstName.message}
-            </p>
+            </Text>
           )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="lastName">Last Name</Label>
+          <label
+            htmlFor="lastName"
+            className="block text-sm font-medium text-zinc-900 dark:text-white"
+          >
+            Last Name
+          </label>
           <Input
             id="lastName"
             placeholder="Enter your last name"
@@ -43,15 +53,20 @@ export function ProfileSetupFormFields({
             disabled={isLoading}
           />
           {form.formState.errors.lastName && (
-            <p className="text-sm text-red-600">
+            <Text className="text-sm text-red-600">
               {form.formState.errors.lastName.message}
-            </p>
+            </Text>
           )}
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="phone">Phone Number (Optional)</Label>
+        <label
+          htmlFor="phone"
+          className="block text-sm font-medium text-zinc-900 dark:text-white"
+        >
+          Phone Number (Optional)
+        </label>
         <Input
           id="phone"
           type="tel"
@@ -60,14 +75,19 @@ export function ProfileSetupFormFields({
           disabled={isLoading}
         />
         {form.formState.errors.phone && (
-          <p className="text-sm text-red-600">
+          <Text className="text-sm text-red-600">
             {form.formState.errors.phone.message}
-          </p>
+          </Text>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="address">Address (Optional)</Label>
+        <label
+          htmlFor="address"
+          className="block text-sm font-medium text-zinc-900 dark:text-white"
+        >
+          Address (Optional)
+        </label>
         <Input
           id="address"
           placeholder="Enter your address"
@@ -75,14 +95,19 @@ export function ProfileSetupFormFields({
           disabled={isLoading}
         />
         {form.formState.errors.address && (
-          <p className="text-sm text-red-600">
+          <Text className="text-sm text-red-600">
             {form.formState.errors.address.message}
-          </p>
+          </Text>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="bio">Bio (Optional)</Label>
+        <label
+          htmlFor="bio"
+          className="block text-sm font-medium text-zinc-900 dark:text-white"
+        >
+          Bio (Optional)
+        </label>
         <Textarea
           id="bio"
           placeholder="Tell us about yourself..."
@@ -91,9 +116,9 @@ export function ProfileSetupFormFields({
           rows={3}
         />
         {form.formState.errors.bio && (
-          <p className="text-sm text-red-600">
+          <Text className="text-sm text-red-600">
             {form.formState.errors.bio.message}
-          </p>
+          </Text>
         )}
       </div>
     </>

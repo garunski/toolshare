@@ -7,6 +7,8 @@ const supabaseAnonKey =
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+export { createClient } from "@supabase/supabase-js";
+
 // Database types will be generated with: supabase gen types typescript
 export type Database = {
   // This will be auto-generated when we set up the database
