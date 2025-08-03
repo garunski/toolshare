@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect } from "react";
 
-import { SocialConnectionProcessor } from "../../../../../common/operations/socialConnectionProcessor";
-import { useAuth } from "../../../../../hooks/useAuth";
-import type { SocialProfile, SocialStats } from "../../../../../types/social";
+import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
+import { useAuth } from "@/hooks/useAuth";
+import type { SocialProfile, SocialStats } from "@/types/social";
 
 interface ProfileDataLoaderProps {
   userId: string;

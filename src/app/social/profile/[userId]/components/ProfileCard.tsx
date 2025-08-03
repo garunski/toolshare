@@ -5,7 +5,7 @@ import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
-import type { SocialProfile } from "../../../../../types/social";
+import type { SocialProfile } from "@/types/social";
 
 interface ProfileCardProps {
   profile: SocialProfile;

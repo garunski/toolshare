@@ -5,7 +5,7 @@ import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
-import type { FriendRequest } from "../../../types/social";
+import type { FriendRequest } from "@/types/social";
 
 interface RequestsTabProps {
   pendingRequests: FriendRequest[];

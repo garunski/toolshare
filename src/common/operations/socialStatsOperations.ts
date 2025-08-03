@@ -1,5 +1,5 @@
-import type { SocialProfile, SocialStats } from "../../types/social";
-import { supabase } from "../supabase";
+import type { SocialProfile, SocialStats } from "@/types/social";
+import { supabase } from "@/common/supabase";
 
 export class SocialStatsOperations {
   static async getSocialStats(userId: string): Promise<SocialStats> {

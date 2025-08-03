@@ -2,7 +2,7 @@
 
 import { Text } from "@/primitives/text";
 
-import type { SocialStats } from "../../../../../types/social";
+import type { SocialStats } from "@/types/social";
 
 interface ProfileStatsProps {
   socialStats: SocialStats;

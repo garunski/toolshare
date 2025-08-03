@@ -1,9 +1,9 @@
-import type { FriendRequest, FriendRequestFormData } from "../../types/social";
-import { supabase } from "../supabase";
+import type { FriendRequest, FriendRequestFormData } from "@/types/social";
+import { supabase } from "@/common/supabase";
 import {
   friendRequestResponseValidator,
   friendRequestValidator,
-} from "../validators/socialFeatureValidator";
+} from "@/common/validators/socialFeatureValidator";
 
 export class FriendRequestProcessor {
   static async sendFriendRequest(

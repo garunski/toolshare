@@ -6,8 +6,8 @@ import { Avatar } from "@/primitives/avatar";
 import { Badge } from "@/primitives/badge";
 import { Text } from "@/primitives/text";
 
-import { ConversationFormatter } from "../../../../../common/formatters/conversationFormatter";
-import type { Message } from "../../../../../types/social";
+import { ConversationFormatter } from "@/common/formatters/conversationFormatter";
+import type { Message } from "@/types/social";
 
 interface MessageListProps {
   messages: Message[];

@@ -3,7 +3,7 @@
 import { Badge } from "@/primitives/badge";
 import { Heading } from "@/primitives/heading";
 
-import type { Message } from "../../../../../types/social";
+import type { Message } from "@/types/social";
 
 import { MessageInput } from "./MessageInput";
 import { MessageList } from "./MessageList";

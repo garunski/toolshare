@@ -2,16 +2,16 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { FriendRequestProcessor } from "../../common/operations/friendRequestProcessor";
-import { MessageThreadHandler } from "../../common/operations/messageThreadHandler";
-import { SocialConnectionProcessor } from "../../common/operations/socialConnectionProcessor";
-import { useAuth } from "../../hooks/useAuth";
+import { FriendRequestProcessor } from "@/common/operations/friendRequestProcessor";
+import { MessageThreadHandler } from "@/common/operations/messageThreadHandler";
+import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
+import { useAuth } from "@/hooks/useAuth";
 import type {
   Conversation,
   FriendRequest,
   SocialProfile,
   SocialStats,
-} from "../../types/social";
+} from "@/types/social";
 
 import { SocialHeader } from "./components/SocialHeader";
 import { SocialTabs } from "./components/SocialTabs";

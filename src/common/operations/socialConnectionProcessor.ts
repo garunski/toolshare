@@ -2,7 +2,7 @@ import type {
   SocialConnection,
   SocialProfile,
   SocialStats,
-} from "../../types/social";
+} from "@/types/social";
 
 import { FriendOperations } from "./friendOperations";
 import { SocialStatsOperations } from "./socialStatsOperations";

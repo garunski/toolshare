@@ -1,4 +1,4 @@
-import type { Conversation, Message } from "../../types/social";
+import type { Conversation, Message } from "@/types/social";
 
 export class ConversationFormatter {
   static formatMessageTime(timestamp: string): string {

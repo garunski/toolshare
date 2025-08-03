@@ -3,9 +3,9 @@
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { MessageThreadHandler } from "../../../../common/operations/messageThreadHandler";
-import { useAuth } from "../../../../hooks/useAuth";
-import type { Message, SocialProfile } from "../../../../types/social";
+import { MessageThreadHandler } from "@/common/operations/messageThreadHandler";
+import { useAuth } from "@/hooks/useAuth";
+import type { Message, SocialProfile } from "@/types/social";
 
 import { MessageContainer } from "./components/MessageContainer";
 import { MessageHeader } from "./components/MessageHeader";

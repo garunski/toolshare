@@ -1,4 +1,4 @@
-import type { Conversation, Message } from "../../types/social";
+import type { Conversation, Message } from "@/types/social";
 
 import { ConversationOperations } from "./conversationOperations";
 import { MessageOperations } from "./messageOperations";

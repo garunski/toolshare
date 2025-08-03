@@ -5,7 +5,7 @@ import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
-import type { Conversation } from "../../../types/social";
+import type { Conversation } from "@/types/social";
 
 interface MessagesTabProps {
   conversations: Conversation[];

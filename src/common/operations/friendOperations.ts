@@ -1,5 +1,5 @@
-import type { SocialConnection, SocialProfile } from "../../types/social";
-import { supabase } from "../supabase";
+import type { SocialConnection, SocialProfile } from "@/types/social";
+import { supabase } from "@/common/supabase";
 
 export class FriendOperations {
   static async getFriends(userId: string): Promise<SocialConnection[]> {

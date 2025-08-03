@@ -1,6 +1,6 @@
-import type { Conversation, Message } from "../../types/social";
-import { supabase } from "../supabase";
-import { conversationQueryValidator } from "../validators/socialFeatureValidator";
+import type { Conversation, Message } from "@/types/social";
+import { supabase } from "@/common/supabase";
+import { conversationQueryValidator } from "@/common/validators/socialFeatureValidator";
 
 export class ConversationOperations {
   static async getConversations(

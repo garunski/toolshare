@@ -3,7 +3,7 @@
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
-import type { SocialStats } from "../../../types/social";
+import type { SocialStats } from "@/types/social";
 
 interface SocialHeaderProps {
   socialStats: SocialStats | null;

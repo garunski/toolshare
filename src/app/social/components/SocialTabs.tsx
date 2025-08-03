@@ -8,7 +8,7 @@ import type {
   Conversation,
   FriendRequest,
   SocialProfile,
-} from "../../../types/social";
+} from "@/types/social";
 
 import { DiscoverTab } from "./DiscoverTab";
 import { FriendsTab } from "./FriendsTab";

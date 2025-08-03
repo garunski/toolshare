@@ -1,6 +1,6 @@
-import type { Message } from "../../types/social";
-import { supabase } from "../supabase";
-import { messageValidator } from "../validators/socialFeatureValidator";
+import type { Message } from "@/types/social";
+import { supabase } from "@/common/supabase";
+import { messageValidator } from "@/common/validators/socialFeatureValidator";
 
 export class MessageOperations {
   static async sendMessage(
