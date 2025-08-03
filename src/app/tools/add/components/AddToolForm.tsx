@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@/primitives/button";
+import { useRouter } from "next/navigation";
+
+import { MultiStepFormBuilder } from "@/components/forms";
+import { addToolFormSteps } from "@/components/forms/configs/addToolFormSteps";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
-
-import { AddToolFormSteps } from "./AddToolFormSteps";
-import { useAddToolForm } from "./useAddToolForm";
 
 interface AddToolFormProps {
   userId: string;
@@ -13,19 +13,27 @@ interface AddToolFormProps {
 }
 
 export function AddToolForm({ userId, onSuccess }: AddToolFormProps) {
-  const {
-    form,
-    currentStep,
-    isLoading,
-    error,
-    uploadedImages,
-    steps,
-    currentStepIndex,
-    nextStep,
-    prevStep,
-    handleImageUpload,
-    handleSubmit,
-  } = useAddToolForm(userId, onSuccess);
+  const router = useRouter();
+
+  const handleComplete = async (allData: Record<string, string>) => {
+    try {
+      // Handle the complete form data
+      const response = await fetch("/api/tools", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...allData, userId }),
+      });
+
+      if (response.ok) {
+        onSuccess();
+        router.push("/tools");
+      } else {
+        throw new Error("Failed to create tool");
+      }
+    } catch (error) {
+      console.error("Failed to create tool:", error);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -38,87 +46,12 @@ export function AddToolForm({ userId, onSuccess }: AddToolFormProps) {
             Share your tools with the community
           </Text>
         </div>
-        <div>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-8"
-          >
-            {/* Progress Steps */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between">
-                {steps.map((step, index) => (
-                  <div key={step.key} className="flex items-center">
-                    <div
-                      className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium ${
-                        index <= currentStepIndex
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-200 text-gray-600"
-                      }`}
-                    >
-                      {index + 1}
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm font-medium text-gray-900">
-                        {step.title}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {step.description}
-                      </p>
-                    </div>
-                    {index < steps.length - 1 && (
-                      <div
-                        className={`mx-4 h-px w-8 ${
-                          index < currentStepIndex
-                            ? "bg-blue-600"
-                            : "bg-gray-200"
-                        }`}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Error Display */}
-            {error && (
-              <div className="rounded-md bg-red-50 p-4">
-                <p className="text-sm text-red-600">{error}</p>
-              </div>
-            )}
-
-            {/* Step Content */}
-            <AddToolFormSteps
-              currentStep={currentStep}
-              form={form}
-              uploadedImages={uploadedImages}
-              onImageUpload={handleImageUpload}
-            />
-
-            {/* Navigation Buttons */}
-            <div className="flex justify-between pt-6">
-              <Button
-                type="button"
-                outline
-                onClick={prevStep}
-                disabled={currentStepIndex === 0}
-              >
-                Previous
-              </Button>
-
-              <div className="flex space-x-2">
-                {currentStepIndex < steps.length - 1 ? (
-                  <Button type="button" onClick={nextStep}>
-                    Next
-                  </Button>
-                ) : (
-                  <Button type="submit" disabled={isLoading}>
-                    {isLoading ? "Creating..." : "Create Tool"}
-                  </Button>
-                )}
-              </div>
-            </div>
-          </form>
-        </div>
+        <MultiStepFormBuilder
+          steps={addToolFormSteps}
+          onComplete={handleComplete}
+          onCancel={() => router.back()}
+        />
       </div>
     </div>
   );

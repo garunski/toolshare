@@ -1,56 +1,103 @@
 "use client";
 
-import { Avatar } from "@/primitives/avatar";
+import { useState, useEffect } from "react";
+
+import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
+import { useAuth } from "@/hooks/useAuth";
+import type { SocialProfile } from "@/types/social";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
-import type { SocialProfile } from "@/types/social";
+export function DiscoverTab() {
+  const { user } = useAuth();
+  const [suggestedFriends, setSuggestedFriends] = useState<SocialProfile[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-interface DiscoverTabProps {
-  suggestedFriends: SocialProfile[];
-}
+  useEffect(() => {
+    if (user?.id) {
+      loadSuggestedFriends();
+    }
+  }, [user?.id]);
 
-export function DiscoverTab({ suggestedFriends }: DiscoverTabProps) {
-  return (
-    <div className="rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900">
-      <div className="mb-4">
-        <Heading level={3} className="text-lg font-semibold">
-          Suggested Friends
-        </Heading>
+  const loadSuggestedFriends = async () => {
+    if (!user?.id) return;
+
+    try {
+      const result = await SocialConnectionProcessor.getSuggestedFriends(user.id);
+      if (result.success) {
+        setSuggestedFriends(result.data || []);
+      }
+    } catch (error) {
+      console.error("Failed to load suggested friends:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const sendFriendRequest = async (friendId: string) => {
+    if (!user?.id) return;
+
+    try {
+      const result = await SocialConnectionProcessor.sendFriendRequest(user.id, friendId);
+      if (result.success) {
+        // Remove the friend from suggested list
+        setSuggestedFriends(prev => prev.filter(friend => friend.id !== friendId));
+      }
+    } catch (error) {
+      console.error("Failed to send friend request:", error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Text>Loading suggested friends...</Text>
       </div>
-      <div>
-        {suggestedFriends.length === 0 ? (
-          <div className="py-8 text-center text-zinc-500 dark:text-zinc-400">
-            <Text>No suggestions available at the moment</Text>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {suggestedFriends.map((friend) => (
-              <div
-                key={friend.id}
-                className="rounded-lg border border-zinc-950/10 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-zinc-900"
-              >
-                <div className="flex items-center space-x-3">
-                  <Avatar
-                    initials={`${friend.first_name[0]}${friend.last_name[0]}`}
-                  />
-                  <div className="flex-1">
-                    <Text className="font-medium text-zinc-900 dark:text-white">
-                      {friend.first_name} {friend.last_name}
-                    </Text>
-                    {friend.bio && (
-                      <Text className="truncate text-sm text-zinc-500 dark:text-zinc-400">
-                        {friend.bio}
-                      </Text>
-                    )}
-                  </div>
-                  <Button>Add Friend</Button>
-                </div>
+    );
+  }
+
+  if (suggestedFriends.length === 0) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Text>No suggested friends found.</Text>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <Heading level={3} className="text-lg font-semibold">
+        Suggested Friends
+      </Heading>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {suggestedFriends.map((friend) => (
+          <div
+            key={friend.id}
+            className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800"
+          >
+            <div className="flex items-center space-x-3">
+              <div className="h-10 w-10 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+              <div className="flex-1">
+                <Text className="font-medium">
+                  {friend.first_name} {friend.last_name}
+                </Text>
+                <Text className="text-sm text-zinc-600 dark:text-zinc-400">
+                  {friend.bio || "No bio available"}
+                </Text>
               </div>
-            ))}
+            </div>
+            <div className="mt-3">
+              <Button
+                size="sm"
+                onClick={() => sendFriendRequest(friend.id)}
+                className="w-full"
+              >
+                Add Friend
+              </Button>
+            </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );

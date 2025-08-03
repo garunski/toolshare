@@ -1,109 +1,80 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
-import { Avatar } from "@/primitives/avatar";
-import { Badge } from "@/primitives/badge";
+import { MessageThreadHandler } from "@/common/operations/messageThreadHandler";
+import { useAuth } from "@/hooks/useAuth";
+import type { Message } from "@/types/social";
 import { Text } from "@/primitives/text";
 
-import { ConversationFormatter } from "@/common/formatters/conversationFormatter";
-import type { Message } from "@/types/social";
-
 interface MessageListProps {
-  messages: Message[];
-  currentUserId: string;
+  userId: string;
+  otherUserId: string;
 }
 
-export function MessageList({ messages, currentUserId }: MessageListProps) {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+export function MessageList({ userId, otherUserId }: MessageListProps) {
+  const { user } = useAuth();
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (user?.id) {
+      loadMessages();
+    }
+  }, [user?.id, otherUserId]);
 
-  const groupedMessages = ConversationFormatter.groupMessagesByDate(messages);
+  const loadMessages = async () => {
+    if (!user?.id) return;
+
+    try {
+      const result = await MessageThreadHandler.getMessages(userId, otherUserId);
+      if (result.success) {
+        setMessages(result.data || []);
+      }
+    } catch (error) {
+      console.error("Failed to load messages:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex-1 overflow-y-auto p-4">
+        <Text>Loading messages...</Text>
+      </div>
+    );
+  }
 
   if (messages.length === 0) {
     return (
-      <div className="py-8 text-center text-zinc-500 dark:text-zinc-400">
-        <Text>No messages yet</Text>
-        <Text className="text-sm">
-          Start the conversation by sending a message!
-        </Text>
+      <div className="flex-1 overflow-y-auto p-4">
+        <Text className="text-center text-zinc-500">No messages yet. Start the conversation!</Text>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {groupedMessages.map(({ date, messages: dayMessages }) => (
-        <div key={date}>
-          <div className="mb-4 text-center">
-            <Badge color="zinc" className="text-xs">
-              {ConversationFormatter.formatDateHeader(date)}
-            </Badge>
-          </div>
-
-          <div className="space-y-4">
-            {dayMessages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${ConversationFormatter.isMessageFromCurrentUser(message, currentUserId) ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-xs lg:max-w-md ${ConversationFormatter.isMessageFromCurrentUser(message, currentUserId) ? "order-2" : "order-1"}`}
-                >
-                  {!ConversationFormatter.isMessageFromCurrentUser(
-                    message,
-                    currentUserId,
-                  ) && (
-                    <div className="mb-1 flex items-center space-x-2">
-                      <Avatar
-                        initials={`${message.sender?.first_name[0]}${message.sender?.last_name[0]}`}
-                      />
-                      <Text className="text-xs text-zinc-500 dark:text-zinc-400">
-                        {message.sender?.first_name} {message.sender?.last_name}
-                      </Text>
-                    </div>
-                  )}
-
-                  <div
-                    className={`rounded-lg p-3 ${
-                      ConversationFormatter.isMessageFromCurrentUser(
-                        message,
-                        currentUserId,
-                      )
-                        ? "bg-blue-600 text-white"
-                        : "bg-zinc-100 dark:bg-zinc-800"
-                    }`}
-                  >
-                    <Text className="text-sm">
-                      {ConversationFormatter.sanitizeMessageContent(
-                        message.content,
-                      )}
-                    </Text>
-                    <Text
-                      className={`mt-1 text-xs ${
-                        ConversationFormatter.isMessageFromCurrentUser(
-                          message,
-                          currentUserId,
-                        )
-                          ? "text-blue-100"
-                          : "text-zinc-500 dark:text-zinc-400"
-                      }`}
-                    >
-                      {ConversationFormatter.formatMessageTime(
-                        message.created_at,
-                      )}
-                    </Text>
-                  </div>
-                </div>
-              </div>
-            ))}
+    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      {messages.map((message) => (
+        <div
+          key={message.id}
+          className={`flex ${message.sender_id === userId ? 'justify-end' : 'justify-start'}`}
+        >
+          <div
+            className={`max-w-xs rounded-lg px-4 py-2 ${
+              message.sender_id === userId
+                ? 'bg-blue-600 text-white'
+                : 'bg-zinc-200 text-zinc-900 dark:bg-zinc-700 dark:text-white'
+            }`}
+          >
+            <Text className="text-sm">{message.content}</Text>
+            <Text className="text-xs opacity-70 mt-1">
+              {new Date(message.created_at).toLocaleTimeString()}
+            </Text>
           </div>
         </div>
       ))}
-      <div ref={messagesEndRef} />
     </div>
   );
 }

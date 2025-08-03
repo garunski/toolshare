@@ -1,57 +1,88 @@
 "use client";
 
-import { Avatar } from "@/primitives/avatar";
+import { useState, useEffect } from "react";
+
+import { MessageThreadHandler } from "@/common/operations/messageThreadHandler";
+import { useAuth } from "@/hooks/useAuth";
+import type { Message, SocialProfile } from "@/types/social";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
-import type { Conversation } from "@/types/social";
+export function MessagesTab() {
+  const { user } = useAuth();
+  const [conversations, setConversations] = useState<Array<{ user: SocialProfile; lastMessage: Message }>>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-interface MessagesTabProps {
-  conversations: Conversation[];
-}
+  useEffect(() => {
+    if (user?.id) {
+      loadConversations();
+    }
+  }, [user?.id]);
 
-export function MessagesTab({ conversations }: MessagesTabProps) {
-  return (
-    <div className="rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900">
-      <div className="mb-4">
-        <Heading level={3} className="text-lg font-semibold">
-          Conversations ({conversations.length})
-        </Heading>
+  const loadConversations = async () => {
+    if (!user?.id) return;
+
+    try {
+      const result = await MessageThreadHandler.getConversations(user.id);
+      if (result.success) {
+        setConversations(result.data || []);
+      }
+    } catch (error) {
+      console.error("Failed to load conversations:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Text>Loading conversations...</Text>
       </div>
-      <div>
-        {conversations.length === 0 ? (
-          <div className="py-8 text-center text-zinc-500 dark:text-zinc-400">
-            <Text>No conversations yet</Text>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {conversations.map((conversation) => (
-              <div
-                key={conversation.id}
-                className="flex cursor-pointer items-center justify-between rounded-lg border border-zinc-200 p-3 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
-              >
-                <div className="flex items-center space-x-3">
-                  <Avatar
-                    initials={`${conversation.other_user.first_name[0]}${conversation.other_user.last_name[0]}`}
-                  />
-                  <div>
-                    <Text className="font-medium text-zinc-900 dark:text-white">
-                      {conversation.other_user.first_name}{" "}
-                      {conversation.other_user.last_name}
-                    </Text>
-                    {conversation.last_message && (
-                      <Text className="max-w-xs truncate text-sm text-zinc-500 dark:text-zinc-400">
-                        {conversation.last_message.content}
-                      </Text>
-                    )}
-                  </div>
+    );
+  }
+
+  if (conversations.length === 0) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Text>No conversations yet. Start messaging your friends!</Text>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <Heading level={3} className="text-lg font-semibold">
+        Messages
+      </Heading>
+      <div className="space-y-2">
+        {conversations.map((conversation) => (
+          <div
+            key={conversation.user.id}
+            className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="h-10 w-10 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+                <div>
+                  <Text className="font-medium">
+                    {conversation.user.first_name} {conversation.user.last_name}
+                  </Text>
+                  <Text className="text-sm text-zinc-600 dark:text-zinc-400">
+                    {conversation.lastMessage.content}
+                  </Text>
                 </div>
-                <Button outline>Open</Button>
               </div>
-            ))}
+              <Button
+                size="sm"
+                onClick={() => {/* Navigate to conversation */}}
+              >
+                Open
+              </Button>
+            </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );

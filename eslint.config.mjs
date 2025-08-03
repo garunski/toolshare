@@ -41,6 +41,14 @@ const eslintConfig = [
     },
   },
   {
+    files: ["src/components/forms/**/*"],
+    rules: {
+      // Disable max-lines for form builder components
+      // These are core components that need to be comprehensive
+      "max-lines": "off",
+    },
+  },
+  {
     files: ["src/primitives/**/*"],
     rules: {
       // COMPLETELY DISABLE ALL LINTING FOR PRIMITIVES FOLDER

@@ -1,119 +1,113 @@
 "use client";
 
-import { Avatar } from "@/primitives/avatar";
+import { useState, useEffect } from "react";
+
+import { FriendRequestProcessor } from "@/common/operations/friendRequestProcessor";
+import { useAuth } from "@/hooks/useAuth";
+import type { SocialProfile } from "@/types/social";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
-import type { FriendRequest } from "@/types/social";
+export function RequestsTab() {
+  const { user } = useAuth();
+  const [friendRequests, setFriendRequests] = useState<Array<{ id: string; sender: SocialProfile; message?: string }>>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-interface RequestsTabProps {
-  pendingRequests: FriendRequest[];
-  sentRequests: FriendRequest[];
-  onAcceptRequest: (requestId: string) => void;
-  onRejectRequest: (requestId: string) => void;
-  onCancelRequest: (requestId: string) => void;
-}
+  useEffect(() => {
+    if (user?.id) {
+      loadFriendRequests();
+    }
+  }, [user?.id]);
 
-export function RequestsTab({
-  pendingRequests,
-  sentRequests,
-  onAcceptRequest,
-  onRejectRequest,
-  onCancelRequest,
-}: RequestsTabProps) {
-  return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <div className="rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900">
-        <div className="mb-4">
-          <Heading level={3} className="text-lg font-semibold">
-            Pending Requests ({pendingRequests.length})
-          </Heading>
-        </div>
-        <div>
-          {pendingRequests.length === 0 ? (
-            <div className="py-8 text-center text-zinc-500 dark:text-zinc-400">
-              <Text>No pending friend requests</Text>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {pendingRequests.map((request) => (
-                <div
-                  key={request.id}
-                  className="flex items-center justify-between rounded-lg border border-zinc-200 p-3 dark:border-zinc-700"
-                >
-                  <div className="flex items-center space-x-3">
-                    <Avatar
-                      initials={`${request.sender?.first_name[0]}${request.sender?.last_name[0]}`}
-                    />
-                    <div>
-                      <Text className="font-medium text-zinc-900 dark:text-white">
-                        {request.sender?.first_name} {request.sender?.last_name}
-                      </Text>
-                      {request.message && (
-                        <Text className="text-sm text-zinc-500 dark:text-zinc-400">
-                          &ldquo;{request.message}&rdquo;
-                        </Text>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button onClick={() => onAcceptRequest(request.id)}>
-                      Accept
-                    </Button>
-                    <Button outline onClick={() => onRejectRequest(request.id)}>
-                      Reject
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+  const loadFriendRequests = async () => {
+    if (!user?.id) return;
+
+    try {
+      const result = await FriendRequestProcessor.getPendingRequests(user.id);
+      if (result.success) {
+        setFriendRequests(result.data || []);
+      }
+    } catch (error) {
+      console.error("Failed to load friend requests:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRequest = async (requestId: string, action: 'accept' | 'decline') => {
+    if (!user?.id) return;
+
+    try {
+      const result = await FriendRequestProcessor.processRequest(requestId, action);
+      if (result.success) {
+        // Remove the request from the list
+        setFriendRequests(prev => prev.filter(req => req.id !== requestId));
+      }
+    } catch (error) {
+      console.error(`Failed to ${action} friend request:`, error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Text>Loading friend requests...</Text>
       </div>
+    );
+  }
 
-      <div className="rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900">
-        <div className="mb-4">
-          <Heading level={3} className="text-lg font-semibold">
-            Sent Requests ({sentRequests.length})
-          </Heading>
-        </div>
-        <div>
-          {sentRequests.length === 0 ? (
-            <div className="py-8 text-center text-zinc-500 dark:text-zinc-400">
-              <Text>No sent friend requests</Text>
+  if (friendRequests.length === 0) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Text>No pending friend requests.</Text>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <Heading level={3} className="text-lg font-semibold">
+        Friend Requests
+      </Heading>
+      <div className="space-y-4">
+        {friendRequests.map((request) => (
+          <div
+            key={request.id}
+            className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800"
+          >
+            <div className="flex items-center space-x-3">
+              <div className="h-10 w-10 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+              <div className="flex-1">
+                <Text className="font-medium">
+                  {request.sender.first_name} {request.sender.last_name}
+                </Text>
+                {request.message && (
+                  <Text className="text-sm text-zinc-600 dark:text-zinc-400">
+                    {request.message}
+                  </Text>
+                )}
+              </div>
             </div>
-          ) : (
-            <div className="space-y-4">
-              {sentRequests.map((request) => (
-                <div
-                  key={request.id}
-                  className="flex items-center justify-between rounded-lg border border-zinc-200 p-3 dark:border-zinc-700"
-                >
-                  <div className="flex items-center space-x-3">
-                    <Avatar
-                      initials={`${request.receiver?.first_name[0]}${request.receiver?.last_name[0]}`}
-                    />
-                    <div>
-                      <Text className="font-medium text-zinc-900 dark:text-white">
-                        {request.receiver?.first_name}{" "}
-                        {request.receiver?.last_name}
-                      </Text>
-                      <Text className="text-sm text-zinc-500 dark:text-zinc-400">
-                        Status: {request.status}
-                      </Text>
-                    </div>
-                  </div>
-                  {request.status === "pending" && (
-                    <Button outline onClick={() => onCancelRequest(request.id)}>
-                      Cancel
-                    </Button>
-                  )}
-                </div>
-              ))}
+            <div className="mt-3 flex space-x-2">
+              <Button
+                size="sm"
+                onClick={() => handleRequest(request.id, 'accept')}
+                className="flex-1"
+              >
+                Accept
+              </Button>
+              <Button
+                size="sm"
+                outline
+                onClick={() => handleRequest(request.id, 'decline')}
+                className="flex-1"
+              >
+                Decline
+              </Button>
             </div>
-          )}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

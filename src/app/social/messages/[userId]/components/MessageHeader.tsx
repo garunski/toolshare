@@ -1,47 +1,61 @@
 "use client";
 
-import { Avatar } from "@/primitives/avatar";
-import { Button } from "@/primitives/button";
+import { useState, useEffect } from "react";
+
+import { useAuth } from "@/hooks/useAuth";
+import type { SocialProfile } from "@/types/social";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
-import type { SocialProfile } from "@/types/social";
-
 interface MessageHeaderProps {
-  otherUser: SocialProfile | null;
-  messageCount: number;
-  onBack: () => void;
+  otherUserId: string;
 }
 
-export function MessageHeader({
-  otherUser,
-  messageCount,
-  onBack,
-}: MessageHeaderProps) {
-  return (
-    <div className="mb-6">
-      <Button outline onClick={onBack} className="mb-4">
-        ← Back to Messages
-      </Button>
+export function MessageHeader({ otherUserId }: MessageHeaderProps) {
+  const { user } = useAuth();
+  const [otherUser, setOtherUser] = useState<SocialProfile | null>(null);
 
-      {otherUser && (
-        <div className="flex items-center space-x-3">
-          <Avatar
-            initials={`${otherUser.first_name[0]}${otherUser.last_name[0]}`}
-          />
-          <div>
-            <Heading
-              level={1}
-              className="text-2xl font-bold text-zinc-900 dark:text-white"
-            >
-              {otherUser.first_name} {otherUser.last_name}
-            </Heading>
-            <Text className="text-sm text-zinc-500 dark:text-zinc-400">
-              {messageCount} messages
-            </Text>
-          </div>
+  useEffect(() => {
+    // Load other user's profile
+    const loadOtherUser = async () => {
+      try {
+        // This would typically fetch from an API
+        // For now, we'll use a mock implementation
+        setOtherUser({
+          id: otherUserId,
+          first_name: "User",
+          last_name: "Name",
+          bio: "User bio",
+        });
+      } catch (error) {
+        console.error("Failed to load user profile:", error);
+      }
+    };
+
+    loadOtherUser();
+  }, [otherUserId]);
+
+  if (!otherUser) {
+    return (
+      <div className="border-b border-zinc-200 p-4 dark:border-zinc-700">
+        <Text>Loading...</Text>
+      </div>
+    );
+  }
+
+  return (
+    <div className="border-b border-zinc-200 p-4 dark:border-zinc-700">
+      <div className="flex items-center space-x-3">
+        <div className="h-10 w-10 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+        <div>
+          <Heading level={3} className="text-lg font-semibold">
+            {otherUser.first_name} {otherUser.last_name}
+          </Heading>
+          <Text className="text-sm text-zinc-600 dark:text-zinc-400">
+            {otherUser.bio || "No bio available"}
+          </Text>
         </div>
-      )}
+      </div>
     </div>
   );
 }
