@@ -44,7 +44,7 @@ async function createSampleData() {
         description: '18V DeWalt cordless drill with two batteries and charger',
         category: 'Power Tools',
         condition: 'Excellent',
-        images: ['drill1.jpg', 'drill2.jpg'],
+        images: ['https://images.unsplash.com/photo-1581147036325-d716c737bdf8?w=400&h=300&fit=crop'],
         is_available: true
       },
       {
@@ -53,7 +53,7 @@ async function createSampleData() {
         description: '7-1/4 inch circular saw, perfect for cutting lumber',
         category: 'Power Tools',
         condition: 'Good',
-        images: ['saw1.jpg'],
+        images: ['https://images.unsplash.com/photo-1581147036325-d716c737bdf8?w=400&h=300&fit=crop'],
         is_available: true
       },
       {
@@ -62,7 +62,7 @@ async function createSampleData() {
         description: '6-foot aluminum extension ladder, lightweight and sturdy',
         category: 'Ladders & Scaffolding',
         condition: 'Excellent',
-        images: ['ladder1.jpg'],
+        images: ['https://images.unsplash.com/photo-1581147036325-d716c737bdf8?w=400&h=300&fit=crop'],
         is_available: true
       },
       {
@@ -71,7 +71,7 @@ async function createSampleData() {
         description: '2000 PSI electric pressure washer for cleaning driveways and decks',
         category: 'Cleaning',
         condition: 'Good',
-        images: ['washer1.jpg'],
+        images: ['https://images.unsplash.com/photo-1581147036325-d716c737bdf8?w=400&h=300&fit=crop'],
         is_available: true
       },
       {
@@ -80,7 +80,7 @@ async function createSampleData() {
         description: 'Complete 100-piece tool set with case, includes wrenches, screwdrivers, and more',
         category: 'Hand Tools',
         condition: 'Excellent',
-        images: ['toolset1.jpg'],
+        images: ['https://images.unsplash.com/photo-1581147036325-d716c737bdf8?w=400&h=300&fit=crop'],
         is_available: true
       },
       {
@@ -89,7 +89,7 @@ async function createSampleData() {
         description: 'Self-propelled gas lawn mower, 21-inch cutting deck',
         category: 'Garden',
         condition: 'Good',
-        images: ['mower1.jpg'],
+        images: ['https://images.unsplash.com/photo-1581147036325-d716c737bdf8?w=400&h=300&fit=crop'],
         is_available: true
       }
     ];
