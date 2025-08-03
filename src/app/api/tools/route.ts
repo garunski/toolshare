@@ -1,6 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-import { processFormError } from "@/common/forms/FormErrorProcessor";
+import {
+  createMissingFieldsResponse,
+  createSuccessResponse,
+  handleApiError,
+  validateRequiredFields,
+} from "@/common/operations/apiResponseHandler";
 import { supabase } from "@/common/supabase";
 
 export async function POST(request: NextRequest) {
@@ -9,11 +14,20 @@ export async function POST(request: NextRequest) {
     const { userId, name, description, category, condition, location, notes } =
       body;
 
-    if (!userId || !name || !description || !category || !condition) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 },
-      );
+    const requiredFields = [
+      "userId",
+      "name",
+      "description",
+      "category",
+      "condition",
+    ];
+    const { isValid, missingFields } = validateRequiredFields(
+      body,
+      requiredFields,
+    );
+
+    if (!isValid) {
+      return createMissingFieldsResponse(missingFields);
     }
 
     const { error } = await supabase.from("tools").insert({
@@ -33,27 +47,8 @@ export async function POST(request: NextRequest) {
       throw error;
     }
 
-    return NextResponse.json({ success: true });
+    return createSuccessResponse();
   } catch (error) {
-    const { fieldErrors, generalError } = processFormError(error);
-
-    if (Object.keys(fieldErrors).length > 0) {
-      return NextResponse.json(
-        {
-          details: {
-            errors: Object.entries(fieldErrors).map(([field, message]) => ({
-              field,
-              message,
-            })),
-          },
-        },
-        { status: 400 },
-      );
-    }
-
-    return NextResponse.json(
-      { error: generalError || "An error occurred" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }

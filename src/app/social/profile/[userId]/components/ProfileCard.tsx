@@ -4,15 +4,20 @@ import { useCallback, useEffect, useState } from "react";
 
 import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
 import { useAuth } from "@/hooks/useAuth";
-import { Button } from "@/primitives/button";
+import type {
+  FriendshipStatus,
+  ProfileActionHandlers,
+} from "@/hooks/useProfileActions";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 import type { SocialProfile } from "@/types/social";
 
+import { ProfileActionButtons } from "./shared/ProfileActionButtons";
+
 interface ProfileCardProps {
   userId: string;
   isOwnProfile: boolean;
-  friendshipStatus: "none" | "friends" | "pending_sent" | "pending_received";
+  friendshipStatus: FriendshipStatus;
   sendingRequest: boolean;
   onSendFriendRequest: () => Promise<void>;
   onAcceptRequest: () => Promise<void>;
@@ -67,6 +72,13 @@ export function ProfileCard({
     );
   }
 
+  const handlers: ProfileActionHandlers = {
+    onSendFriendRequest,
+    onAcceptRequest,
+    onRejectRequest,
+    onMessage,
+  };
+
   return (
     <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
       <div className="flex items-center space-x-4">
@@ -82,39 +94,13 @@ export function ProfileCard({
       </div>
 
       {!isOwnProfile && user && (
-        <div className="mt-6 flex space-x-3">
-          {friendshipStatus === "none" && (
-            <Button
-              onClick={onSendFriendRequest}
-              disabled={sendingRequest}
-              className="flex-1"
-            >
-              {sendingRequest ? "Sending..." : "Send Friend Request"}
-            </Button>
-          )}
-
-          {friendshipStatus === "pending_sent" && (
-            <Text className="text-zinc-600 dark:text-zinc-400">
-              Friend request sent
-            </Text>
-          )}
-
-          {friendshipStatus === "pending_received" && (
-            <>
-              <Button onClick={onAcceptRequest} className="flex-1">
-                Accept Request
-              </Button>
-              <Button outline onClick={onRejectRequest} className="flex-1">
-                Decline Request
-              </Button>
-            </>
-          )}
-
-          {friendshipStatus === "friends" && (
-            <Button onClick={onMessage} className="flex-1">
-              Send Message
-            </Button>
-          )}
+        <div className="mt-6">
+          <ProfileActionButtons
+            isOwnProfile={isOwnProfile}
+            friendshipStatus={friendshipStatus}
+            sendingRequest={sendingRequest}
+            handlers={handlers}
+          />
         </div>
       )}
     </div>
