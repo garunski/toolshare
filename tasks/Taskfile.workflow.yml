@@ -3,14 +3,4 @@ version: '3'
 tasks:
   # ============================================================================
   # WORKFLOW TASKS (Only keeping the ones that are actually used)
-  # ============================================================================
-
-  workflow-db-reset:
-    desc: Reset database and regenerate types
-    cmds:
-      - |
-        echo "🔄 Resetting database and types..."
-        supabase db reset
-        task database:db-types
-        task database:db-seed-users
-        echo "✅ Database reset and types regenerated" 
+  # ============================================================================ 
