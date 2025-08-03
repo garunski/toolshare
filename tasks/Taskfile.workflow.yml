@@ -64,8 +64,9 @@ tasks:
     cmds:
       - |
         echo "🔄 Resetting database and types..."
-        supabase db reset --seed
-        task db-types
+        supabase db reset
+        task database:db-types
+        task database:db-seed-users
         echo "✅ Database reset and types regenerated"
 
   workflow-code-quality:
