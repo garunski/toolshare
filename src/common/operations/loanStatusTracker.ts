@@ -10,7 +10,7 @@ import {
   fetchUserLoans,
   updateLoanInDatabase,
   updateToolAvailability,
-} from "./loanStatusHelpers";
+} from "./loanStatusOperations";
 
 export type LoanStatus =
   | "pending"

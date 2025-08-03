@@ -10,9 +10,10 @@ alwaysApply: false
 ## Development Workflow
 **IMPORTANT: All notification development operations MUST be run using Taskfile commands.**
 - Use `task dev` to start the development server
-- Use `task dev:build` to build the application
 - Use `task dev:type-check` to run TypeScript checks
 - Use `task dev:lint` to check code quality
+- Use `task dev:format` to format code
+- Use `task dev:code-quality` to run all quality checks
 
 ## Setup & Configuration
 - Use Novu Cloud for notification management

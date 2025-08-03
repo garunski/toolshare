@@ -2,7 +2,7 @@ version: '3'
 
 tasks:
   # ============================================================================
-  # DEVELOPMENT TASKS (Only keeping the ones that are actually used)
+  # DEVELOPMENT TASKS
   # ============================================================================
 
   dev-only:
@@ -10,4 +10,69 @@ tasks:
     cmds:
       - |
         echo "🚀 Starting Next.js development server..."
-        npm run dev 
+        npm run dev
+
+  # ============================================================================
+  # CODE QUALITY TASKS
+  # ============================================================================
+
+  lint:
+    desc: Run ESLint to check code quality
+    cmds:
+      - |
+        echo "🔍 Running ESLint..."
+        npm run lint
+
+  lint-fix:
+    desc: Automatically fix ESLint issues
+    cmds:
+      - |
+        echo "🔧 Fixing ESLint issues..."
+        npm run lint:fix
+
+  type-check:
+    desc: Run TypeScript type checking
+    cmds:
+      - |
+        echo "🔍 Running TypeScript type check..."
+        npx tsc --noEmit
+
+  format:
+    desc: Format code with Prettier
+    cmds:
+      - |
+        echo "🎨 Formatting code with Prettier..."
+        npm run format
+
+  format-check:
+    desc: Check code formatting with Prettier
+    cmds:
+      - |
+        echo "🔍 Checking code formatting..."
+        npm run format:check
+
+  format-fix:
+    desc: Format code and fix linting issues
+    cmds:
+      - |
+        echo "🎨 Formatting code and fixing issues..."
+        npm run format
+        npm run lint:fix
+
+  # ============================================================================
+  # QUALITY TASKS
+  # ============================================================================
+
+  code-quality:
+    desc: Run all code quality checks
+    deps: [lint, type-check, format-check]
+    cmds:
+      - |
+        echo "✅ All code quality checks completed!"
+
+  code-fix:
+    desc: Fix all code quality issues
+    deps: [format-fix, type-check]
+    cmds:
+      - |
+        echo "✅ All code quality issues fixed!" 

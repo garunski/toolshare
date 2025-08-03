@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { FriendRequestProcessor } from "../../common/operations/friendRequestProcessor";
-import { MessageThreadManager } from "../../common/operations/messageThreadManager";
-import { SocialConnectionManager } from "../../common/operations/socialConnectionManager";
+import { MessageThreadHandler } from "../../common/operations/messageThreadHandler";
+import { SocialConnectionProcessor } from "../../common/operations/socialConnectionProcessor";
 import { useAuth } from "../../hooks/useAuth";
 import type {
   Conversation,
@@ -39,15 +39,15 @@ export default function SocialPage() {
         suggestedFriendsData,
         socialStatsData,
       ] = await Promise.all([
-        SocialConnectionManager.getFriends(user.id),
+        SocialConnectionProcessor.getFriends(user.id),
         FriendRequestProcessor.getPendingRequests(user.id),
         FriendRequestProcessor.getSentRequests(user.id),
-        MessageThreadManager.getConversations(user.id),
-        SocialConnectionManager.getSuggestedFriends(user.id),
-        SocialConnectionManager.getSocialStats(user.id),
+        MessageThreadHandler.getConversations(user.id),
+        SocialConnectionProcessor.getSuggestedFriends(user.id),
+        SocialConnectionProcessor.getSocialStats(user.id),
       ]);
 
-      setFriends(friendsData.map((conn) => conn.friend!));
+      setFriends(friendsData.map((conn: any) => conn.friend!));
       setPendingRequests(pendingRequestsData);
       setSentRequests(sentRequestsData);
       setConversations(conversationsData);

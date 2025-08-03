@@ -9,8 +9,8 @@ export interface SessionState {
   error: string | null;
 }
 
-export class SessionStateManager {
-  private static instance: SessionStateManager;
+export class SessionStateHandler {
+  private static instance: SessionStateHandler;
   private listeners: Set<(state: SessionState) => void> = new Set();
   private currentState: SessionState = {
     user: null,
@@ -23,11 +23,11 @@ export class SessionStateManager {
     this.initializeAuthListener();
   }
 
-  static getInstance(): SessionStateManager {
-    if (!SessionStateManager.instance) {
-      SessionStateManager.instance = new SessionStateManager();
+  static getInstance(): SessionStateHandler {
+    if (!SessionStateHandler.instance) {
+      SessionStateHandler.instance = new SessionStateHandler();
     }
-    return SessionStateManager.instance;
+    return SessionStateHandler.instance;
   }
 
   private async initializeAuthListener() {

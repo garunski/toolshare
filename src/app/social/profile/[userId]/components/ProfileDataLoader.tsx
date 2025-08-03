@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 
-import { SocialConnectionManager } from "../../../../../common/operations/socialConnectionManager";
+import { SocialConnectionProcessor } from "../../../../../common/operations/socialConnectionProcessor";
 import { useAuth } from "../../../../../hooks/useAuth";
 import type { SocialProfile, SocialStats } from "../../../../../types/social";
 
@@ -49,10 +49,11 @@ export function ProfileDataLoader({
 
       let friendshipStatus = "none";
       if (currentUser && currentUser.id !== userId) {
-        friendshipStatus = await SocialConnectionManager.checkFriendshipStatus(
-          currentUser.id,
-          userId,
-        );
+        friendshipStatus =
+          await SocialConnectionProcessor.checkFriendshipStatus(
+            currentUser.id,
+            userId,
+          );
       }
 
       onDataLoaded(mockProfile, mockStats, friendshipStatus);

@@ -1,6 +1,26 @@
 import { supabase } from "@/common/supabase";
+import type { Tool } from "@/types/tool";
 
-export function buildSearchQuery(filters: any) {
+export interface SearchFilters {
+  searchTerm?: string;
+  category?: string;
+  condition?: string;
+  availability?: boolean;
+}
+
+export interface ToolWithOwner extends Tool {
+  profiles?: {
+    id: string;
+    first_name: string;
+    last_name: string;
+  };
+}
+
+export interface ToolSearchResult extends ToolWithOwner {
+  searchScore?: number;
+}
+
+export function buildSearchQuery(filters: SearchFilters) {
   let query = supabase.from("tools").select(`
     id,
     name,
@@ -39,7 +59,7 @@ export function buildSearchQuery(filters: any) {
   return query;
 }
 
-export async function fetchCategories() {
+export async function fetchCategories(): Promise<string[]> {
   const { data, error } = await supabase.from("tools").select("category");
 
   if (error) {
@@ -49,12 +69,16 @@ export async function fetchCategories() {
 
   // Extract unique categories
   const categories = [
-    ...new Set(data?.map((tool: any) => tool.category).filter(Boolean)),
+    ...new Set(
+      data
+        ?.map((tool: Pick<Tool, "category">) => tool.category)
+        .filter(Boolean),
+    ),
   ] as string[];
   return categories.sort();
 }
 
-export async function fetchConditions() {
+export async function fetchConditions(): Promise<string[]> {
   const { data, error } = await supabase.from("tools").select("condition");
 
   if (error) {
@@ -64,12 +88,19 @@ export async function fetchConditions() {
 
   // Extract unique conditions
   const conditions = [
-    ...new Set(data?.map((tool: any) => tool.condition).filter(Boolean)),
+    ...new Set(
+      data
+        ?.map((tool: Pick<Tool, "condition">) => tool.condition)
+        .filter(Boolean),
+    ),
   ] as string[];
   return conditions.sort();
 }
 
-export function calculateSearchScore(tool: any, searchTerm: string): number {
+export function calculateSearchScore(
+  tool: ToolWithOwner,
+  searchTerm: string,
+): number {
   if (!searchTerm) return 0;
 
   const term = searchTerm.toLowerCase();
@@ -95,7 +126,10 @@ export function calculateSearchScore(tool: any, searchTerm: string): number {
   return score;
 }
 
-export function sortSearchResults(results: any[], searchTerm: string): any[] {
+export function sortSearchResults(
+  results: ToolWithOwner[],
+  searchTerm: string,
+): ToolSearchResult[] {
   if (!searchTerm) return results;
 
   return results
@@ -103,5 +137,5 @@ export function sortSearchResults(results: any[], searchTerm: string): any[] {
       ...tool,
       searchScore: calculateSearchScore(tool, searchTerm),
     }))
-    .sort((a, b) => b.searchScore - a.searchScore);
+    .sort((a, b) => (b.searchScore || 0) - (a.searchScore || 0));
 }

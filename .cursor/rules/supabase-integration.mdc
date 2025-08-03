@@ -20,6 +20,7 @@ alwaysApply: false
 - Use `task database:db-types` to generate TypeScript types
 - Use `task database:studio` to open Supabase Studio
 - Use `task database:logs` to view Supabase logs
+- Use `task dev:code-quality` to run all quality checks
 
 ## Client Setup
 - Use single Supabase client instance

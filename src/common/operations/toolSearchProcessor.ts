@@ -3,7 +3,9 @@ import {
   fetchCategories,
   fetchConditions,
   sortSearchResults,
-} from "./toolSearchHelpers";
+  type SearchFilters as BaseSearchFilters,
+  type ToolWithOwner,
+} from "./toolSearchOperations";
 
 export interface SearchFilters {
   category?: string;
@@ -31,19 +33,55 @@ export interface SearchResult {
 export async function searchTools(
   filters: SearchFilters,
 ): Promise<SearchResult[]> {
-  const query = buildSearchQuery(filters);
+  // Convert availability filter to boolean for the base query
+  const baseFilters: BaseSearchFilters = {
+    searchTerm: filters.searchTerm,
+    category: filters.category,
+    condition: filters.condition,
+    availability:
+      filters.availability === "available"
+        ? true
+        : filters.availability === "unavailable"
+          ? false
+          : undefined,
+  };
+
+  const query = buildSearchQuery(baseFilters);
   const { data, error } = await query.order("created_at", { ascending: false });
 
   if (error) {
     throw new Error(`Failed to search tools: ${error.message}`);
   }
 
-  const results = (data || []).map((item) => ({
+  const results = (data || []).map((item: any) => ({
     ...item,
-    owner: item.profiles[0],
+    owner: item.profiles?.[0] || {
+      id: item.owner_id,
+      first_name: "Unknown",
+      last_name: "User",
+    },
   }));
 
-  return sortSearchResults(results, filters.searchTerm || "");
+  // Filter by availability if needed
+  let filteredResults = results;
+  if (filters.availability === "available") {
+    filteredResults = results.filter((item: any) => item.is_available);
+  } else if (filters.availability === "unavailable") {
+    filteredResults = results.filter((item: any) => !item.is_available);
+  }
+
+  const sortedResults = sortSearchResults(
+    filteredResults as ToolWithOwner[],
+    filters.searchTerm || "",
+  );
+  return sortedResults.map((result) => ({
+    ...result,
+    owner: (result.profiles as any)?.[0] || {
+      id: result.owner_id,
+      first_name: "Unknown",
+      last_name: "User",
+    },
+  })) as SearchResult[];
 }
 
 export async function getToolCategories(): Promise<string[]> {

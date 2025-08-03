@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 import {
   SessionState,
-  SessionStateManager,
-} from "@/common/operations/sessionStateManager";
+  SessionStateHandler,
+} from "@/common/operations/sessionStateHandler";
 
 export function useAuth() {
   const [authState, setAuthState] = useState<SessionState>({
@@ -14,19 +14,19 @@ export function useAuth() {
   });
 
   useEffect(() => {
-    const sessionManager = SessionStateManager.getInstance();
+    const sessionManager = SessionStateHandler.getInstance();
     const unsubscribe = sessionManager.subscribe(setAuthState);
 
     return unsubscribe;
   }, []);
 
   const signOut = async () => {
-    const sessionManager = SessionStateManager.getInstance();
+    const sessionManager = SessionStateHandler.getInstance();
     await sessionManager.signOut();
   };
 
   const refreshSession = async () => {
-    const sessionManager = SessionStateManager.getInstance();
+    const sessionManager = SessionStateHandler.getInstance();
     await sessionManager.refreshSession();
   };
 

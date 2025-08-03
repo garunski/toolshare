@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
-import { ToolDataManager } from "@/common/operations/toolDataManager";
+import { ToolDataProcessor } from "@/common/operations/toolDataProcessor";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
@@ -22,7 +22,7 @@ export default function ToolsPage() {
     if (!user) return;
 
     setLoading(true);
-    const result = await ToolDataManager.getUserTools(user.id);
+    const result = await ToolDataProcessor.getUserTools(user.id);
 
     if (result.success) {
       setTools(result.data || []);

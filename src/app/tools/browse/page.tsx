@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { ToolDataManager } from "@/common/operations/toolDataManager";
+import { ToolDataProcessor } from "@/common/operations/toolDataProcessor";
 import { useAuth } from "@/hooks/useAuth";
 import type { Database } from "@/types/supabase";
 
@@ -29,11 +29,11 @@ export default function BrowseToolsPage() {
 
   const loadAvailableTools = async () => {
     setLoading(true);
-    const result = await ToolDataManager.getAvailableTools();
+    const result = await ToolDataProcessor.getAvailableTools();
 
     if (result.success) {
       setTools(
-        result.data?.map((tool) => ({
+        result.data?.map((tool: any) => ({
           ...tool,
           profiles: {
             id: tool.owner_id,
@@ -51,11 +51,11 @@ export default function BrowseToolsPage() {
 
   const handleSearch = async (searchData: any) => {
     setLoading(true);
-    const result = await ToolDataManager.searchTools(searchData);
+    const result = await ToolDataProcessor.searchTools(searchData);
 
     if (result.success) {
       setTools(
-        result.data?.map((tool) => ({
+        result.data?.map((tool: any) => ({
           ...tool,
           profiles: {
             id: tool.owner_id,

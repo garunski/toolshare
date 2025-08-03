@@ -3,7 +3,7 @@ import type { Conversation, Message } from "../../types/social";
 import { ConversationOperations } from "./conversationOperations";
 import { MessageOperations } from "./messageOperations";
 
-export class MessageThreadManager {
+export class MessageThreadHandler {
   static async sendMessage(
     data: { receiver_id: string; content: string; loan_id?: string },
     senderId: string,

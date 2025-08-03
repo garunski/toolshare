@@ -7,7 +7,7 @@ import type {
 import { FriendOperations } from "./friendOperations";
 import { SocialStatsOperations } from "./socialStatsOperations";
 
-export class SocialConnectionManager {
+export class SocialConnectionProcessor {
   static async getFriends(userId: string): Promise<SocialConnection[]> {
     return FriendOperations.getFriends(userId);
   }

@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { MessageThreadManager } from "../../../../common/operations/messageThreadManager";
+import { MessageThreadHandler } from "../../../../common/operations/messageThreadHandler";
 import { useAuth } from "../../../../hooks/useAuth";
 import type { Message, SocialProfile } from "../../../../types/social";
 
@@ -40,7 +40,7 @@ export default function MessagePage() {
     try {
       setLoading(true);
       const [messagesData, otherUserData] = await Promise.all([
-        MessageThreadManager.getMessages(user.id, otherUserId),
+        MessageThreadHandler.getMessages(user.id, otherUserId),
         fetchOtherUserProfile(),
       ]);
 
@@ -56,10 +56,10 @@ export default function MessagePage() {
   const setupSubscription = useCallback(() => {
     if (!user || !otherUserId) return;
 
-    subscriptionRef.current = MessageThreadManager.subscribeToConversation(
+    subscriptionRef.current = MessageThreadHandler.subscribeToConversation(
       user.id,
       otherUserId,
-      (newMessage) => {
+      (newMessage: Message) => {
         setMessages((prev) => [...prev, newMessage]);
       },
     );
@@ -83,7 +83,7 @@ export default function MessagePage() {
 
     try {
       setSending(true);
-      const message = await MessageThreadManager.sendMessage(
+      const message = await MessageThreadHandler.sendMessage(
         {
           receiver_id: otherUserId,
           content: newMessage.trim(),

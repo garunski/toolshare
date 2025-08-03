@@ -12,7 +12,7 @@ type Tool = Database["public"]["Tables"]["tools"]["Row"];
 
 export { type ToolOperationResult } from "./toolCRUD";
 
-export class ToolDataManager {
+export class ToolDataProcessor {
   static async createTool(
     toolData: ToolCreationData,
     ownerId: string,

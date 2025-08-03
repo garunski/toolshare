@@ -12,6 +12,7 @@ alwaysApply: false
 - Use `task dev:type-check` to run TypeScript type checking
 - Use `task dev:lint` to check code quality
 - Use `task dev:format` to format code
+- Use `task dev:code-quality` to run all quality checks
 - Use `task database:db-types` to generate types from database schema
 
 ## Type Safety

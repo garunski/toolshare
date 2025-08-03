@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { ToolDataManager } from "@/common/operations/toolDataManager";
+import { ToolDataProcessor } from "@/common/operations/toolDataProcessor";
 import { ToolImageUploader } from "@/common/operations/toolImageUploader";
 import { toolCreationSchema } from "@/common/validators/toolCreationValidator";
 
@@ -97,7 +97,7 @@ export function useAddToolForm(userId: string, onSuccess: () => void) {
     setError(null);
 
     try {
-      const result = await ToolDataManager.createTool(data, userId);
+      const result = await ToolDataProcessor.createTool(data, userId);
 
       if (result.success) {
         onSuccess();

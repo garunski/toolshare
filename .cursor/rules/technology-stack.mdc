@@ -30,6 +30,10 @@ alwaysApply: true
 - Use `task dev` to start the development server
 - Use `task setup` for initial project setup
 - Use `task status` to check project status
+- Use `task dev:lint` to run ESLint
+- Use `task dev:type-check` to run TypeScript checks
+- Use `task dev:format` to format code
+- Use `task dev:code-quality` to run all quality checks
 
 ## Development Tools
 - **Package Manager**: npm or yarn

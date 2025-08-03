@@ -18,8 +18,8 @@ alwaysApply: true
 - Use `task dev:format` to format code with Prettier
 - Use `task dev:format-check` to check code formatting
 - Use `task dev:format-fix` to format code and fix linting issues
-- Use `task workflow:workflow-code-quality` to run all code quality checks
-- Use `task workflow:workflow-code-fix` to fix all code quality issues
+- Use `task dev:code-quality` to run all code quality checks
+- Use `task dev:code-fix` to fix all code quality issues
 
 ## File Size Limit
 - All files MUST be under 150 lines

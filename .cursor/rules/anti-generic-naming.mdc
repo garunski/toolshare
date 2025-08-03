@@ -12,7 +12,7 @@ alwaysApply: false
 **IMPORTANT: All development operations MUST be run using Taskfile commands.**
 - Use `task dev:lint` to check code quality and naming conventions
 - Use `task dev:format` to format code
-- Use `task workflow:workflow-code-quality` to run all code quality checks
+- Use `task dev:code-quality` to run all code quality checks
 
 ## NEVER Use Generic Names
 - "util", "utils", "helper", "helpers", "manager", "service", "common", "shared", "misc", "lib"
