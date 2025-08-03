@@ -68,3 +68,14 @@ tasks:
         echo "📋 Quick Commands:"
         echo "  task dev          - Start full stack (Next.js + Supabase)"
         echo "  task db-reset     - Reset database, types, and seed data"
+
+  db-reset:
+    desc: Reset database, generate types, and seed data
+    cmds:
+      - |
+        echo "🔄 Resetting database, types, and seed data..."
+        supabase db reset
+        supabase gen types typescript --local > src/types/supabase.ts
+        npx tsx supabase/seed-users.ts
+        npx tsx supabase/seed-data.ts
+        echo "✅ Database reset complete with types and seed data"
