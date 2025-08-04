@@ -1,4 +1,4 @@
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 import type { FriendRequest, FriendRequestFormData } from "@/types/social";
 
 export class FriendRequestQueries {
@@ -6,6 +6,7 @@ export class FriendRequestQueries {
     senderId: string,
     validatedData: FriendRequestFormData,
   ): Promise<FriendRequest> {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("friend_requests")
       .insert({
@@ -24,6 +25,7 @@ export class FriendRequestQueries {
     userId: string,
     field: "sender_id" | "receiver_id",
   ) {
+    const supabase = createClient();
     const select =
       field === "sender_id"
         ? `*, receiver:profiles!friend_requests_receiver_id_fkey(*)`
@@ -37,6 +39,7 @@ export class FriendRequestQueries {
   }
 
   static async cancelRequest(requestId: string, userId: string) {
+    const supabase = createClient();
     return supabase
       .from("friend_requests")
       .delete()
@@ -45,6 +48,7 @@ export class FriendRequestQueries {
   }
 
   static async processResponse(requestId: string, action: "accept" | "reject") {
+    const supabase = createClient();
     const rpcName =
       action === "accept" ? "accept_friend_request" : "reject_friend_request";
     return supabase.rpc(rpcName, { request_id: requestId });

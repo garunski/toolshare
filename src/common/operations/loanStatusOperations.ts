@@ -1,10 +1,11 @@
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 
 export async function updateLoanInDatabase(
   loanId: string,
   status: string,
   message?: string,
 ) {
+  const supabase = createClient();
   const { error } = await supabase
     .from("loans")
     .update({
@@ -32,6 +33,7 @@ export async function updateToolAvailability(
   toolId: string,
   isAvailable: boolean,
 ) {
+  const supabase = createClient();
   const { error } = await supabase
     .from("tools")
     .update({ is_available: isAvailable })
@@ -43,6 +45,7 @@ export async function updateToolAvailability(
 }
 
 export async function fetchLoanWithDetails(loanId: string) {
+  const supabase = createClient();
   const { data, error } = await supabase
     .from("loans")
     .select(
@@ -77,6 +80,7 @@ export async function fetchLoanWithDetails(loanId: string) {
 }
 
 export async function fetchUserLoans(userId: string) {
+  const supabase = createClient();
   const { data, error } = await supabase
     .from("loans")
     .select(

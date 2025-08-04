@@ -1,10 +1,10 @@
 import { getActiveLoans } from "@/common/operations/loanStatusTracker";
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/server";
 
 import { LoansDashboard } from "./components/LoansDashboard";
 
 export default async function LoansPage() {
-  const client = supabase;
+  const supabase = await createClient();
 
   // Get current user
   const {

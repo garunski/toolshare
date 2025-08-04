@@ -1,7 +1,7 @@
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 
 export async function submitLoanRequest(data: any, userId: string, tool: any) {
-  const client = supabase;
+  const supabase = createClient();
 
   const { error } = await supabase.from("loans").insert({
     tool_id: data.tool_id,

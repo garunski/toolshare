@@ -1,4 +1,4 @@
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 import type { Conversation } from "@/types/social";
 
 export class ConversationOperations {
@@ -6,6 +6,7 @@ export class ConversationOperations {
     userId: string,
   ): Promise<{ success: boolean; data: Conversation[] }> {
     try {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("conversations")
         .select(
@@ -39,6 +40,7 @@ export class ConversationOperations {
   }
 
   static subscribeToMessages(userId: string, callback: (message: any) => void) {
+    const supabase = createClient();
     return supabase
       .channel(`messages:${userId}`)
       .on(
@@ -61,6 +63,7 @@ export class ConversationOperations {
     otherUserId: string,
     callback: (message: any) => void,
   ) {
+    const supabase = createClient();
     return supabase
       .channel(`conversation:${userId}:${otherUserId}`)
       .on(

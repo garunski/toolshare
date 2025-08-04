@@ -1,4 +1,4 @@
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 import { ToolSearchData } from "@/common/validators/toolCreationValidator";
 import type { Database } from "@/types/supabase";
 
@@ -15,6 +15,7 @@ export class ToolQueries {
     userId: string,
   ): Promise<ToolOperationResult<Tool[]>> {
     try {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("tools")
         .select("*")
@@ -43,6 +44,7 @@ export class ToolQueries {
     searchData: ToolSearchData,
   ): Promise<ToolOperationResult<Tool[]>> {
     try {
+      const supabase = createClient();
       let query = supabase.from("tools").select("*");
 
       // Apply search filters
@@ -97,6 +99,7 @@ export class ToolQueries {
 
   static async getAvailableTools(): Promise<ToolOperationResult<Tool[]>> {
     try {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("tools")
         .select("*")

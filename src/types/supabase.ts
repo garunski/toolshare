@@ -247,6 +247,33 @@ export type Database = {
           },
         ];
       };
+      permissions: {
+        Row: {
+          action: string;
+          created_at: string | null;
+          description: string | null;
+          id: string;
+          name: string;
+          resource: string;
+        };
+        Insert: {
+          action: string;
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          name: string;
+          resource: string;
+        };
+        Update: {
+          action?: string;
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          name?: string;
+          resource?: string;
+        };
+        Relationships: [];
+      };
       profiles: {
         Row: {
           address: string | null;
@@ -279,6 +306,69 @@ export type Database = {
           id?: string;
           last_name?: string;
           phone?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [];
+      };
+      role_permissions: {
+        Row: {
+          created_at: string | null;
+          id: string;
+          permission_id: string;
+          role_id: string;
+        };
+        Insert: {
+          created_at?: string | null;
+          id?: string;
+          permission_id: string;
+          role_id: string;
+        };
+        Update: {
+          created_at?: string | null;
+          id?: string;
+          permission_id?: string;
+          role_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "role_permissions_permission_id_fkey";
+            columns: ["permission_id"];
+            isOneToOne: false;
+            referencedRelation: "permissions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "role_permissions_role_id_fkey";
+            columns: ["role_id"];
+            isOneToOne: false;
+            referencedRelation: "roles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      roles: {
+        Row: {
+          created_at: string | null;
+          description: string | null;
+          id: string;
+          is_system_role: boolean | null;
+          name: string;
+          updated_at: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          is_system_role?: boolean | null;
+          name: string;
+          updated_at?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          is_system_role?: boolean | null;
+          name?: string;
           updated_at?: string | null;
         };
         Relationships: [];
@@ -413,6 +503,58 @@ export type Database = {
           },
         ];
       };
+      user_roles: {
+        Row: {
+          assigned_at: string | null;
+          assigned_by: string | null;
+          expires_at: string | null;
+          id: string;
+          is_active: boolean | null;
+          role_id: string;
+          user_id: string;
+        };
+        Insert: {
+          assigned_at?: string | null;
+          assigned_by?: string | null;
+          expires_at?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          role_id: string;
+          user_id: string;
+        };
+        Update: {
+          assigned_at?: string | null;
+          assigned_by?: string | null;
+          expires_at?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          role_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_assigned_by_fkey";
+            columns: ["assigned_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "user_roles_role_id_fkey";
+            columns: ["role_id"];
+            isOneToOne: false;
+            referencedRelation: "roles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "user_roles_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -422,9 +564,20 @@ export type Database = {
         Args: { request_id: string };
         Returns: undefined;
       };
+      get_user_roles: {
+        Args: { user_uuid: string };
+        Returns: {
+          role_name: string;
+          role_description: string;
+        }[];
+      };
       reject_friend_request: {
         Args: { request_id: string };
         Returns: undefined;
+      };
+      user_has_permission: {
+        Args: { permission_name: string; user_uuid: string };
+        Returns: boolean;
       };
     };
     Enums: {

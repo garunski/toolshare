@@ -1,4 +1,4 @@
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 import {
   ToolCreationData,
   ToolUpdateData,
@@ -33,6 +33,7 @@ export class ToolCRUD {
         updated_at: new Date().toISOString(),
       };
 
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("tools")
         .insert(insertData)
@@ -67,6 +68,7 @@ export class ToolCRUD {
         updated_at: new Date().toISOString(),
       };
 
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("tools")
         .update(updatePayload)
@@ -94,6 +96,7 @@ export class ToolCRUD {
 
   static async deleteTool(toolId: string): Promise<ToolOperationResult> {
     try {
+      const supabase = createClient();
       const { error } = await supabase.from("tools").delete().eq("id", toolId);
 
       if (error) {
@@ -116,6 +119,7 @@ export class ToolCRUD {
 
   static async getToolById(toolId: string): Promise<ToolOperationResult<Tool>> {
     try {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("tools")
         .select("*")

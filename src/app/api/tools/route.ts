@@ -6,7 +6,7 @@ import {
   handleApiError,
   validateRequiredFields,
 } from "@/common/operations/apiResponseHandler";
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/server";
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
       return createMissingFieldsResponse(missingFields);
     }
 
+    const supabase = await createClient();
     const { error } = await supabase.from("tools").insert({
       name,
       description,

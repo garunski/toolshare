@@ -6,24 +6,22 @@ tasks:
   # ============================================================================
 
   clean:
+    silent: true
     desc: Clean build artifacts and temporary files
     cmds:
       - |
-        echo "🧹 Cleaning project..."
         rm -rf .next
         rm -rf node_modules/.cache
         rm -rf .turbo
-        echo "✅ Clean complete"
 
   clean-all:
+    silent: true
     desc: Clean everything including node_modules (requires reinstall)
     cmds:
       - |
-        echo "🧹 Deep cleaning project..."
         rm -rf .next
         rm -rf node_modules
         rm -rf .turbo
-        echo "✅ Deep clean complete"
         echo "⚠️  Run 'task install-deps' to reinstall dependencies"
 
   # ============================================================================
@@ -31,6 +29,7 @@ tasks:
   # ============================================================================
 
   monitor:
+    silent: true
     desc: Monitor all services and show status
     cmds:
       - |
@@ -59,6 +58,7 @@ tasks:
         fi
 
   debug-env:
+    silent: true
     desc: Debug environment variables (without exposing secrets)
     cmds:
       - |
@@ -71,25 +71,17 @@ tasks:
         echo "NEXT_PUBLIC_NOVU_APP_ID: ${NEXT_PUBLIC_NOVU_APP_ID:-not set}"
 
   docker-fix-auth:
+    silent: true
     desc: Fix Docker authentication issues (standalone task)
     cmds:
       - |
-        echo "🔧 Fixing Docker authentication issues..."
-        echo "Logging out from public.ecr.aws to clear expired tokens..."
         docker logout public.ecr.aws || true
-        echo "✅ Docker authentication reset"
-        echo ""
-        echo "🔄 Now try starting Supabase again:"
-        echo "  task database:supabase-start"
-        echo ""
-        echo "💡 If issues persist, you may need to:"
-        echo "  docker login public.ecr.aws"
+        echo "💡 If issues persist, try: docker login public.ecr.aws"
 
   clear-task-cache:
+    silent: true
     desc: Clear Task runner cache
     cmds:
       - |
-        echo "🧹 Clearing Task cache..."
         rm -rf .task
-        echo "✅ Task cache cleared"
         echo "💡 Run 'task dev' again to start development" 

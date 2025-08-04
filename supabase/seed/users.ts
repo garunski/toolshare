@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase configuration for local development
+// Note: Users need to use anon key for auth operations
 const supabaseUrl = 'http://127.0.0.1:54321';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0';
 
@@ -36,7 +36,7 @@ const testUsers = [
   }
 ];
 
-async function createTestUsers() {
+export async function seedUsers() {
   console.log('🚀 Creating test users...');
   
   for (const user of testUsers) {
@@ -91,7 +91,4 @@ async function createTestUsers() {
   testUsers.forEach(user => {
     console.log(`   ${user.email} / ${user.password}`);
   });
-}
-
-// Run the script
-createTestUsers().catch(console.error); 
+} 

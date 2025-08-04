@@ -1,4 +1,4 @@
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 import type { Tool } from "@/types/tool";
 
 export interface SearchFilters {
@@ -21,6 +21,7 @@ export interface ToolSearchResult extends ToolWithOwner {
 }
 
 export function buildSearchQuery(filters: SearchFilters) {
+  const supabase = createClient();
   let query = supabase.from("tools").select(`
     id,
     name,
@@ -60,6 +61,7 @@ export function buildSearchQuery(filters: SearchFilters) {
 }
 
 export async function fetchCategories(): Promise<string[]> {
+  const supabase = createClient();
   const { data, error } = await supabase.from("tools").select("category");
 
   if (error) {
@@ -79,6 +81,7 @@ export async function fetchCategories(): Promise<string[]> {
 }
 
 export async function fetchConditions(): Promise<string[]> {
+  const supabase = createClient();
   const { data, error } = await supabase.from("tools").select("condition");
 
   if (error) {

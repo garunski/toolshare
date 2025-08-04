@@ -3,7 +3,7 @@
 import { Wrench } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
@@ -19,8 +19,7 @@ export function LoanHistoryList({ userId }: LoanHistoryListProps) {
 
   useEffect(() => {
     async function fetchLoanHistory() {
-      const client = supabase;
-
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("loans")
         .select(

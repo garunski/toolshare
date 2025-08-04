@@ -69,8 +69,9 @@ export async function processLoanReturn(data: LoanReturn): Promise<void> {
 export async function getLoanStatus(
   loanId: string,
 ): Promise<LoanStatus | null> {
-  const { supabase } = await import("@/common/supabase");
+  const { createClient } = await import("@/common/supabase/client");
 
+  const supabase = createClient();
   const { data, error } = await supabase
     .from("loans")
     .select("status")

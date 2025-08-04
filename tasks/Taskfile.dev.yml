@@ -6,56 +6,55 @@ tasks:
   # ============================================================================
 
   dev-only:
+    silent: true
     desc: Start Next.js development server only (without Supabase)
     cmds:
-      - |
-        echo "🚀 Starting Next.js development server..."
-        npm run dev
+      - npm run dev
+
+  build:
+    silent: true
+    desc: Build the project for production
+    cmds:
+      - npm run build
 
   # ============================================================================
   # CODE QUALITY TASKS
   # ============================================================================
 
   lint:
+    silent: true
     desc: Run ESLint to check code quality
     cmds:
-      - |
-        echo "🔍 Running ESLint..."
-        npm run lint
+      - npm run lint
 
   lint-fix:
+    silent: true
     desc: Automatically fix ESLint issues
     cmds:
-      - |
-        echo "🔧 Fixing ESLint issues..."
-        npm run lint:fix
+      - npm run lint:fix
 
   type-check:
+    silent: true
     desc: Run TypeScript type checking
     cmds:
-      - |
-        echo "🔍 Running TypeScript type check..."
-        npx tsc --noEmit
+      - npx tsc --noEmit
 
   format:
     desc: Format code with Prettier
     cmds:
-      - |
-        echo "🎨 Formatting code with Prettier..."
-        npm run format
+      - npm run format
 
   format-check:
+    silent: true
     desc: Check code formatting with Prettier
     cmds:
-      - |
-        echo "🔍 Checking code formatting..."
-        npm run format:check
+      - npm run format:check
 
   format-fix:
+    silent: true
     desc: Format code and fix linting issues
     cmds:
       - |
-        echo "🎨 Formatting code and fixing issues..."
         npm run format
         npm run lint:fix
 
@@ -64,15 +63,11 @@ tasks:
   # ============================================================================
 
   code-quality:
+    silent: true
     desc: Run all code quality checks
     deps: [lint, type-check, format-check]
-    cmds:
-      - |
-        echo "✅ All code quality checks completed!"
 
   code-fix:
+    silent: true
     desc: Fix all code quality issues
-    deps: [format-fix, type-check]
-    cmds:
-      - |
-        echo "✅ All code quality issues fixed!" 
+    deps: [format-fix, type-check] 

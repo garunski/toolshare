@@ -1,13 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from './config';
 
-// Supabase configuration for local development
-const supabaseUrl = 'http://127.0.0.1:54321';
-const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU';
-
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-async function createSampleData() {
-  console.log('🚀 Creating sample data...');
+export async function seedTools() {
+  console.log('🔧 Creating sample tools...');
 
   try {
     // Get user IDs
@@ -24,8 +18,6 @@ async function createSampleData() {
       console.error('❌ No users found. Please create users first.');
       return;
     }
-
-    console.log(`✅ Found ${users.length} users`);
 
     const john = users.find(u => u.first_name === 'John');
     const jane = users.find(u => u.first_name === 'Jane');
@@ -105,80 +97,9 @@ async function createSampleData() {
     }
 
     console.log(`✅ Created ${createdTools.length} tools`);
-
-    // Create sample loans
-    const drill = createdTools.find(t => t.name === 'Cordless Drill');
-    const ladder = createdTools.find(t => t.name === 'Ladder');
-
-    if (drill && ladder) {
-      const loans = [
-        {
-          tool_id: drill.id,
-          borrower_id: jane.id,
-          lender_id: john.id,
-          status: 'completed',
-          start_date: '2024-01-15',
-          end_date: '2024-01-20'
-        },
-        {
-          tool_id: ladder.id,
-          borrower_id: bob.id,
-          lender_id: jane.id,
-          status: 'active',
-          start_date: '2024-02-01',
-          end_date: '2024-02-15'
-        }
-      ];
-
-      const { data: createdLoans, error: loansError } = await supabase
-        .from('loans')
-        .insert(loans)
-        .select();
-
-      if (loansError) {
-        console.error('❌ Error creating loans:', loansError.message);
-      } else {
-        console.log(`✅ Created ${createdLoans.length} loans`);
-      }
-
-      // Create sample messages
-      const messages = [
-        {
-          sender_id: jane.id,
-          receiver_id: john.id,
-          content: 'Hi John! I need to borrow your drill for a weekend project. Is it available?'
-        },
-        {
-          sender_id: john.id,
-          receiver_id: jane.id,
-          content: 'Sure Jane! You can pick it up anytime. Just let me know when you\'re coming.'
-        },
-        {
-          sender_id: bob.id,
-          receiver_id: jane.id,
-          content: 'Thanks for the ladder! I\'ll return it by the 15th as agreed.',
-          loan_id: createdLoans ? createdLoans.find(l => l.borrower_id === bob.id)?.id : null
-        }
-      ];
-
-      const { data: createdMessages, error: messagesError } = await supabase
-        .from('messages')
-        .insert(messages)
-        .select();
-
-      if (messagesError) {
-        console.error('❌ Error creating messages:', messagesError.message);
-      } else {
-        console.log(`✅ Created ${createdMessages.length} messages`);
-      }
-    }
-
-    console.log('🎉 Sample data creation complete!');
+    return createdTools;
 
   } catch (error) {
     console.error('❌ Unexpected error:', (error as Error).message);
   }
-}
-
-// Run the script
-createSampleData().catch(console.error); 
+} 

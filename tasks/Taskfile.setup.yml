@@ -6,43 +6,34 @@ tasks:
   # ============================================================================
 
   install-deps:
+    silent: true
     desc: Install all project dependencies
     cmds:
-      - |
-        echo "📦 Installing dependencies..."
-        npm install
-        echo "✅ Dependencies installed successfully"
+      - npm install
 
   setup-env:
+    silent: true
     desc: Set up environment variables
     cmds:
       - |
-        echo "🔧 Setting up environment variables..."
         if [ ! -f .env.local ]; then
           cp env.example .env.local
-          echo "📝 Created .env.local from env.example"
           echo "⚠️  Please update .env.local with your actual values"
-        else
-          echo "✅ .env.local already exists"
         fi
 
   setup-supabase:
+    silent: true
     desc: Initialize and start Supabase locally
     deps: [install-supabase-cli]
     cmds:
-      - |
-        echo "🚀 Setting up Supabase..."
-        supabase start --exclude vector
-        echo "✅ Supabase started successfully"
-        echo "📊 Studio available at: http://localhost:54323"
-        echo "🔗 API available at: http://localhost:54321"
+      - supabase start --exclude vector
 
   install-supabase-cli:
+    silent: true
     desc: Install Supabase CLI if not already installed
     cmds:
       - |
         if ! command -v supabase &> /dev/null; then
-          echo "📥 Installing Supabase CLI..."
           if [[ "$OSTYPE" == "darwin"* ]]; then
             brew install supabase/tap/supabase
           elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -51,16 +42,12 @@ tasks:
             echo "❌ Unsupported OS. Please install Supabase CLI manually: https://supabase.com/docs/guides/cli"
             exit 1
           fi
-        else
-          echo "✅ Supabase CLI already installed"
         fi
 
   fix-docker-auth:
+    silent: true
     desc: Fix Docker authentication issues for Supabase
     cmds:
       - |
-        echo "🔧 Fixing Docker authentication..."
-        echo "Logging out from public.ecr.aws to clear expired tokens..."
         docker logout public.ecr.aws || true
-        echo "✅ Docker authentication reset"
         echo "💡 If Supabase still fails, try: docker login public.ecr.aws" 

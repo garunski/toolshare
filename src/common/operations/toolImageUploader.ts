@@ -1,4 +1,4 @@
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 
 export interface UploadResult {
   success: boolean;
@@ -33,6 +33,7 @@ export class ToolImageUploader {
       const fileExtension = data.file.name.split(".").pop();
       const fileName = `${data.toolId}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExtension}`;
 
+      const supabase = createClient();
       // Upload to Supabase Storage
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from(this.BUCKET_NAME)
@@ -69,6 +70,7 @@ export class ToolImageUploader {
       const toolId = urlParts[urlParts.length - 2];
       const filePath = `${toolId}/${fileName}`;
 
+      const supabase = createClient();
       const { error } = await supabase.storage
         .from(this.BUCKET_NAME)
         .remove([filePath]);
@@ -125,6 +127,7 @@ export class ToolImageUploader {
   }
 
   static getImageUrl(filePath: string): string {
+    const supabase = createClient();
     const { data } = supabase.storage
       .from(this.BUCKET_NAME)
       .getPublicUrl(filePath);

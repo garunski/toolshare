@@ -2,33 +2,32 @@ version: '3'
 
 tasks:
   # ============================================================================
-  # SUPABASE DATABASE TASKS (Only keeping the ones that are actually used)
+  # SUPABASE DATABASE TASKS
   # ============================================================================
 
   supabase-start:
+    silent: true
     desc: Start Supabase services locally
     cmds:
+      - supabase start --exclude vector
+
+  db-reset:
+    silent: true
+    desc: Reset database, generate types, and seed all data (including users)
+    cmds:
       - |
-        echo "🚀 Starting Supabase..."
-        supabase start --exclude vector
-        echo "✅ Supabase started"
-        echo "📊 Studio: http://localhost:54323"
-        echo "🔗 API: http://localhost:54321"
+        supabase db reset
+        supabase gen types typescript --local > src/types/supabase.ts
+        npx tsx supabase/seed/index.ts
 
   db-types:
+    silent: true
     desc: Generate TypeScript types from database schema
     cmds:
-      - |
-        echo "📝 Generating TypeScript types..."
-        supabase gen types typescript --local > src/types/supabase.ts
-        echo "✅ Types generated at src/types/supabase.ts"
+      - supabase gen types typescript --local > src/types/supabase.ts
 
-  db-seed-users:
+  db-seed:
+    silent: true
     desc: Create test users and sample data
     cmds:
-      - |
-        echo "👥 Creating test users..."
-        npx tsx supabase/seed-users.ts
-        echo "📦 Creating sample data..."
-        npx tsx supabase/seed-data.ts
-        echo "✅ Test data creation complete!" 
+      - npx tsx supabase/seed/index.ts 

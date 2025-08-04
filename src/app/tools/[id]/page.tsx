@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/server";
 
 import { ToolDetailView } from "./components/ToolDetailView";
 
@@ -12,7 +12,7 @@ interface ToolDetailPageProps {
 
 export default async function ToolDetailPage({ params }: ToolDetailPageProps) {
   const { id } = await params;
-  const client = supabase;
+  const supabase = await createClient();
 
   // Fetch tool data
   const { data: tool, error } = await supabase

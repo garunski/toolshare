@@ -1,6 +1,6 @@
 import { Session, User } from "@supabase/supabase-js";
 
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 
 export interface SessionState {
   user: User | null;
@@ -31,6 +31,7 @@ export class SessionStateHandler {
   }
 
   private async initializeAuthListener() {
+    const supabase = createClient();
     // Get initial session
     const {
       data: { session },
@@ -84,6 +85,7 @@ export class SessionStateHandler {
   }
 
   async signOut(): Promise<void> {
+    const supabase = createClient();
     const { error } = await supabase.auth.signOut();
     if (error) {
       this.updateState({ error: error.message });
@@ -91,6 +93,7 @@ export class SessionStateHandler {
   }
 
   async refreshSession(): Promise<void> {
+    const supabase = createClient();
     const { data, error } = await supabase.auth.refreshSession();
     if (error) {
       this.updateState({ error: error.message });

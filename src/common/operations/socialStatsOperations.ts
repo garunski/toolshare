@@ -1,4 +1,4 @@
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 import type { SocialStats } from "@/types/social";
 
 export class SocialStatsOperations {
@@ -6,6 +6,7 @@ export class SocialStatsOperations {
     userId: string,
   ): Promise<{ success: boolean; data: SocialStats }> {
     try {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("social_stats")
         .select("*")
@@ -42,6 +43,7 @@ export class SocialStatsOperations {
     limit = 10,
   ): Promise<{ success: boolean; data: any[] }> {
     try {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("profiles")
         .select("*")

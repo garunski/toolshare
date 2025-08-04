@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 import { Button } from "@/primitives/button";
 
 import { processFormError } from "./FormErrorProcessor";
@@ -57,6 +57,7 @@ async function handleSupabaseCall(
   endpoint: string,
   formData: Record<string, string>,
 ) {
+  const supabase = createClient();
   switch (endpoint) {
     case "auth/signUp":
       return await supabase.auth.signUp({

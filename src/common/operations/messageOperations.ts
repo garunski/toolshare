@@ -1,4 +1,4 @@
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 import type { Message } from "@/types/social";
 
 export class MessageOperations {
@@ -7,6 +7,7 @@ export class MessageOperations {
     otherUserId: string,
   ): Promise<{ success: boolean; data: Message[] }> {
     try {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("messages")
         .select("*")
@@ -32,6 +33,7 @@ export class MessageOperations {
     content: string,
   ): Promise<{ success: boolean; data: Message }> {
     try {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("messages")
         .insert({
@@ -57,6 +59,7 @@ export class MessageOperations {
     loanId: string,
     userId: string,
   ): Promise<Message[]> {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("messages")
       .select(
@@ -78,6 +81,7 @@ export class MessageOperations {
   }
 
   static async deleteMessage(messageId: string, userId: string): Promise<void> {
+    const supabase = createClient();
     const { error } = await supabase
       .from("messages")
       .delete()

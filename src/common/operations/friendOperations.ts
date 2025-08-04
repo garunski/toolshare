@@ -1,8 +1,9 @@
-import { supabase } from "@/common/supabase";
+import { createClient } from "@/common/supabase/client";
 import type { SocialConnection, SocialProfile } from "@/types/social";
 
 export class FriendOperations {
   static async getFriends(userId: string): Promise<SocialConnection[]> {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("social_connections")
       .select(
@@ -22,6 +23,7 @@ export class FriendOperations {
   }
 
   static async removeFriend(userId: string, friendId: string): Promise<void> {
+    const supabase = createClient();
     const { error } = await supabase
       .from("social_connections")
       .delete()
@@ -39,6 +41,7 @@ export class FriendOperations {
     currentUserId: string,
     limit = 10,
   ): Promise<SocialProfile[]> {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
@@ -57,6 +60,7 @@ export class FriendOperations {
     userId: string,
     limit = 5,
   ): Promise<SocialProfile[]> {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
@@ -74,6 +78,7 @@ export class FriendOperations {
     userId: string,
     otherUserId: string,
   ): Promise<"friends" | "pending_sent" | "pending_received" | "none"> {
+    const supabase = createClient();
     const { data: connection } = await supabase
       .from("social_connections")
       .select("*")
@@ -116,6 +121,7 @@ export class FriendOperations {
     senderId: string,
     receiverId: string,
   ): Promise<void> {
+    const supabase = createClient();
     const { error } = await supabase.from("friend_requests").insert({
       sender_id: senderId,
       receiver_id: receiverId,
@@ -128,6 +134,7 @@ export class FriendOperations {
   }
 
   static async getProfile(userId: string): Promise<SocialProfile> {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
