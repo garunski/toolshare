@@ -3,26 +3,24 @@
 import {
   AdjustmentsHorizontalIcon,
   CheckCircleIcon,
-  MagnifyingGlassIcon,
   FunnelIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 
+import { useAttributes } from "@/common/hooks/useAttributes";
 import { Badge } from "@/primitives/badge";
 import { Heading } from "@/primitives/heading";
-import { useAttributes } from "@/common/hooks/useAttributes";
 
+import { DataTypeDistribution } from "./DataTypeDistribution";
 import { RecentAttributesList } from "./RecentAttributesList";
 
-const DATA_TYPE_COLORS = {
-  text: "bg-blue-100 text-blue-800",
-  number: "bg-green-100 text-green-800",
-  boolean: "bg-purple-100 text-purple-800",
-  date: "bg-yellow-100 text-yellow-800",
-  select: "bg-orange-100 text-orange-800",
-  multi_select: "bg-red-100 text-red-800",
-  url: "bg-indigo-100 text-indigo-800",
-  email: "bg-pink-100 text-pink-800",
-};
+interface AttributeStats {
+  total: number;
+  required: number;
+  searchable: number;
+  filterable: number;
+  withOptions: number;
+}
 
 export function AttributeMetrics() {
   const { attributes, loading } = useAttributes();
@@ -42,20 +40,18 @@ export function AttributeMetrics() {
     );
   }
 
-  const stats = {
+  const stats: AttributeStats = {
     total: attributes.length,
     required: attributes.filter((attr) => attr.is_required).length,
     searchable: attributes.filter((attr) => attr.is_searchable).length,
     filterable: attributes.filter((attr) => attr.is_filterable).length,
     withOptions: attributes.filter(
-      (attr) => attr.options && typeof attr.options === 'object' && 'options' in attr.options,
+      (attr) =>
+        attr.options &&
+        typeof attr.options === "object" &&
+        "options" in attr.options,
     ).length,
   };
-
-  const typeDistribution = attributes.reduce((acc, attr) => {
-    acc[attr.data_type] = (acc[attr.data_type] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
 
   return (
     <div className="rounded-lg bg-white p-6 shadow">
@@ -74,7 +70,9 @@ export function AttributeMetrics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-red-600">Required</p>
-                <p className="text-2xl font-bold text-red-900">{stats.required}</p>
+                <p className="text-2xl font-bold text-red-900">
+                  {stats.required}
+                </p>
               </div>
               <CheckCircleIcon className="h-8 w-8 text-red-400" />
             </div>
@@ -120,29 +118,11 @@ export function AttributeMetrics() {
         </div>
 
         {/* Data Type Distribution */}
-        <div>
-          <h4 className="mb-3 font-medium">Data Type Distribution</h4>
-          <div className="flex flex-wrap gap-2">
-            {Object.entries(typeDistribution)
-              .sort(([, a], [, b]) => b - a)
-              .map(([type, count]) => (
-                <div key={type} className="flex items-center space-x-2">
-                  <Badge
-                    className={
-                      DATA_TYPE_COLORS[type as keyof typeof DATA_TYPE_COLORS]
-                    }
-                    color="zinc"
-                  >
-                    {type}: {count}
-                  </Badge>
-                </div>
-              ))}
-          </div>
-        </div>
+        <DataTypeDistribution attributes={attributes} />
 
         {/* Recent Attributes */}
         <RecentAttributesList attributes={attributes} />
       </div>
     </div>
   );
-} 
+}

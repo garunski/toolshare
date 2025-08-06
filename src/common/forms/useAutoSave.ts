@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useCallback, useEffect, useRef } from "react";
 
-import { useFormStateManager, FormUtils } from './FormStateManager';
+import { FormUtils, useFormStateManager } from "./FormStateManager";
 
 interface UseAutoSaveOptions {
   formKey: string;
@@ -24,58 +24,70 @@ export function useAutoSave({
   debounceMs = 2000,
   onSave,
   onSaveSuccess,
-  onSaveError
+  onSaveError,
 }: UseAutoSaveOptions) {
-  const { setAutoSaveData, getAutoSaveData, clearAutoSaveData } = useFormStateManager();
+  const { setAutoSaveData, getAutoSaveData, clearAutoSaveData } =
+    useFormStateManager();
   const saveTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const lastDataRef = useRef<any>(null);
   const stateRef = useRef<AutoSaveState>({
     isSaving: false,
     lastSaved: null,
     lastError: null,
-    saveCount: 0
+    saveCount: 0,
   });
 
   // Debounced save function
-  const debouncedSave = useCallback(async (data: any) => {
-    if (!onSave) return;
+  const debouncedSave = useCallback(
+    async (data: any) => {
+      if (!onSave) return;
 
-    try {
-      stateRef.current.isSaving = true;
-      await onSave(data);
-      
-      // Update local storage
-      setAutoSaveData(formKey, data);
-      
-      stateRef.current.lastSaved = new Date();
-      stateRef.current.lastError = null;
-      stateRef.current.saveCount++;
-      
-      onSaveSuccess?.(data);
-    } catch (error) {
-      stateRef.current.lastError = error instanceof Error ? error.message : 'Save failed';
-      onSaveError?.(error instanceof Error ? error : new Error('Save failed'));
-    } finally {
-      stateRef.current.isSaving = false;
-    }
-  }, [onSave, formKey, setAutoSaveData, onSaveSuccess, onSaveError]);
+      try {
+        stateRef.current.isSaving = true;
+        await onSave(data);
 
-  // Debounced wrapper
+        // Update local storage
+        setAutoSaveData(formKey, data);
+
+        stateRef.current.lastSaved = new Date();
+        stateRef.current.lastError = null;
+        stateRef.current.saveCount++;
+
+        onSaveSuccess?.(data);
+      } catch (error) {
+        stateRef.current.lastError =
+          error instanceof Error ? error.message : "Save failed";
+        onSaveError?.(
+          error instanceof Error ? error : new Error("Save failed"),
+        );
+      } finally {
+        stateRef.current.isSaving = false;
+      }
+    },
+    [onSave, formKey, setAutoSaveData, onSaveSuccess, onSaveError],
+  );
+
+  // Debounced wrapper with inline function to fix dependency warning
   const debouncedSaveWrapper = useCallback(
-    FormUtils.debounce(debouncedSave, debounceMs),
-    [debouncedSave, debounceMs]
+    (data: any) => {
+      return FormUtils.debounce(debouncedSave, debounceMs)(data);
+    },
+    [debouncedSave, debounceMs],
   );
 
   // Trigger auto-save
-  const triggerAutoSave = useCallback((data: any) => {
-    // Skip if data hasn't changed
-    if (JSON.stringify(data) === JSON.stringify(lastDataRef.current)) {
-      return;
-    }
+  const triggerAutoSave = useCallback(
+    (data: any) => {
+      // Skip if data hasn't changed
+      if (JSON.stringify(data) === JSON.stringify(lastDataRef.current)) {
+        return;
+      }
 
-    lastDataRef.current = data;
-    debouncedSaveWrapper(data);
-  }, [debouncedSaveWrapper]);
+      lastDataRef.current = data;
+      debouncedSaveWrapper(data);
+    },
+    [debouncedSaveWrapper],
+  );
 
   // Load saved data on mount
   const loadSavedData = useCallback(() => {
@@ -96,7 +108,7 @@ export function useAutoSave({
       isSaving: false,
       lastSaved: null,
       lastError: null,
-      saveCount: 0
+      saveCount: 0,
     };
   }, [formKey, clearAutoSaveData]);
 
@@ -105,10 +117,10 @@ export function useAutoSave({
     return { ...stateRef.current };
   }, []);
 
-  // Cleanup on unmount
+  // Cleanup on unmount - fix the ref warning by copying the value inside the effect
   useEffect(() => {
+    const timeoutId = saveTimeoutRef.current;
     return () => {
-      const timeoutId = saveTimeoutRef.current;
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
@@ -123,6 +135,6 @@ export function useAutoSave({
     isSaving: stateRef.current.isSaving,
     lastSaved: stateRef.current.lastSaved,
     lastError: stateRef.current.lastError,
-    saveCount: stateRef.current.saveCount
+    saveCount: stateRef.current.saveCount,
   };
-} 
+}

@@ -29,4 +29,4 @@ export function QuickActionItem({ action }: QuickActionItemProps) {
       <PlusIcon className="h-4 w-4 opacity-50" />
     </Link>
   );
-} 
+}

@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import {
+  ArrowPathIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
   XCircleIcon,
-  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 
 import { Badge } from "@/primitives/badge";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 
-import { HealthCheckOperations } from "./HealthCheckOperations";
 import { HealthCheckItem } from "./HealthCheckItem";
+import { HealthCheckOperations } from "./HealthCheckOperations";
 
 interface HealthCheck {
   name: string;
@@ -48,8 +48,6 @@ export function SystemHealthMonitor() {
     return () => clearInterval(interval);
   }, []);
 
-
-
   const getStatusIcon = (status: HealthCheck["status"]) => {
     switch (status) {
       case "healthy":
@@ -72,8 +70,11 @@ export function SystemHealthMonitor() {
     }
   };
 
-  const overallStatus = healthChecks.some((check) => check.status === "error") ? "error" :
-                      healthChecks.some((check) => check.status === "warning") ? "warning" : "healthy";
+  const overallStatus = healthChecks.some((check) => check.status === "error")
+    ? "error"
+    : healthChecks.some((check) => check.status === "warning")
+      ? "warning"
+      : "healthy";
 
   return (
     <div className="rounded-lg bg-white p-6 shadow">
@@ -87,11 +88,7 @@ export function SystemHealthMonitor() {
           <span className="text-sm text-gray-500">
             Last check: {lastUpdate.toLocaleTimeString()}
           </span>
-          <Button
-            outline
-            onClick={runHealthChecks}
-            disabled={loading}
-          >
+          <Button outline onClick={runHealthChecks} disabled={loading}>
             {loading ? (
               <ArrowPathIcon className="h-4 w-4 animate-spin" />
             ) : (
@@ -117,4 +114,4 @@ export function SystemHealthMonitor() {
       )}
     </div>
   );
-} 
+}

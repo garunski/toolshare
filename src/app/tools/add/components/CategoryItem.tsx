@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { FolderIcon } from '@heroicons/react/24/outline';
+import { FolderIcon } from "@heroicons/react/24/outline";
 
-import { Badge } from '@/primitives/badge';
+import { Badge } from "@/primitives/badge";
 
 interface ExternalCategory {
   external_id: number;
@@ -23,16 +23,23 @@ interface CategoryItemProps {
   onToggleExpanded: (categoryId: number) => void;
 }
 
-export function CategoryItem({ category, depth, isSelected, isExpanded, onSelect, onToggleExpanded }: CategoryItemProps) {
+export function CategoryItem({
+  category,
+  depth,
+  isSelected,
+  isExpanded,
+  onSelect,
+  onToggleExpanded,
+}: CategoryItemProps) {
   const hasChildren = category.children && category.children.length > 0;
 
   return (
     <div>
       <div
-        className={`flex items-center p-4 rounded-lg cursor-pointer transition-colors ${
+        className={`flex cursor-pointer items-center rounded-lg p-4 transition-colors ${
           isSelected
-            ? 'bg-blue-50 border-2 border-blue-200'
-            : 'bg-gray-50 hover:bg-gray-100 border-2 border-transparent'
+            ? "border-2 border-blue-200 bg-blue-50"
+            : "border-2 border-transparent bg-gray-50 hover:bg-gray-100"
         }`}
         style={{ marginLeft: depth * 20 }}
         onClick={() => onSelect(category.external_id)}
@@ -45,10 +52,10 @@ export function CategoryItem({ category, depth, isSelected, isExpanded, onSelect
                   e.stopPropagation();
                   onToggleExpanded(category.external_id);
                 }}
-                className="p-1 hover:bg-gray-200 rounded"
+                className="rounded p-1 hover:bg-gray-200"
               >
                 <svg
-                  className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                  className={`h-4 w-4 transition-transform ${isExpanded ? "rotate-90" : ""}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -67,9 +74,11 @@ export function CategoryItem({ category, depth, isSelected, isExpanded, onSelect
 
             <div>
               <h3 className="font-medium text-gray-900">
-                {category.category_path.split(' > ').pop()}
+                {category.category_path.split(" > ").pop()}
               </h3>
-              <p className="text-sm text-gray-600 mt-1">{category.category_path}</p>
+              <p className="mt-1 text-sm text-gray-600">
+                {category.category_path}
+              </p>
             </div>
           </div>
 
@@ -89,7 +98,7 @@ export function CategoryItem({ category, depth, isSelected, isExpanded, onSelect
 
       {hasChildren && isExpanded && (
         <div className="mt-2">
-          {category.children!.map(child => (
+          {category.children!.map((child) => (
             <CategoryItem
               key={child.external_id}
               category={child}
@@ -104,4 +113,4 @@ export function CategoryItem({ category, depth, isSelected, isExpanded, onSelect
       )}
     </div>
   );
-} 
+}

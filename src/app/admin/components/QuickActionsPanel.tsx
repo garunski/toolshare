@@ -1,17 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
-  PlusIcon,
-  UserGroupIcon,
-  TagIcon,
   AdjustmentsHorizontalIcon,
   ChartBarIcon,
-  Cog6ToothIcon,
-  ArrowPathIcon,
+  TagIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { Badge } from "@/primitives/badge";
 import { Heading } from "@/primitives/heading";
@@ -81,13 +77,13 @@ export function QuickActionsPanel() {
     },
   ];
 
-
-
   return (
     <div className="space-y-6">
       {/* Quick Actions */}
       <div className="rounded-lg bg-white p-6 shadow">
-        <Heading level={3} className="mb-4">Quick Actions</Heading>
+        <Heading level={3} className="mb-4">
+          Quick Actions
+        </Heading>
         <div className="space-y-3">
           {quickActions.map((action) => (
             <QuickActionItem key={action.title} action={action} />
@@ -104,7 +100,9 @@ export function QuickActionsPanel() {
 
       {/* Recent Activity Summary */}
       <div className="rounded-lg bg-white p-6 shadow">
-        <Heading level={3} className="mb-4">Today&apos;s Summary</Heading>
+        <Heading level={3} className="mb-4">
+          Today&apos;s Summary
+        </Heading>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600">New Users</span>
@@ -126,4 +124,4 @@ export function QuickActionsPanel() {
       </div>
     </div>
   );
-} 
+}

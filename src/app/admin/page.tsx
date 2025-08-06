@@ -2,21 +2,21 @@ import { Suspense } from "react";
 
 import { Heading } from "@/primitives/heading";
 
-import { AdminProtection } from "./components/AdminProtection";
 import { AdminDashboardStats } from "./components/AdminDashboardStats";
+import { AdminProtection } from "./components/AdminProtection";
 import { AdminRecentActivity } from "./components/AdminRecentActivity";
-import { CategoryMetrics } from "./components/CategoryMetrics";
 import { AttributeMetrics } from "./components/AttributeMetrics";
-import { SystemHealthMonitor } from "./components/SystemHealthMonitor";
+import { CategoryMetrics } from "./components/CategoryMetrics";
 import { QuickActionsPanel } from "./components/QuickActionsPanel";
+import { SystemHealthMonitor } from "./components/SystemHealthMonitor";
 
 export default function AdminDashboardPage() {
   return (
     <AdminProtection>
-      <div className="p-6 space-y-8">
+      <div className="space-y-8 p-6">
         <div>
           <Heading level={1}>Admin Dashboard</Heading>
-          <p className="text-gray-600 mt-1">
+          <p className="mt-1 text-gray-600">
             System overview and management tools
           </p>
         </div>
@@ -29,9 +29,9 @@ export default function AdminDashboardPage() {
         {/* System Health */}
         <SystemHealthMonitor />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="space-y-8 lg:col-span-2">
             <CategoryMetrics />
             <AttributeMetrics />
             <Suspense fallback={<div>Loading activity...</div>}>

@@ -1,4 +1,3 @@
-import { Badge } from "@/primitives/badge";
 import type { CategoryTreeNode } from "@/types/categories";
 
 interface CategoryStatItemProps {
@@ -11,7 +10,11 @@ interface CategoryStatItemProps {
   index: number;
 }
 
-export function CategoryStatItem({ stat, category, index }: CategoryStatItemProps) {
+export function CategoryStatItem({
+  stat,
+  category,
+  index,
+}: CategoryStatItemProps) {
   const getProgressBarColor = (index: number) => {
     const colors = [
       "bg-blue-500",
@@ -61,4 +64,4 @@ export function CategoryStatItem({ stat, category, index }: CategoryStatItemProp
       </div>
     </div>
   );
-} 
+}

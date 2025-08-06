@@ -5,13 +5,16 @@ interface RecentAttributesListProps {
   attributes: AttributeDefinition[];
 }
 
-export function RecentAttributesList({ attributes }: RecentAttributesListProps) {
+export function RecentAttributesList({
+  attributes,
+}: RecentAttributesListProps) {
   if (attributes.length === 0) return null;
 
   const recentAttributes = attributes
     .sort(
       (a, b) =>
-        new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime(),
+        new Date(b.created_at || "").getTime() -
+        new Date(a.created_at || "").getTime(),
     )
     .slice(0, 5);
 
@@ -26,17 +29,11 @@ export function RecentAttributesList({ attributes }: RecentAttributesListProps) 
                 <span className="text-sm font-medium">
                   {attr.display_label}
                 </span>
-                                        <Badge color="zinc">
-                          {attr.data_type}
-                        </Badge>
-                        {attr.is_required && (
-                          <Badge color="red">
-                            Required
-                          </Badge>
-                        )}
+                <Badge color="zinc">{attr.data_type}</Badge>
+                {attr.is_required && <Badge color="red">Required</Badge>}
               </div>
               <span className="text-xs text-gray-500">
-                {new Date(attr.created_at || '').toLocaleDateString()}
+                {new Date(attr.created_at || "").toLocaleDateString()}
               </span>
             </div>
           </div>
@@ -44,4 +41,4 @@ export function RecentAttributesList({ attributes }: RecentAttributesListProps) 
       </div>
     </div>
   );
-} 
+}

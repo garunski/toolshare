@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { ChartBarIcon, TagIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 
+import { useCategories } from "@/common/hooks/useCategories";
+import { ItemStatisticsOperations } from "@/common/operations/itemStatisticsOperations";
 import { Badge } from "@/primitives/badge";
 import { Heading } from "@/primitives/heading";
-import { ItemStatisticsOperations } from "@/common/operations/itemStatisticsOperations";
-import { useCategories } from "@/common/hooks/useCategories";
 
 import { CategoryStatItem } from "./CategoryStatItem";
 
@@ -49,8 +49,6 @@ export function CategoryMetrics() {
 
     loadCategoryStats();
   }, []);
-
-
 
   if (loading || categoriesLoading) {
     return (
@@ -110,4 +108,4 @@ export function CategoryMetrics() {
       )}
     </div>
   );
-} 
+}

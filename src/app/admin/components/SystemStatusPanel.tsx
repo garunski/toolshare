@@ -16,8 +16,14 @@ interface SystemStatusPanelProps {
   onRefresh: () => void;
 }
 
-export function SystemStatusPanel({ systemTasks, refreshing, onRefresh }: SystemStatusPanelProps) {
-  const getStatusColor = (status: "up-to-date" | "healthy" | "warning" | "error") => {
+export function SystemStatusPanel({
+  systemTasks,
+  refreshing,
+  onRefresh,
+}: SystemStatusPanelProps) {
+  const getStatusColor = (
+    status: "up-to-date" | "healthy" | "warning" | "error",
+  ) => {
     switch (status) {
       case "up-to-date":
       case "healthy":
@@ -33,11 +39,7 @@ export function SystemStatusPanel({ systemTasks, refreshing, onRefresh }: System
     <div className="rounded-lg bg-white p-6 shadow">
       <div className="mb-4 flex items-center justify-between">
         <Heading level={3}>System Status</Heading>
-        <Button
-          outline
-          onClick={onRefresh}
-          disabled={refreshing}
-        >
+        <Button outline onClick={onRefresh} disabled={refreshing}>
           {refreshing ? (
             <ArrowPathIcon className="h-4 w-4 animate-spin" />
           ) : (
@@ -65,4 +67,4 @@ export function SystemStatusPanel({ systemTasks, refreshing, onRefresh }: System
       </div>
     </div>
   );
-} 
+}
