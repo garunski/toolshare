@@ -1,27 +1,26 @@
 // Core components
-export { FormBuilder } from "./FormBuilder";
-export { FormField } from "./FormField";
-export { MultiStepFormBuilder } from "./MultiStepFormBuilder";
+export { FormBuilder } from './FormBuilder';
+export { FormField } from './FormField';
+export { MultiStepFormBuilder } from './MultiStepFormBuilder';
 
-// Utilities
-export { processFormError } from "./FormErrorProcessor";
-export {
-  hasValidationErrors,
-  validateAllFields,
-  validateField,
-} from "./FormValidation";
+// Dynamic form system
+export { DynamicFormBuilder } from './DynamicFormBuilder';
+export { DynamicField } from './DynamicField';
+export { DynamicValidationEngine } from './DynamicValidationEngine';
 
-// Validators
-export * from "./validators";
+// Field renderers
+export { MultiSelect } from './MultiSelect';
+export { DatePicker } from './DatePicker';
+export { FormProgressIndicator } from './FormProgressIndicator';
+export { ValidationMessage } from './ValidationMessage';
 
-// Configurations
-export { addToolFormConfig } from "./configs/addToolFormConfig";
-export { addToolFormSteps } from "./configs/addToolFormSteps";
-export { friendRequestFormConfig } from "./configs/friendRequestFormConfig";
-export { loanRequestFormConfig } from "./configs/loanRequestFormConfig";
-export { loginFormConfig } from "./configs/loginFormConfig";
-export { profileSetupFormConfig } from "./configs/profileSetupFormConfig";
-export { registerFormConfig } from "./configs/registerFormConfig";
+// Form state management
+export { useFormStateManager, FormUtils } from './FormStateManager';
+
+// UX Enhancements
+export { useAutoSave } from './useAutoSave';
+export { SmartDefaultsProvider, useSmartDefaults } from './SmartDefaultsProvider';
 
 // Types
-export type { FormConfig } from "./FormBuilder";
+export type { AttributeDefinitionWithOptions } from './DynamicValidationEngine';
+export type { ValidationResult, ValidationError, ValidationWarning } from './DynamicValidationEngine';
