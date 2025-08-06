@@ -22,6 +22,11 @@ const navigationItems = [
     permission: "manage_categories",
   },
   {
+    name: "External Taxonomy",
+    href: "/admin/categories/external",
+    permission: "manage_categories",
+  },
+  {
     name: "Attributes",
     href: "/admin/attributes",
     permission: "manage_attributes",

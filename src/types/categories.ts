@@ -54,6 +54,16 @@ export interface CategoryTreeNode {
   children?: CategoryTreeNode[];
 }
 
+export interface ExternalTaxonomyNode {
+  external_id: number;
+  category_path: string;
+  parent_id: number | null;
+  level: number;
+  is_active: boolean;
+  last_updated: string;
+  children?: ExternalTaxonomyNode[];
+}
+
 export interface AttributeWithCategory extends AttributeDefinition {
   category_attributes: {
     is_required: boolean;

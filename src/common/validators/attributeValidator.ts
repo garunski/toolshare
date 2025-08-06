@@ -6,6 +6,9 @@ import {
 } from "./attributeSchemas";
 import { AttributeValidationHelpers } from "./attributeValidationHelpers";
 
+// Export schemas for use in other files
+export { attributeCreationSchema, attributeUpdateSchema };
+
 // Validation helper functions
 export class AttributeValidator {
   // Validate attribute creation data
@@ -41,6 +44,18 @@ export class AttributeValidator {
     }
 
     return !data; // Name is available if no data returned
+  }
+
+  /**
+   * Generate unique name from display label
+   */
+  static generateName(displayLabel: string): string {
+    return displayLabel
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
+      .replace(/\s+/g, "_") // Replace spaces with underscores
+      .replace(/-+/g, "_") // Replace multiple hyphens with single underscore
+      .replace(/^_|_$/g, ""); // Remove leading/trailing underscores
   }
 
   // Validate attribute value against definition

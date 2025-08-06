@@ -1,4 +1,5 @@
 import { createClient } from "@/common/supabase/client";
+import { AttributeValidator } from "@/common/validators/attributeValidator";
 import type {
   AttributeCreationRequest,
   AttributeDefinition,
@@ -131,5 +132,13 @@ export class AttributeOperations {
       .eq("id", attributeId);
 
     if (error) throw new Error(`Failed to delete attribute: ${error.message}`);
+  }
+
+  // Validate attribute value against definition
+  static validateAttributeValue(
+    value: any,
+    attribute: AttributeDefinition,
+  ): { isValid: boolean; error?: string } {
+    return AttributeValidator.validateAttributeValue(value, attribute);
   }
 }
