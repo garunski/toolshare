@@ -1,9 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 
 import { MultiStepFormBuilder } from "@/common/forms";
 import { addToolFormSteps } from "@/common/forms/configs/addToolFormSteps";
+import { useCategories } from "@/common/hooks/useCategories";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
@@ -14,6 +16,57 @@ interface AddToolFormProps {
 
 export function AddToolForm({ userId, onSuccess }: AddToolFormProps) {
   const router = useRouter();
+  const { categories, loading: categoriesLoading } = useCategories();
+
+  // Convert category tree to flat options for select
+  const categoryOptions = useMemo(() => {
+    const options: Array<{ value: string; label: string }> = [];
+
+    const addCategory = (category: any, level = 0) => {
+      const indent = "  ".repeat(level);
+      options.push({
+        value: category.id,
+        label: `${indent}${category.name}`,
+      });
+
+      if (category.children && category.children.length > 0) {
+        category.children.forEach((child: any) =>
+          addCategory(child, level + 1),
+        );
+      }
+    };
+
+    categories.forEach((category) => addCategory(category));
+    return options;
+  }, [categories]);
+
+  // Create dynamic form steps with populated category options
+  const dynamicFormSteps = useMemo(() => {
+    return addToolFormSteps.map((step) => {
+      if (step.key === "details") {
+        return {
+          ...step,
+          config: {
+            ...step.config,
+            fields: step.config.fields.map((field) => {
+              if (field.name === "category") {
+                return {
+                  ...field,
+                  options: categoryOptions,
+                  placeholder: categoriesLoading
+                    ? "Loading categories..."
+                    : "Select a category",
+                  disabled: categoriesLoading,
+                };
+              }
+              return field;
+            }),
+          },
+        };
+      }
+      return step;
+    });
+  }, [categoryOptions, categoriesLoading]);
 
   const handleComplete = async (allData: Record<string, string>) => {
     try {
@@ -48,7 +101,7 @@ export function AddToolForm({ userId, onSuccess }: AddToolFormProps) {
         </div>
 
         <MultiStepFormBuilder
-          steps={addToolFormSteps}
+          steps={dynamicFormSteps}
           onComplete={handleComplete}
           onCancel={() => router.back()}
         />

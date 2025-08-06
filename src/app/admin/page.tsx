@@ -7,6 +7,7 @@ import { AdminProtection } from "./components/AdminProtection";
 import { AdminRecentActivity } from "./components/AdminRecentActivity";
 import { AttributeMetrics } from "./components/AttributeMetrics";
 import { CategoryMetrics } from "./components/CategoryMetrics";
+import { LiveActivityFeed } from "./components/LiveActivityFeed";
 import { QuickActionsPanel } from "./components/QuickActionsPanel";
 import { SystemHealthMonitor } from "./components/SystemHealthMonitor";
 
@@ -34,6 +35,7 @@ export default function AdminDashboardPage() {
           <div className="space-y-8 lg:col-span-2">
             <CategoryMetrics />
             <AttributeMetrics />
+            <LiveActivityFeed />
             <Suspense fallback={<div>Loading activity...</div>}>
               <AdminRecentActivity />
             </Suspense>

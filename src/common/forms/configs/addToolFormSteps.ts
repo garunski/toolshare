@@ -3,7 +3,6 @@ import { requiredValidator } from "../validators";
 
 import {
   optionalTextareaField,
-  toolCategoryField,
   toolConditionField,
   toolDescriptionField,
   toolImagesField,
@@ -36,7 +35,16 @@ export const addToolFormSteps: Array<{
       loadingText: "Processing...",
       endpoint: "", // Will be handled by MultiStepFormBuilder
       fields: [
-        toolCategoryField,
+        {
+          name: "category",
+          type: "select" as const,
+          label: "Category",
+          placeholder: "Select a category",
+          required: true,
+          validate: requiredValidator,
+          // This will be populated dynamically by the form component
+          options: [],
+        },
         toolConditionField,
         {
           name: "location",
