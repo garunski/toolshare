@@ -7,7 +7,7 @@
 
 ```typescript
 // src/common/operations/auditLoggingService.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface AuditLogEntry {
   action: 'CREATE' | 'UPDATE' | 'DELETE' | 'VIEW' | 'EXPORT';
@@ -26,6 +26,7 @@ export class AuditLoggingService {
    */
   static async logAction(entry: AuditLogEntry): Promise<void> {
     try {
+      const supabase = createClient();
       await supabase
         .from('audit_log')
         .insert({
@@ -47,6 +48,7 @@ export class AuditLoggingService {
    * Get audit trail for resource
    */
   static async getAuditTrail(resourceType: string, resourceId: string, limit = 50) {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from('audit_log')
       .select(`
@@ -66,6 +68,7 @@ export class AuditLoggingService {
    * Get user activity summary
    */
   static async getUserActivity(userId: string, days = 30) {
+    const supabase = createClient();
     const since = new Date();
     since.setDate(since.getDate() - days);
 
@@ -89,6 +92,7 @@ export class AuditLoggingService {
     userId?: string;
     resourceType?: string;
   }) {
+    const supabase = createClient();
     let query = supabase
       .from('audit_log')
       .select('*')
@@ -116,7 +120,7 @@ export class AuditLoggingService {
 
 ```typescript
 // src/common/operations/dataRetentionManager.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface RetentionPolicy {
   table: string;
@@ -159,6 +163,7 @@ export class DataRetentionManager {
    * Apply single retention policy
    */
   private static async applyRetentionPolicy(policy: RetentionPolicy) {
+    const supabase = createClient();
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - policy.retentionDays);
 
@@ -233,7 +238,7 @@ export class DataRetentionManager {
 
 ```typescript
 // src/common/operations/gdprComplianceManager.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 export class GDPRComplianceManager {
   
@@ -247,6 +252,7 @@ export class GDPRComplianceManager {
     messages: any[];
     audit_log: any[];
   }> {
+    const supabase = createClient();
     const [profile, items, loans, messages, auditLog] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', userId).single(),
       supabase.from('items').select('*').eq('owner_id', userId),

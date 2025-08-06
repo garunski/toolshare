@@ -518,7 +518,7 @@ import { Switch } from '@/primitives/switch';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useAttributes } from '@/common/hooks/useAttributes';
 import { CategoryOperations } from '@/common/operations/categoryOperations';
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 import type { Category } from '@/types/categories';
 import type { AttributeDefinitionWithOptions } from '@/types/attributes';
 

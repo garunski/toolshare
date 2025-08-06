@@ -7,7 +7,7 @@
 
 ```typescript
 // src/common/operations/advancedSearchEngine.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface SearchFilters {
   query?: string;

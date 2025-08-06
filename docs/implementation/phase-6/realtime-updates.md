@@ -7,7 +7,7 @@
 
 ```typescript
 // src/common/operations/realtimeConnectionManager.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
 interface SubscriptionConfig {
@@ -28,6 +28,7 @@ export class RealtimeConnectionManager {
     let channel = this.channels.get(channelName);
     
     if (!channel) {
+      const supabase = createClient();
       channel = supabase.channel(channelName);
       this.channels.set(channelName, channel);
       this.subscriptions.set(channelName, []);
@@ -174,7 +175,7 @@ export class RealtimeConnectionManager {
 // src/common/hooks/useRealtimeAdminData.ts
 import { useState, useEffect, useCallback } from 'react';
 import { RealtimeConnectionManager } from '@/common/operations/realtimeConnectionManager';
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface AdminStats {
   totalUsers: number;
@@ -198,6 +199,7 @@ export function useRealtimeAdminData() {
   // Load initial data
   const loadInitialData = useCallback(async () => {
     try {
+      const supabase = createClient();
       const [users, items, categories, loans, activity] = await Promise.all([
         supabase.from('profiles').select('id', { count: 'exact' }),
         supabase.from('items').select('id', { count: 'exact' }),
@@ -442,7 +444,7 @@ export function LiveActivityFeed() {
 ```typescript
 // src/common/operations/realtimeNotifications.ts
 import { RealtimeConnectionManager } from './realtimeConnectionManager';
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface NotificationPayload {
   id: string;
@@ -497,6 +499,7 @@ export class RealtimeNotifications {
    * Send notification to user
    */
   static async sendNotification(notification: Omit<NotificationPayload, 'id' | 'read' | 'createdAt'>): Promise<void> {
+    const supabase = createClient();
     const { error } = await supabase
       .from('notifications')
       .insert({
@@ -517,6 +520,7 @@ export class RealtimeNotifications {
    * Mark notification as read
    */
   static async markAsRead(notificationId: string): Promise<void> {
+    const supabase = createClient();
     await supabase
       .from('notifications')
       .update({ read: true, read_at: new Date().toISOString() })

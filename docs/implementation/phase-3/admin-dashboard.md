@@ -373,7 +373,7 @@ import { Card } from '@/primitives/card';
 import { Badge } from '@/primitives/badge';
 import { Heading } from '@/primitives/heading';
 import { Button } from '@/primitives/button';
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 import { 
   CheckCircleIcon, 
   ExclamationTriangleIcon, 
@@ -399,7 +399,8 @@ export function SystemHealthMonitor() {
 
     // Database Connection Check
     try {
-      const { error } = await supabase.from('profiles').select('id').limit(1);
+      const supabase = createClient();
+    const { error } = await supabase.from('profiles').select('id').limit(1);
       checks.push({
         name: 'Database Connection',
         status: error ? 'error' : 'healthy',
@@ -485,7 +486,8 @@ export function SystemHealthMonitor() {
 
     // Storage Health Check
     try {
-      const { data, error } = await supabase.storage.listBuckets();
+      const supabase = createClient();
+    const { data, error } = await supabase.storage.listBuckets();
       checks.push({
         name: 'Storage System',
         status: error ? 'error' : 'healthy',

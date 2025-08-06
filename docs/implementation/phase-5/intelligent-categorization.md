@@ -7,7 +7,7 @@
 
 ```typescript
 // src/common/operations/categorySuggestionEngine.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface CategorySuggestion {
   external_id: number;
@@ -86,6 +86,7 @@ export class CategorySuggestionEngine {
   private static async findCandidateCategories(searchTerms: string[]): Promise<any[]> {
     if (searchTerms.length === 0) return [];
     
+    const supabase = createClient();
     const searchQuery = searchTerms.join(' | ');
     
     const { data: categories } = await supabase
@@ -183,7 +184,7 @@ export class CategorySuggestionEngine {
 
 ```typescript
 // src/common/operations/categoryPredictor.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface TrainingData {
   itemName: string;
@@ -231,6 +232,7 @@ export class CategoryPredictor {
    * Get training data from existing items
    */
   private static async getTrainingData(): Promise<TrainingData[]> {
+    const supabase = createClient();
     const { data: items } = await supabase
       .from('items')
       .select(`

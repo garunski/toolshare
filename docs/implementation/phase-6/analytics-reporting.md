@@ -7,7 +7,7 @@
 
 ```typescript
 // src/common/operations/analyticsDataCollector.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface AnalyticsEvent {
   event_type: string;
@@ -117,6 +117,7 @@ export class AnalyticsDataCollector {
    * Generate usage report
    */
   static async generateUsageReport(startDate: string, endDate: string) {
+    const supabase = createClient();
     const { data, error } = await supabase.rpc('generate_usage_report', {
       start_date: startDate,
       end_date: endDate

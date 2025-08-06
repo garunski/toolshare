@@ -1,14 +1,3 @@
-# Database Schema - Dynamic Categories & Attributes
-
-## Migration File Creation
-
-### 1. Create Migration File
-- [ ] Create: `supabase/migrations/[YYYYMMDDHHMMSS]_add_dynamic_categories_attributes.sql`
-- [ ] Use format: `20241216120000_add_dynamic_categories_attributes.sql` (replace with current datetime)
-
-### 2. Complete SQL Migration Template
-
-```sql
 -- Dynamic Categories and Attributes System Migration
 -- This migration adds flexible item categorization and dynamic properties
 
@@ -42,7 +31,7 @@ CREATE TABLE IF NOT EXISTS public.categories (
 -- Defines dynamic attributes that can be assigned to categories
 CREATE TABLE IF NOT EXISTS public.attribute_definitions (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    name TEXT NOT NULL, -- Internal name (e.g., 'power_rating')
+    name TEXT NOT NULL UNIQUE, -- Internal name (e.g., 'power_rating')
     display_label TEXT NOT NULL, -- User-friendly label (e.g., 'Power Rating')
     description TEXT,
     data_type TEXT NOT NULL CHECK (data_type IN ('text', 'number', 'boolean', 'date', 'select', 'multi_select', 'url', 'email')),
@@ -367,41 +356,4 @@ CREATE TRIGGER update_items_updated_at
 -- Update search vector on insert/update
 CREATE TRIGGER update_item_search_vector_trigger
     BEFORE INSERT OR UPDATE ON public.items
-    FOR EACH ROW EXECUTE FUNCTION public.update_item_search_vector();
-```
-
-### 3. Apply Migration
-- [ ] Run: `task database:db-migrate`
-- [ ] Verify migration applied successfully
-- [ ] Check tables created: `categories`, `attribute_definitions`, `category_attributes`, `items`
-
-### 4. Generate Types
-- [ ] Run: `task database:db-types`
-- [ ] Verify new types appear in `src/types/supabase.ts`
-
-### 5. Validation Queries
-```sql
--- Verify categories created
-SELECT name, slug, parent_id FROM public.categories;
-
--- Verify attribute definitions
-SELECT name, display_label, data_type FROM public.attribute_definitions;
-
--- Verify category-attribute links
-SELECT c.name as category, ad.display_label as attribute, ca.is_required
-FROM public.categories c
-JOIN public.category_attributes ca ON c.id = ca.category_id
-JOIN public.attribute_definitions ad ON ca.attribute_definition_id = ad.id
-ORDER BY c.name, ca.display_order;
-
--- Test helper functions
-SELECT public.get_category_path((SELECT id FROM public.categories WHERE slug = 'power-tools'));
-```
-
-## Success Criteria
-- [ ] All dynamic schema tables created successfully
-- [ ] Sample categories and attributes populated
-- [ ] Helper functions working correctly
-- [ ] RLS policies protecting data appropriately
-- [ ] Indexes created for optimal performance
-- [ ] Types generated and available in TypeScript 
+    FOR EACH ROW EXECUTE FUNCTION public.update_item_search_vector(); 

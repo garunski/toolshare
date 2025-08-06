@@ -34,6 +34,158 @@ export type Database = {
   };
   public: {
     Tables: {
+      attribute_definitions: {
+        Row: {
+          created_at: string | null;
+          data_type: string;
+          default_value: string | null;
+          description: string | null;
+          display_label: string;
+          display_order: number | null;
+          help_text: string | null;
+          id: string;
+          is_filterable: boolean | null;
+          is_required: boolean | null;
+          is_searchable: boolean | null;
+          name: string;
+          options: Json | null;
+          updated_at: string | null;
+          validation_rules: Json | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          data_type: string;
+          default_value?: string | null;
+          description?: string | null;
+          display_label: string;
+          display_order?: number | null;
+          help_text?: string | null;
+          id?: string;
+          is_filterable?: boolean | null;
+          is_required?: boolean | null;
+          is_searchable?: boolean | null;
+          name: string;
+          options?: Json | null;
+          updated_at?: string | null;
+          validation_rules?: Json | null;
+        };
+        Update: {
+          created_at?: string | null;
+          data_type?: string;
+          default_value?: string | null;
+          description?: string | null;
+          display_label?: string;
+          display_order?: number | null;
+          help_text?: string | null;
+          id?: string;
+          is_filterable?: boolean | null;
+          is_required?: boolean | null;
+          is_searchable?: boolean | null;
+          name?: string;
+          options?: Json | null;
+          updated_at?: string | null;
+          validation_rules?: Json | null;
+        };
+        Relationships: [];
+      };
+      categories: {
+        Row: {
+          color: string | null;
+          created_at: string | null;
+          description: string | null;
+          icon: string | null;
+          id: string;
+          is_active: boolean | null;
+          metadata: Json | null;
+          name: string;
+          parent_id: string | null;
+          slug: string;
+          sort_order: number | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          color?: string | null;
+          created_at?: string | null;
+          description?: string | null;
+          icon?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          metadata?: Json | null;
+          name: string;
+          parent_id?: string | null;
+          slug: string;
+          sort_order?: number | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          color?: string | null;
+          created_at?: string | null;
+          description?: string | null;
+          icon?: string | null;
+          id?: string;
+          is_active?: boolean | null;
+          metadata?: Json | null;
+          name?: string;
+          parent_id?: string | null;
+          slug?: string;
+          sort_order?: number | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "categories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      category_attributes: {
+        Row: {
+          attribute_definition_id: string;
+          category_id: string;
+          category_specific_validation: Json | null;
+          created_at: string | null;
+          display_order: number | null;
+          id: string;
+          is_required: boolean | null;
+        };
+        Insert: {
+          attribute_definition_id: string;
+          category_id: string;
+          category_specific_validation?: Json | null;
+          created_at?: string | null;
+          display_order?: number | null;
+          id?: string;
+          is_required?: boolean | null;
+        };
+        Update: {
+          attribute_definition_id?: string;
+          category_id?: string;
+          category_specific_validation?: Json | null;
+          created_at?: string | null;
+          display_order?: number | null;
+          id?: string;
+          is_required?: boolean | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "category_attributes_attribute_definition_id_fkey";
+            columns: ["attribute_definition_id"];
+            isOneToOne: false;
+            referencedRelation: "attribute_definitions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "category_attributes_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "categories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       friend_requests: {
         Row: {
           created_at: string | null;
@@ -73,6 +225,78 @@ export type Database = {
           {
             foreignKeyName: "friend_requests_sender_id_fkey";
             columns: ["sender_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      items: {
+        Row: {
+          attributes: Json | null;
+          category_id: string;
+          condition: string;
+          created_at: string | null;
+          description: string | null;
+          id: string;
+          images: string[] | null;
+          is_available: boolean | null;
+          is_public: boolean | null;
+          is_shareable: boolean | null;
+          location: string | null;
+          name: string;
+          owner_id: string;
+          search_vector: unknown | null;
+          tags: string[] | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          attributes?: Json | null;
+          category_id: string;
+          condition: string;
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          images?: string[] | null;
+          is_available?: boolean | null;
+          is_public?: boolean | null;
+          is_shareable?: boolean | null;
+          location?: string | null;
+          name: string;
+          owner_id: string;
+          search_vector?: unknown | null;
+          tags?: string[] | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          attributes?: Json | null;
+          category_id?: string;
+          condition?: string;
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          images?: string[] | null;
+          is_available?: boolean | null;
+          is_public?: boolean | null;
+          is_shareable?: boolean | null;
+          location?: string | null;
+          name?: string;
+          owner_id?: string;
+          search_vector?: unknown | null;
+          tags?: string[] | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "items_owner_id_fkey";
+            columns: ["owner_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["id"];
@@ -564,11 +788,15 @@ export type Database = {
         Args: { request_id: string };
         Returns: undefined;
       };
+      get_category_path: {
+        Args: { category_uuid: string };
+        Returns: string;
+      };
       get_user_roles: {
         Args: { user_uuid: string };
         Returns: {
-          role_name: string;
           role_description: string;
+          role_name: string;
         }[];
       };
       reject_friend_request: {
@@ -577,6 +805,10 @@ export type Database = {
       };
       user_has_permission: {
         Args: { permission_name: string; user_uuid: string };
+        Returns: boolean;
+      };
+      validate_item_attributes: {
+        Args: { category_uuid: string; item_attributes: Json };
         Returns: boolean;
       };
     };

@@ -7,7 +7,7 @@
 
 ```typescript
 // src/common/operations/multiTenantManager.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface TenantConfig {
   id: string;
@@ -32,6 +32,7 @@ export class MultiTenantManager {
    * Get tenant configuration
    */
   static async getTenantConfig(tenantId: string): Promise<TenantConfig | null> {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from('tenant_configs')
       .select('*')
@@ -67,6 +68,7 @@ export class MultiTenantManager {
 
     switch (action) {
       case 'add_user':
+        const supabase = createClient();
         const { count: userCount } = await supabase
           .from('profiles')
           .select('id', { count: 'exact' })
@@ -146,7 +148,7 @@ export class MultiTenantManager {
 
 ```typescript
 // src/common/operations/rateLimitingService.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface RateLimit {
   key: string;
@@ -228,6 +230,7 @@ export class RateLimitingService {
    */
   private static async persistRateLimit(key: string, limit: RateLimit): Promise<void> {
     try {
+      const supabase = createClient();
       await supabase
         .from('rate_limits')
         .upsert({
@@ -281,7 +284,7 @@ export class RateLimitingService {
 
 ```typescript
 // src/common/operations/securityManager.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 export class SecurityManager {
   
@@ -304,6 +307,7 @@ export class SecurityManager {
     reasons: string[];
     riskScore: number;
   }> {
+    const supabase = createClient();
     const reasons: string[] = [];
     let riskScore = 0;
 

@@ -3,9 +3,7 @@ import { createClient } from "@/common/supabase/client";
 import type { UserCreationRequest, UserWithRoles } from "@/types/roles";
 
 export class UserCreationOperations {
-  /**
-   * Create a new user with profile and optional role assignments
-   */
+  // Create a new user with profile and optional role assignments
   static async createUserWithRoles(
     request: UserCreationRequest,
   ): Promise<UserWithRoles> {

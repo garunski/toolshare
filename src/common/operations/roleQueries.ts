@@ -2,9 +2,7 @@ import { createClient } from "@/common/supabase/client";
 import type { Role, RoleWithPermissions, UserWithRoles } from "@/types/roles";
 
 export class RoleQueryOperations {
-  /**
-   * Get all roles with their permissions
-   */
+  // Get all roles with their permissions
   static async getAllRolesWithPermissions(): Promise<RoleWithPermissions[]> {
     const supabase = createClient();
     const { data, error } = await supabase.from("roles").select(`
@@ -24,9 +22,7 @@ export class RoleQueryOperations {
     }));
   }
 
-  /**
-   * Get user roles for specific user
-   */
+  // Get user roles for specific user
   static async getUserRoles(userId: string): Promise<Role[]> {
     const supabase = createClient();
     const { data, error } = await supabase
@@ -45,9 +41,7 @@ export class RoleQueryOperations {
     return data.map((ur) => ur.roles).flat();
   }
 
-  /**
-   * Get all users with their roles (admin function)
-   */
+  // Get all users with their roles (admin function)
   static async getAllUsersWithRoles(): Promise<UserWithRoles[]> {
     const supabase = createClient();
 

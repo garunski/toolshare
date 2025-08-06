@@ -7,7 +7,7 @@
 
 ```typescript
 // src/common/operations/autoPopulationEngine.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 import { AttributeMappingEngine } from './attributeMappingEngine';
 
 interface AutoPopulationSuggestion {

@@ -116,7 +116,7 @@ import { Badge } from '@/primitives/badge';
 import { Checkbox } from '@/primitives/checkbox';
 import { UserRoleModal } from './UserRoleModal';
 import { UserDetailModal } from './UserDetailModal';
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 import { EyeIcon, PencilIcon, ShieldCheckIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 interface User {
@@ -158,6 +158,7 @@ export function EnhancedUserTable({ filters, selectedUsers, onUserSelect }: Prop
   const loadUsers = async () => {
     setLoading(true);
     try {
+      const supabase = createClient();
       // Load users with their roles and stats
       const { data: userData, error } = await supabase
         .from('profiles')
@@ -375,7 +376,7 @@ import { Card } from '@/primitives/card';
 import { Badge } from '@/primitives/badge';
 import { Heading } from '@/primitives/heading';
 import { Button } from '@/primitives/button';
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 import { 
   UserIcon, 
   EyeIcon, 
@@ -428,6 +429,7 @@ export function UserActivityMonitor() {
 
   const loadActivityData = async () => {
     try {
+      const supabase = createClient();
       // Load recent activities (simulated - would need actual activity logging)
       const { data: users } = await supabase
         .from('profiles')
@@ -653,7 +655,7 @@ import { Dialog } from '@/primitives/dialog';
 import { Input } from '@/primitives/input';
 import { Textarea } from '@/primitives/textarea';
 import { Switch } from '@/primitives/switch';
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 import { PlusIcon, PencilIcon, TrashIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 
 interface Role {
@@ -682,6 +684,7 @@ export function RoleManagementPanel() {
 
   const loadRoles = async () => {
     try {
+      const supabase = createClient();
       const { data: rolesData } = await supabase
         .from('roles')
         .select(`

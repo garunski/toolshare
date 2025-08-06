@@ -7,7 +7,7 @@
 
 ```typescript
 // src/common/operations/taxonomyImporter.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface TaxonomyRecord {
   external_id: number;
@@ -79,6 +79,7 @@ export class TaxonomyImporter {
    * Store taxonomy records in database
    */
   private static async storeTaxonomyRecords(records: TaxonomyRecord[]): Promise<{ success: boolean; imported: number; errors: string[] }> {
+    const supabase = createClient();
     const errors: string[] = [];
     let imported = 0;
     
@@ -119,6 +120,7 @@ export class TaxonomyImporter {
     lastImportDate: string | null;
     topLevelCategories: number;
   }> {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from('external_product_taxonomy')
       .select('external_id, level, last_updated')

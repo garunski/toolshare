@@ -7,7 +7,7 @@
 
 ```typescript
 // src/common/operations/attributeMappingEngine.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface AttributeMapping {
   external_category_id: number;

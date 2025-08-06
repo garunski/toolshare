@@ -7,7 +7,7 @@
 
 ```typescript
 // src/common/operations/importValidationEngine.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 import { TaxonomyValidator, type TaxonomyRecord } from '@/common/validators/taxonomyValidator';
 
 interface ValidationResult {
@@ -90,6 +90,7 @@ export class ImportValidationEngine {
    * Check for conflicts with existing data
    */
   private static async checkExistingConflicts(records: TaxonomyRecord[]): Promise<string[]> {
+    const supabase = createClient();
     const warnings: string[] = [];
     
     const { data: existingCategories } = await supabase
@@ -139,7 +140,7 @@ export class ImportValidationEngine {
 
 ```typescript
 // src/common/operations/importProcessingEngine.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 import { ImportValidationEngine } from './importValidationEngine';
 import type { TaxonomyRecord } from '@/common/validators/taxonomyValidator';
 
@@ -227,6 +228,7 @@ export class ImportProcessingEngine {
    * Create backup of existing taxonomy
    */
   private static async createBackup(): Promise<string> {
+    const supabase = createClient();
     const backupId = `backup_${Date.now()}`;
     
     const { error } = await supabase.rpc('create_taxonomy_backup', {
@@ -332,7 +334,7 @@ export class ImportProcessingEngine {
 
 ```typescript
 // src/common/operations/taxonomyQualityScorer.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface QualityScore {
   overall: number;
@@ -355,6 +357,7 @@ export class TaxonomyQualityScorer {
    * Generate comprehensive quality score
    */
   static async generateQualityScore(): Promise<QualityScore> {
+    const supabase = createClient();
     const { data: categories } = await supabase
       .from('external_product_taxonomy')
       .select('*')
@@ -504,7 +507,7 @@ export class TaxonomyQualityScorer {
 
 ```typescript
 // src/common/operations/importProgressTracker.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface ImportProgress {
   id: string;
@@ -525,6 +528,7 @@ export class ImportProgressTracker {
    * Create new import session
    */
   static async createImportSession(totalRecords: number): Promise<string> {
+    const supabase = createClient();
     const sessionId = `import_${Date.now()}`;
     
     await supabase
@@ -571,6 +575,7 @@ export class ImportProgressTracker {
       }
     }
     
+    const supabase = createClient();
     await supabase
       .from('import_sessions')
       .update(updateData)
@@ -581,6 +586,7 @@ export class ImportProgressTracker {
    * Get current progress
    */
   static async getProgress(sessionId: string): Promise<ImportProgress | null> {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from('import_sessions')
       .select('*')
@@ -638,7 +644,7 @@ export class ImportProgressTracker {
 
 ```typescript
 // src/common/operations/taxonomyBackupSystem.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface BackupInfo {
   id: string;
@@ -655,6 +661,7 @@ export class TaxonomyBackupSystem {
    * Create backup of current taxonomy
    */
   static async createBackup(name?: string, description?: string): Promise<string> {
+    const supabase = createClient();
     const backupId = name || `backup_${Date.now()}`;
     
     // Create backup table
@@ -697,6 +704,7 @@ export class TaxonomyBackupSystem {
    * Restore from backup
    */
   static async restoreFromBackup(backupId: string): Promise<{ success: boolean; restored: number; errors: string[] }> {
+    const supabase = createClient();
     const errors: string[] = [];
     
     try {

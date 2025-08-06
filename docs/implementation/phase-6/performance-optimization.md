@@ -7,7 +7,7 @@
 
 ```typescript
 // src/common/operations/queryOptimizationService.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface QueryCache {
   key: string;
@@ -30,6 +30,7 @@ export class QueryOptimizationService {
     limit?: number;
     offset?: number;
   }) {
+    const supabase = createClient();
     const cacheKey = `items:${JSON.stringify(filters)}`;
     const cached = this.getFromCache(cacheKey);
     if (cached) return cached;
@@ -96,6 +97,7 @@ export class QueryOptimizationService {
    * Optimized category hierarchy loading
    */
   static async loadCategoryHierarchy(maxDepth = 3) {
+    const supabase = createClient();
     const cacheKey = `categories:hierarchy:${maxDepth}`;
     const cached = this.getFromCache(cacheKey);
     if (cached) return cached;
@@ -232,7 +234,7 @@ export class QueryOptimizationService {
 
 ```typescript
 // src/common/operations/imageOptimizationService.ts
-import { supabase } from '@/common/supabase';
+import { createClient } from '@/common/supabase/client';
 
 interface ImageVariant {
   size: 'thumbnail' | 'small' | 'medium' | 'large' | 'original';
@@ -260,6 +262,7 @@ export class ImageOptimizationService {
     generateVariants = true
   ): Promise<{ url: string; variants: Record<string, string> }> {
     
+    const supabase = createClient();
     // Upload original image
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from(bucket)
