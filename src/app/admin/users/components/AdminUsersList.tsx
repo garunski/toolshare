@@ -2,36 +2,62 @@
 
 import { useEffect, useState } from "react";
 
-import { RoleFormatter } from "@/common/formatters/roleFormatter";
-import { Badge } from "@/primitives/badge";
+import { Button } from "@/primitives/button";
 import { Text } from "@/primitives/text";
-import type { UserWithRoles } from "@/types/roles";
+import type { Role, UserWithRoles } from "@/types/roles";
+
+import { CreateUserForm } from "./CreateUserForm";
+import { UserCard } from "./UserCard";
 
 export function AdminUsersList() {
   const [users, setUsers] = useState<UserWithRoles[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
   useEffect(() => {
-    async function fetchUsers() {
+    async function fetchData() {
       try {
-        const response = await fetch("/api/admin/users");
-        const result = await response.json();
+        // Fetch users
+        const usersResponse = await fetch("/api/admin/users");
+        const usersResult = await usersResponse.json();
 
-        if (!response.ok) {
-          throw new Error(result.error || "Failed to fetch users");
+        if (!usersResponse.ok) {
+          throw new Error(usersResult.error || "Failed to fetch users");
         }
 
-        setUsers(result.data || []);
+        setUsers(usersResult.data || []);
+
+        // Fetch roles
+        const rolesResponse = await fetch("/api/admin/roles");
+        const rolesResult = await rolesResponse.json();
+
+        if (!rolesResponse.ok) {
+          throw new Error(rolesResult.error || "Failed to fetch roles");
+        }
+
+        setRoles(rolesResult.data || []);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to fetch users");
+        setError(err instanceof Error ? err.message : "Failed to fetch data");
       } finally {
         setLoading(false);
       }
     }
 
-    fetchUsers();
+    fetchData();
   }, []);
+
+  const handleUserCreated = () => {
+    setShowCreateForm(false);
+    // Refresh the users list
+    window.location.reload();
+  };
+
+  const handleRoleUpdated = () => {
+    // Refresh the users list
+    window.location.reload();
+  };
 
   if (loading) {
     return (
@@ -63,35 +89,35 @@ export function AdminUsersList() {
   }
 
   return (
-    <div className="space-y-4">
-      {users.map((user) => (
-        <div key={user.id} className="rounded-lg bg-white p-4 shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <Text className="font-medium text-gray-900">
-                {user.first_name} {user.last_name}
-              </Text>
-              {user.email && (
-                <Text className="text-sm text-gray-500">{user.email}</Text>
-              )}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {user.roles.length === 0 ? (
-                <Badge>No roles</Badge>
-              ) : (
-                user.roles.map((role) => (
-                  <Badge
-                    key={role.id}
-                    className={RoleFormatter.getRoleBadgeColor(role.name)}
-                  >
-                    {RoleFormatter.formatRoleName(role)}
-                  </Badge>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-      ))}
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <Text className="text-lg font-semibold text-gray-900">Users</Text>
+        <Button
+          onClick={() => setShowCreateForm(true)}
+          disabled={showCreateForm}
+        >
+          Create User
+        </Button>
+      </div>
+
+      {showCreateForm && (
+        <CreateUserForm
+          roles={roles}
+          onUserCreated={handleUserCreated}
+          onCancel={() => setShowCreateForm(false)}
+        />
+      )}
+
+      <div className="space-y-4">
+        {users.map((user) => (
+          <UserCard
+            key={user.id}
+            user={user}
+            availableRoles={roles}
+            onRoleUpdated={handleRoleUpdated}
+          />
+        ))}
+      </div>
     </div>
   );
 }

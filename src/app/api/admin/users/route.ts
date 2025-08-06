@@ -6,7 +6,9 @@ import {
 } from "@/common/operations/apiResponseHandler";
 import { RolePermissionOperations } from "@/common/operations/rolePermissions";
 import { RoleQueryOperations } from "@/common/operations/roleQueries";
+import { UserCreationOperations } from "@/common/operations/userCreation";
 import { createClient } from "@/common/supabase/server";
+import { UserCreationValidator } from "@/common/validators/userCreationValidator";
 
 export async function GET(request: NextRequest) {
   try {
@@ -81,13 +83,21 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { email, firstName, lastName, roleIds } = body;
 
-    // TODO: Implement user creation logic
-    // This would involve creating a Supabase Auth user and assigning roles
+    // Validate the request data
+    const validatedData =
+      UserCreationValidator.validateUserCreationWithGeneratedPassword(body);
+
+    // Create the user with roles
+    const newUser =
+      await UserCreationOperations.createUserWithRoles(validatedData);
 
     return createApiResponse({
-      message: "User creation not yet implemented",
+      message: "User created successfully",
+      data: {
+        user: newUser,
+        generatedPassword: validatedData.password,
+      },
     });
   } catch (error) {
     return handleApiError(error);

@@ -90,6 +90,13 @@ export class RoleQueryOperations {
       id: profile.id,
       first_name: profile.first_name,
       last_name: profile.last_name,
+      email: "", // Will be populated from auth if needed
+      phone: undefined,
+      address: undefined,
+      bio: undefined,
+      avatar_url: undefined,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
       roles: userRolesMap.get(profile.id) || [],
     }));
   }

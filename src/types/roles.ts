@@ -15,6 +15,12 @@ export interface UserWithRoles {
   first_name: string;
   last_name: string;
   email?: string;
+  phone?: string;
+  address?: string;
+  bio?: string;
+  avatar_url?: string;
+  created_at: string;
+  updated_at: string;
   roles: Role[];
 }
 
@@ -33,4 +39,16 @@ export type RoleAssignmentRequest = {
 export type RoleRemovalRequest = {
   userId: string;
   roleId: string;
+};
+
+export type UserCreationRequest = {
+  email: string;
+  password?: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  address?: string;
+  bio?: string;
+  roleIds?: string[];
+  roleExpiresAt?: string;
 };
