@@ -16,6 +16,8 @@ const eslintConfig = [
     ignores: [
       // Protected primitives folder - NEVER modify
       "src/primitives/**/*",
+      // Backup directory - will be deleted during migration
+      "src/common.backup/**/*",
     ],
   },
   {
