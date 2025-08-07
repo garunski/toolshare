@@ -1,0 +1,93 @@
+---
+description: Global Architecture Rules for Next.js App Router project
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+## 🚨 Philosophy
+* Pages should not contain business logic.
+* APIs must be explicit, routed endpoints — not helper functions.
+* Colocate what makes clarity. Avoid shared code unless it is reusable *domain logic*, not just repeated code.
+* Middleware is mandatory on API routes that accept user input.
+* Decomposition should follow clarity, not line count.
+* The `src/primitives/` directory is **immutable** — never modify its contents; create wrapper components if extension is required.
+
+## 🔁 Layered Responsibility
+1. **UI (Page + Components)**
+   * Lives in `app/**/page.tsx` and client components
+   * Role: Layout, orchestration, form rendering, controlled inputs
+   * Must not: Directly fetch data, contain business logic, or access DB
+   * Soft limit: `page.tsx` ≤ **150 lines**
+
+2. **API Layer (Explicit Server Routes)**
+   * Lives in `app/api/**/route.ts`
+   * Role: Validate input, authenticate, run business logic, and return serialisable response
+   * Requirements: Strict `zod` parsing, middleware gating
+   * Soft limit: `route.ts` ≤ **100 lines**
+
+3. **Business Logic (Domain Modules)**
+   * Either colocated with an API route or extracted to `domain/<area>/performX.ts`
+   * Extract only when logic is clearly reusable & testable
+   * Naming: `performX.ts`, `generateY.ts`, `applyZ.ts`
+
+4. **Validation Schemas**
+   * Form-side validation lives with the form
+   * Server-side validation lives with the API handler
+   * Derive client schema from server schema — never duplicate
+
+5. **Middleware**
+   * Scoped per route group (e.g. `app/api/(authenticated)/middleware.ts`)
+   * Handles: Auth, RBAC, logging, rate-limiting
+
+## 📁 File & Folder Organisation
+```text
+app/
+└── tools/
+    └── [toolId]/
+        └── edit/
+            ├── page.tsx                     # Orchestrates the page
+            ├── EditToolForm/                # Colocated, scoped component
+            │   ├── index.tsx
+            │   ├── fields/
+            │   │   ├── NameField.tsx
+            │   │   └── CategoryField.tsx
+            │   └── useFormState.ts
+            └── useToolEditData.ts           # Server-side fetch
+```
+
+## ❌ Anti-Patterns
+| Pattern                 | Why it's bad                                               |
+|-------------------------|------------------------------------------------------------|
+| `lib/api/*.ts`          | Hides intent, bypasses validation/middleware               |
+| `utils/*.ts`            | Meaningless abstraction bucket                             |
+| Server Actions for all  | Blurs client/server boundary                               |
+| Premature shared code   | DRY without ownership increases coupling                   |
+| Generic `operations/` wrappers | Adds naming overhead without value                  |
+
+## 🚚 Import Rules
+* Use the `@/` alias (configured in `tsconfig.json`) for all intra-project imports; avoid deep relative paths like `../../../`.
+* Do not import from `src/primitives/` directly—wrap primitives in higher-level components if extension is needed.
+
+## 📛 Naming Rules
+| Context          | Convention                                 |
+|------------------|--------------------------------------------|
+| API handler      | `route.ts` only in verb folder (`create/`) |
+| Logic module     | `performX.ts`, `applyY.ts`, `generateZ.ts` |
+| Form hook        | `use<FormName>Form.ts`                     |
+| Schema           | `validate<FormName>.ts` or `schema<FormName>.ts` |
+| Components       | Folder `ComponentName/` with `index.tsx`   |
+
+### ❌ Generic Names Are Banned
+Avoid filenames or directories containing any of the following words; they hide intent and indicate poor organisation:
+
+```
+util  utils  helper  helpers  manager  service  common  shared  misc  lib
+```
+
+### ✅ File Naming Convention
+* Use **camelCase** for filenames (e.g. `profileImageUploader.ts`).
+* Be descriptive and specific about the file’s purpose.
+* Include the primary action or responsibility in the name.
+  * ✅ `userProfileImageProcessor.ts`
+  * ❌ `imageHelper.ts`

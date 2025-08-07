@@ -1,0 +1,14 @@
+---
+description: API Route Standards
+globs:
+  - "app/api/**/route.ts"
+alwaysApply: false
+---
+
+* One `route.ts` per endpoint, folder name expresses intent (`create`, `update`, `delete`, etc.).
+* Must use `zod` for input parsing and output typing.
+* All routes must be gated by appropriate middleware (`auth`, `roles`, `rate-limit`).
+* Hard-fail on validation errors; never silently coerce.
+* Business logic should live in the same folder or in a domain module with a descriptive verb-noun filename.
+* If a `route.ts` file exceeds **100 lines** extract the logic, not the validation.
+* Never leak internal DB models in responses — shape responses explicitly.

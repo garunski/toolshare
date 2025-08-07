@@ -1,0 +1,13 @@
+---
+description: UI & Component Guidelines
+globs:
+  - "app/**/page.tsx"
+  - "app/**/components/**"
+alwaysApply: false
+---
+
+* `page.tsx` orchestrates the view; keep ≤ **150 lines**. Break into colocated components otherwise.
+* Use named component folders with `index.tsx`; place sub-components in `fields/`, `parts/`, etc.
+* Avoid generic names such as `util`, `helper`, `common`, or `shared`—names must express intent.
+* Derive client-side validation schema from the server schema to avoid duplication.
+* Prefer `use<FormName>Form.ts` (or `use<FormName>State.ts`) for non-trivial form state.

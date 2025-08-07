@@ -1,0 +1,13 @@
+---
+description: Validation & Schema Rules
+globs:
+  - "**/validate*.*"
+  - "**/schema*.*"
+alwaysApply: false
+---
+
+* Use `zod` everywhere; server schemas are the single source of truth.
+* Share schemas by importing or through `.pick()`, `.omit()`, `.extend()`—never duplicate code.
+* Throw on the first invalid input; catch and handle at the API boundary.
+* Export `z.infer<typeof schema>` types alongside each schema for strong typing.
+* Co-locate form-side schemas with forms and server-side schemas with their API handlers.
