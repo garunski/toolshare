@@ -1,7 +1,8 @@
 import { PerformFriendRequest } from "@/apiApp/social/friends/request/performFriendRequest";
 import { PerformProfileOperation } from "@/apiApp/social/profiles/performProfileOperation";
-import { SocialStatsProcessor } from "@/common/operations/socialStatsProcessor";
 import type { SocialConnection } from "@/types/social";
+
+import { SocialStatsProcessor } from "../../../admin/analytics/social/processSocialStats";
 
 export class ProcessConnections {
   static async getFriends(

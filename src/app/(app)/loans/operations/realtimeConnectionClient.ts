@@ -1,10 +1,9 @@
 import { RealtimeChannel } from "@supabase/supabase-js";
 
+import { AdminSubscriptionHelpers } from "@/common/operations/helpers/adminSubscriptionHelpers";
+import { ConnectionManagementHelpers } from "@/common/operations/helpers/connectionManagementHelpers";
+import { UserSubscriptionHelpers } from "@/common/operations/helpers/userSubscriptionHelpers";
 import { createClient } from "@/common/supabase/client";
-
-import { AdminSubscriptionHelpers } from "./helpers/adminSubscriptionHelpers";
-import { ConnectionManagementHelpers } from "./helpers/connectionManagementHelpers";
-import { UserSubscriptionHelpers } from "./helpers/userSubscriptionHelpers";
 
 interface SubscriptionConfig {
   table: string;

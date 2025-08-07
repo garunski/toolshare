@@ -1,4 +1,4 @@
-import { getActiveLoans } from "@/common/operations/loanStatusTracker";
+import { getActiveLoans } from "@/app/loans/operations/loanTrackingOperationsClient";
 import { createClient } from "@/common/supabase/server";
 
 import { LoansDashboard } from "./components/LoansDashboard";

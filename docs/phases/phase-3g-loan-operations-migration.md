@@ -1,7 +1,7 @@
 # Phase 3g: Loan Operations Migration
 
 ## 🎯 Objective
-Move 3 loan operation files from `src/common/operations/` to be colocated with API routes in `/api/(app)/loans/`. Run `task validate` after each task and fix all issues
+Move 3 loan operation files from `src/common/operations/` to be colocated with API routes in `/api/(app)/loans/`. Run `task validate` after each task and fix all issuesfu
 
 ---
 
@@ -11,44 +11,44 @@ Move 3 loan operation files from `src/common/operations/` to be colocated with A
 **Size:** 2.1KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/(app)/loans/status/`
-- [ ] Copy `loanStatusOperations.ts` to `performStatusUpdate.ts`
-- [ ] Refactor function names to be specific (e.g., `performStatusUpdate`, `updateLoanStatus`, `getLoanStatus`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add loan status update validation logic
-- [ ] Add status transition rules and validation
-- [ ] Add notification handling for status changes
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `loanStatusOperations.ts`
+- [x]  Create directory: `src/app/api/(app)/loans/status/`
+- [x]  Copy `loanStatusOperations.ts` to `performStatusUpdate.ts`
+- [x]  Refactor function names to be specific (e.g., `performStatusUpdate`, `updateLoanStatus`, `getLoanStatus`)
+- [x]  Update imports to use `@/common/supabase/server`
+- [x]  Add loan status update validation logic
+- [x]  Add status transition rules and validation
+- [x]  Add notification handling for status changes
+- [x]  Create corresponding `route.ts` file
+- [x]  Update all imports in codebase that reference `loanStatusOperations.ts`
 
 ### 2. `loanStatusTracker.ts` → `/api/(app)/loans/tracking/trackLoanStatus.ts`
 **Size:** 2.1KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/(app)/loans/tracking/`
-- [ ] Copy `loanStatusTracker.ts` to `trackLoanStatus.ts`
-- [ ] Refactor function names to be specific (e.g., `trackLoanStatus`, `getLoanTracking`, `updateLoanTracking`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add loan status tracking logic
-- [ ] Add tracking history and audit trail
-- [ ] Add automated status updates based on time/conditions
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `loanStatusTracker.ts`
+- [x]  Create directory: `src/app/api/(app)/loans/tracking/`
+- [x]  Copy `loanStatusTracker.ts` to `trackLoanStatus.ts`
+- [x]  Refactor function names to be specific (e.g., `trackLoanStatus`, `getLoanTracking`, `updateLoanTracking`)
+- [x]  Update imports to use `@/common/supabase/server`
+- [x]  Add loan status tracking logic
+- [x]  Add tracking history and audit trail
+- [x]  Add automated status updates based on time/conditions
+- [x]  Create corresponding `route.ts` file
+- [x]  Update all imports in codebase that reference `loanStatusTracker.ts`
 
 ### 3. `realtimeConnectionManager.ts` → `/api/(app)/loans/realtime/manageConnections.ts`
 **Size:** 4.1KB | **Complexity:** High
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/(app)/loans/realtime/`
-- [ ] Copy `realtimeConnectionManager.ts` to `manageConnections.ts`
-- [ ] Refactor function names to be specific (e.g., `manageConnections`, `handleRealtimeConnection`, `broadcastLoanUpdate`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add real-time connection management logic
-- [ ] Add WebSocket connection handling
-- [ ] Add real-time loan status broadcasting
-- [ ] Add connection pooling and optimization
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `realtimeConnectionManager.ts`
+- [x]  Create directory: `src/app/api/(app)/loans/realtime/`
+- [x]  Copy `realtimeConnectionManager.ts` to `manageConnections.ts`
+- [x]  Refactor function names to be specific (e.g., `manageConnections`, `handleRealtimeConnection`, `broadcastLoanUpdate`)
+- [x]  Update imports to use `@/common/supabase/server`
+- [x]  Add real-time connection management logic
+- [x]  Add WebSocket connection handling
+- [x]  Add real-time loan status broadcasting
+- [x]  Add connection pooling and optimization
+- [x]  Create corresponding `route.ts` file
+- [x]  Update all imports in codebase that reference `realtimeConnectionManager.ts`
 
 ---
 
@@ -78,17 +78,17 @@ After each file is moved, test the functionality to ensure it works correctly.
 ## 📋 Verification Checklist
 
 ### ✅ File Migration Verification
-- [ ] All 3 loan operation files moved to appropriate API routes
-- [ ] All function names refactored to be specific and descriptive
-- [ ] All imports updated to use `@/common/supabase/server`
-- [ ] All corresponding `route.ts` files created
-- [ ] All imports in codebase updated to reference new locations
+- [x]  All 3 loan operation files moved to appropriate API routes
+- [x]  All function names refactored to be specific and descriptive
+- [x]  All imports updated to use `@/common/supabase/server`
+- [x]  All corresponding `route.ts` files created
+- [x]  All imports in codebase updated to reference new locations
 
 ### ✅ Code Quality Verification
-- [ ] Run `task validate` to ensure no TypeScript errors
-- [ ] Run `task dev:code-quality` to ensure code quality standards
-- [ ] All business logic preserved after moving
-- [ ] No functionality broken
+- [x]  Run `task validate` to ensure no TypeScript errors
+- [x]  Run `task dev:code-quality` to ensure code quality standards
+- [x]  All business logic preserved after moving
+- [x]  No functionality broken
 
 ---
 

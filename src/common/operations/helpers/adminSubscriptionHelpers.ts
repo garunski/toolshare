@@ -1,4 +1,4 @@
-import { RealtimeConnectionManager } from "../realtimeConnectionManager";
+import { RealtimeConnectionManager } from "@/app/loans/operations/realtimeConnectionClient";
 
 export class AdminSubscriptionHelpers {
   static createAdminSubscriptions(callback: (data: any) => void): () => void {

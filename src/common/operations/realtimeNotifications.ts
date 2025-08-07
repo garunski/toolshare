@@ -1,6 +1,5 @@
+import { RealtimeConnectionManager } from "@/app/loans/operations/realtimeConnectionOperations";
 import { createClient } from "@/common/supabase/client";
-
-import { RealtimeConnectionManager } from "./realtimeConnectionManager";
 
 interface NotificationPayload {
   id: string;
@@ -24,13 +23,13 @@ export class RealtimeNotifications {
     (notification: NotificationPayload) => void
   > = new Map();
 
-  static subscribeToNotifications(
+  static async subscribeToNotifications(
     userId: string,
     onNotification: (notification: NotificationPayload) => void,
-  ): () => void {
+  ): Promise<() => void> {
     this.listeners.set(userId, onNotification);
 
-    const unsubscribe = RealtimeConnectionManager.subscribe(
+    const unsubscribe = await RealtimeConnectionManager.subscribe(
       `notifications-${userId}`,
       {
         table: "notifications",

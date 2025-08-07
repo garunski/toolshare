@@ -5,10 +5,13 @@ import {
   validateLoanStatusUpdate,
 } from "@/common/validators/borrowingRequestValidator";
 
+// Re-export types for API routes
+export type { LoanReturn, LoanStatusUpdate };
+
 import {
-  fetchLoanWithDetails,
-  fetchUserLoans,
-  updateLoanInDatabase,
+  getLoanWithDetails,
+  getUserLoans,
+  performStatusUpdate,
   updateToolAvailability,
 } from "./loanStatusOperations";
 
@@ -28,14 +31,14 @@ export interface LoanStatusChange {
   message?: string;
 }
 
-export async function updateLoanStatus(data: LoanStatusUpdate): Promise<void> {
+export async function trackLoanStatus(data: LoanStatusUpdate): Promise<void> {
   const validatedData = validateLoanStatusUpdate(data);
 
   // Get loan details
-  const loan = await fetchLoanWithDetails(validatedData.loan_id);
+  const loan = await getLoanWithDetails(validatedData.loan_id);
 
   // Update loan status
-  await updateLoanInDatabase(
+  await performStatusUpdate(
     validatedData.loan_id,
     validatedData.status,
     validatedData.message,
@@ -53,10 +56,10 @@ export async function processLoanReturn(data: LoanReturn): Promise<void> {
   const validatedData = validateLoanReturn(data);
 
   // Get loan details
-  const loan = await fetchLoanWithDetails(validatedData.loan_id);
+  const loan = await getLoanWithDetails(validatedData.loan_id);
 
   // Update loan status to returned
-  await updateLoanInDatabase(
+  await performStatusUpdate(
     validatedData.loan_id,
     "returned",
     validatedData.condition_notes,
@@ -86,5 +89,5 @@ export async function getLoanStatus(
 }
 
 export async function getActiveLoans(userId: string): Promise<any[]> {
-  return await fetchUserLoans(userId);
+  return await getUserLoans(userId);
 }

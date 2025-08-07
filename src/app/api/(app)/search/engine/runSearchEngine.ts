@@ -2,14 +2,17 @@ import {
   getSavedSearches,
   saveSearch,
   trackSearch,
-} from "./advancedSearchAnalytics";
-import { buildSearchQuery, getSearchFacets } from "./advancedSearchCore";
+} from "../../../admin/analytics/search/analyzeSearch";
+import {
+  buildSearchQuery,
+  getSearchFacets,
+} from "../core/performAdvancedSearch";
 import {
   getSearchSuggestions,
   processCategoryFacets,
   processConditionFacets,
   processLocationFacets,
-} from "./advancedSearchHelpers";
+} from "../helpers/searchHelpers";
 
 interface SearchFilters {
   query?: string;
@@ -37,11 +40,11 @@ interface SearchResult {
   searchTime: number;
 }
 
-export class AdvancedSearchEngine {
+export class SearchEngine {
   /**
    * Perform advanced search with filters and facets
    */
-  static async search(
+  static async executeSearch(
     filters: SearchFilters,
     limit = 20,
     offset = 0,
@@ -91,7 +94,7 @@ export class AdvancedSearchEngine {
   /**
    * Save search for user
    */
-  static async saveSearch(
+  static async saveUserSearch(
     userId: string,
     name: string,
     filters: SearchFilters,
@@ -102,14 +105,14 @@ export class AdvancedSearchEngine {
   /**
    * Get saved searches for user
    */
-  static async getSavedSearches(userId: string) {
+  static async getUserSavedSearches(userId: string) {
     return getSavedSearches(userId);
   }
 
   /**
    * Track search analytics
    */
-  static async trackSearch(
+  static async trackSearchAnalytics(
     query: string,
     filters: SearchFilters,
     resultsCount: number,

@@ -1,6 +1,6 @@
 import { createClient } from "@/common/supabase/client";
 
-export async function updateLoanInDatabase(
+export async function performStatusUpdate(
   loanId: string,
   status: string,
   message?: string,
@@ -44,7 +44,7 @@ export async function updateToolAvailability(
   }
 }
 
-export async function fetchLoanWithDetails(loanId: string) {
+export async function getLoanWithDetails(loanId: string) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("loans")
@@ -79,7 +79,7 @@ export async function fetchLoanWithDetails(loanId: string) {
   return data;
 }
 
-export async function fetchUserLoans(userId: string) {
+export async function getUserLoans(userId: string) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("loans")

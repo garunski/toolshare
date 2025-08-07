@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { RealtimeConnectionManager } from "@/common/operations/realtimeConnectionManager";
+import { RealtimeConnectionManager } from "@/app/loans/operations/realtimeConnectionClient";
 import { createClient } from "@/common/supabase/client";
 
 interface AdminStats {

@@ -3,7 +3,7 @@
 import { ClockIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 
-import { RealtimeConnectionManager } from "@/common/operations/realtimeConnectionManager";
+import { RealtimeConnectionManager } from "@/app/loans/operations/realtimeConnectionClient";
 import { Heading } from "@/primitives/heading";
 
 import { LiveActivityHelpers } from "./helpers/LiveActivityHelpers";

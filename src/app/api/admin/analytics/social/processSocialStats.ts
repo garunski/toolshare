@@ -1,6 +1,6 @@
 import type { SocialStats } from "@/types/social";
 
-import { SocialStatsOperations } from "./socialStatsOperations";
+import { SocialStatsOperations } from "./getSocialStats";
 
 export class SocialStatsProcessor {
   static async getSocialStats(

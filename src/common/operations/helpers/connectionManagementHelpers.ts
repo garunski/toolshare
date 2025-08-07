@@ -1,4 +1,4 @@
-import { RealtimeConnectionManager } from "../realtimeConnectionManager";
+import { RealtimeConnectionManager } from "@/app/loans/operations/realtimeConnectionClient";
 
 export class ConnectionManagementHelpers {
   static readonly MAX_RECONNECT_ATTEMPTS = 5;

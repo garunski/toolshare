@@ -1,6 +1,6 @@
 import { createClient } from "@/common/supabase/client";
 
-import { getSortColumn } from "./advancedSearchHelpers";
+import { getSortColumn } from "../helpers/searchHelpers";
 
 interface SearchFilters {
   query?: string;

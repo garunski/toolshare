@@ -7,8 +7,8 @@ import { z } from "zod";
 
 import {
   processLoanReturn,
-  updateLoanStatus,
-} from "@/common/operations/loanStatusTracker";
+  trackLoanStatus,
+} from "@/app/loans/operations/loanTrackingOperationsClient";
 import { Button } from "@/primitives/button";
 import { Text } from "@/primitives/text";
 import { Textarea } from "@/primitives/textarea";
@@ -40,14 +40,14 @@ export function LoanActionForm({ loan, onSubmit }: LoanActionFormProps) {
     try {
       switch (loan.action) {
         case "approve":
-          await updateLoanStatus({
+          await trackLoanStatus({
             loan_id: loan.id,
             status: "approved",
             message: data.message,
           });
           break;
         case "deny":
-          await updateLoanStatus({
+          await trackLoanStatus({
             loan_id: loan.id,
             status: "denied",
             message: data.message,
