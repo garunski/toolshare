@@ -592,4 +592,41 @@ find src -type d -empty -delete
 
 ---
 
+## 🤖 AI Implementation Instructions
+
+### Before Starting
+1. **Check Current Progress**: Review the detailed sub-phase files in `docs/phases/`:
+   - `phase-5a-forms-analysis.md` - Analysis and planning
+   - `phase-5b-delete-form-builders.md` - Delete form builders (10 files)
+   - `phase-5c-delete-form-fields.md` - Delete form fields (4 files)
+   - `phase-5d-delete-form-configs.md` - Delete form configs (8 files)
+   - `phase-5e-delete-form-validation.md` - Delete form validation (2 files)
+   - `phase-5f-delete-utility-components.md` - Delete utility components (2 files)
+   - `phase-5g-cleanup-validation.md` - Final cleanup
+
+2. **Identify Next Task**: Check which sub-phase files exist and which are missing to determine the next step.
+
+### Implementation Process
+1. **Follow Sub-Phase Files**: Each sub-phase contains detailed file-by-file breakdowns with specific subtasks.
+2. **Complete One File at a Time**: For each file in the sub-phase:
+   - Follow the exact subtasks listed
+   - Run `task validate` after completing each file
+   - Fix any issues before moving to the next file
+3. **Check Progress**: After each file is completed, update the checklist in the sub-phase file.
+4. **Move to Next Sub-Phase**: Only proceed to the next sub-phase after all files in the current sub-phase are completed.
+
+### Quality Assurance
+- **Run `task validate`** after each individual file deletion
+- **Fix all issues** before proceeding to the next file
+- **Update checklists** in sub-phase files to track progress
+- **Verify functionality** after each sub-phase completion
+
+### Success Criteria
+- All 29 over-engineered form files successfully deleted
+- All imports updated to remove dependencies
+- All functionality preserved and working
+- `task validate` passes without errors
+
+---
+
 *Phase 5 focuses on moving all form components from the scattered forms directory to be colocated with their respective pages, ensuring clear ownership and maintainability while removing over-engineered generic form builders.*

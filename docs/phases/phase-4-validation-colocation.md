@@ -389,4 +389,40 @@ find src -type d -empty -delete
 
 ---
 
+## 🤖 AI Implementation Instructions
+
+### Before Starting
+1. **Check Current Progress**: Review the detailed sub-phase files in `docs/phases/`:
+   - `phase-4a-validation-analysis.md` - Analysis and planning
+   - `phase-4b-form-validation-migration.md` - Form validation (6 files)
+   - `phase-4c-admin-api-validation-migration.md` - Admin API validation (4 files)
+   - `phase-4d-taxonomy-validation-migration.md` - Taxonomy validation (3 files)
+   - `phase-4e-social-feature-validation-migration.md` - Social validation (2 files)
+   - `phase-4f-cleanup-validation.md` - Final cleanup
+
+2. **Identify Next Task**: Check which sub-phase files exist and which are missing to determine the next step.
+
+### Implementation Process
+1. **Follow Sub-Phase Files**: Each sub-phase contains detailed file-by-file breakdowns with specific subtasks.
+2. **Complete One File at a Time**: For each file in the sub-phase:
+   - Follow the exact subtasks listed
+   - Run `task validate` after completing each file
+   - Fix any issues before moving to the next file
+3. **Check Progress**: After each file is completed, update the checklist in the sub-phase file.
+4. **Move to Next Sub-Phase**: Only proceed to the next sub-phase after all files in the current sub-phase are completed.
+
+### Quality Assurance
+- **Run `task validate`** after each individual file migration
+- **Fix all issues** before proceeding to the next file
+- **Update checklists** in sub-phase files to track progress
+- **Verify functionality** after each sub-phase completion
+
+### Success Criteria
+- All 15 validation files successfully migrated
+- All imports updated to reference new locations
+- All functionality preserved and working
+- `task validate` passes without errors
+
+---
+
 *Phase 4 focuses on moving all validation schemas from the scattered validators directory to be colocated with their respective forms and APIs, ensuring clear ownership and maintainability.*

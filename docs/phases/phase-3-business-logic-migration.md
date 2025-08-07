@@ -482,4 +482,45 @@ export async function GET(request: NextRequest) {
 
 ---
 
+## 🤖 AI Implementation Instructions
+
+### Before Starting
+1. **Check Current Progress**: Review the detailed sub-phase files in `docs/phases/`:
+   - `phase-3a-analysis.md` - Analysis and planning
+   - `phase-3b-tool-operations-migration.md` - Tool operations (15 files)
+   - `phase-3c-user-management-migration.md` - User management (8 files)
+   - `phase-3d-role-and-permission-operations-migration.md` - Role operations (6 files)
+   - `phase-3e-category-and-attribute-operations-migration.md` - Category operations (12 files)
+   - `phase-3f-social-operations-migration.md` - Social operations (8 files)
+   - `phase-3g-loan-operations-migration.md` - Loan operations (3 files)
+   - `phase-3h-search-and-analytics-operations-migration.md` - Search operations (8 files)
+   - `phase-3i-system-and-performance-operations-migration.md` - System operations (12 files)
+   - `phase-3j-helper-operations-migration.md` - Helper operations (8 files)
+   - `phase-3k-cleanup-validation.md` - Final cleanup
+
+2. **Identify Next Task**: Check which sub-phase files exist and which are missing to determine the next step.
+
+### Implementation Process
+1. **Follow Sub-Phase Files**: Each sub-phase contains detailed file-by-file breakdowns with specific subtasks.
+2. **Complete One File at a Time**: For each file in the sub-phase:
+   - Follow the exact subtasks listed
+   - Run `task validate` after completing each file
+   - Fix any issues before moving to the next file
+3. **Check Progress**: After each file is completed, update the checklist in the sub-phase file.
+4. **Move to Next Sub-Phase**: Only proceed to the next sub-phase after all files in the current sub-phase are completed.
+
+### Quality Assurance
+- **Run `task validate`** after each individual file migration
+- **Fix all issues** before proceeding to the next file
+- **Update checklists** in sub-phase files to track progress
+- **Verify functionality** after each sub-phase completion
+
+### Success Criteria
+- All 80 operation files successfully migrated
+- All imports updated to reference new locations
+- All functionality preserved and working
+- `task validate` passes without errors
+
+---
+
 *Phase 3 focuses on moving all business logic from the scattered operations directory to be colocated with their respective API routes, ensuring clear ownership and maintainability.*

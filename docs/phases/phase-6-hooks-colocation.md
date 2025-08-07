@@ -274,4 +274,43 @@ find src -type d -empty -delete
 
 ---
 
+## 🤖 AI Implementation Instructions
+
+### Before Starting
+1. **Check Current Progress**: Review the detailed sub-phase files in `docs/phases/`:
+   - `phase-6a-hooks-analysis.md` - Analysis and planning
+   - `phase-6b-tool-hooks-migration.md` - Tool hooks (4 files)
+   - `phase-6c-admin-hooks-migration.md` - Admin hooks (4 files)
+   - `phase-6d-attribute-hooks-migration.md` - Attribute hooks (2 files)
+   - `phase-6e-social-hooks-migration.md` - Social hooks (1 file)
+   - `phase-6f-mobile-touch-hooks-migration.md` - Mobile/touch hooks (4 files)
+   - `phase-6g-utility-hooks-migration.md` - Utility hooks (1 file)
+   - `phase-6h-shared-hooks-migration.md` - Shared hooks (3 files)
+   - `phase-6i-cleanup-validation.md` - Final cleanup
+
+2. **Identify Next Task**: Check which sub-phase files exist and which are missing to determine the next step.
+
+### Implementation Process
+1. **Follow Sub-Phase Files**: Each sub-phase contains detailed file-by-file breakdowns with specific subtasks.
+2. **Complete One File at a Time**: For each file in the sub-phase:
+   - Follow the exact subtasks listed
+   - Run `task validate` after completing each file
+   - Fix any issues before moving to the next file
+3. **Check Progress**: After each file is completed, update the checklist in the sub-phase file.
+4. **Move to Next Sub-Phase**: Only proceed to the next sub-phase after all files in the current sub-phase are completed.
+
+### Quality Assurance
+- **Run `task validate`** after each individual file migration
+- **Fix all issues** before proceeding to the next file
+- **Update checklists** in sub-phase files to track progress
+- **Verify functionality** after each sub-phase completion
+
+### Success Criteria
+- All 19 hook files successfully migrated
+- All imports updated to reference new locations
+- All functionality preserved and working
+- `task validate` passes without errors
+
+---
+
 *Phase 6 focuses on proper hook colocation, ensuring that all hooks are placed where they are actually used, making the codebase more maintainable and easier to understand.*
