@@ -1,7 +1,7 @@
 import { createClient } from "@/common/supabase/client";
 import type { SocialConnection, SocialProfile } from "@/types/social";
 
-export class FriendOperations {
+export class PerformFriendRequest {
   static async getFriends(userId: string): Promise<SocialConnection[]> {
     const supabase = createClient();
     const { data, error } = await supabase

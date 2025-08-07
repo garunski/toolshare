@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { ProcessFriendRequest } from "@/apiApp/social/friends/process/processFriendRequest";
 import { useAuth } from "@/common/hooks/useAuth";
-import { FriendRequestProcessor } from "@/common/operations/friendRequestProcessor";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
@@ -18,7 +18,7 @@ export function RequestsTab() {
     if (!user?.id) return;
 
     try {
-      const result = await FriendRequestProcessor.getPendingRequests(user.id);
+      const result = await ProcessFriendRequest.getPendingRequests(user.id);
       if (result.success) {
         setFriendRequests(result.data || []);
       }
@@ -42,7 +42,7 @@ export function RequestsTab() {
     if (!user?.id) return;
 
     try {
-      const result = await FriendRequestProcessor.processRequest(
+      const result = await ProcessFriendRequest.processRequest(
         requestId,
         action,
       );

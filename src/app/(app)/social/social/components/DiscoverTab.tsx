@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { ProcessConnections } from "@/apiApp/social/connections/processConnections";
 import { useAuth } from "@/common/hooks/useAuth";
-import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
@@ -18,9 +18,7 @@ export function DiscoverTab() {
     if (!user?.id) return;
 
     try {
-      const result = await SocialConnectionProcessor.getSuggestedFriends(
-        user.id,
-      );
+      const result = await ProcessConnections.getSuggestedFriends(user.id);
       if (result.success) {
         setSuggestedFriends(result.data || []);
       }
@@ -41,7 +39,7 @@ export function DiscoverTab() {
     if (!user?.id) return;
 
     try {
-      const result = await SocialConnectionProcessor.sendFriendRequest(
+      const result = await ProcessConnections.sendFriendRequest(
         user.id,
         friendId,
       );

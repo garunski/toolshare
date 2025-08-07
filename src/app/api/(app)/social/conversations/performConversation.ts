@@ -1,7 +1,7 @@
 import { createClient } from "@/common/supabase/client";
 import type { Conversation } from "@/types/social";
 
-export class ConversationOperations {
+export class PerformConversation {
   static async getConversations(
     userId: string,
   ): Promise<{ success: boolean; data: Conversation[] }> {

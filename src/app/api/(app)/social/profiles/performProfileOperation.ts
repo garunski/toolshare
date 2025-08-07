@@ -1,13 +1,12 @@
+import { PerformFriendRequest } from "@/apiApp/social/friends/request/performFriendRequest";
 import type { SocialProfile } from "@/types/social";
 
-import { FriendOperations } from "./friendOperations";
-
-export class SocialProfileOperations {
+export class PerformProfileOperation {
   static async getProfile(
     userId: string,
   ): Promise<{ success: boolean; data: SocialProfile }> {
     try {
-      const data = await FriendOperations.getProfile(userId);
+      const data = await PerformFriendRequest.getProfile(userId);
       return { success: true, data };
     } catch (error) {
       console.error("Failed to get profile:", error);
@@ -38,7 +37,7 @@ export class SocialProfileOperations {
     limit = 10,
   ): Promise<{ success: boolean; data: SocialProfile[] }> {
     try {
-      const data = await FriendOperations.searchUsers(
+      const data = await PerformFriendRequest.searchUsers(
         query,
         currentUserId,
         limit,
@@ -55,7 +54,10 @@ export class SocialProfileOperations {
     limit = 5,
   ): Promise<{ success: boolean; data: SocialProfile[] }> {
     try {
-      const data = await FriendOperations.getSuggestedFriends(userId, limit);
+      const data = await PerformFriendRequest.getSuggestedFriends(
+        userId,
+        limit,
+      );
       return { success: true, data };
     } catch (error) {
       console.error("Failed to get suggested friends:", error);

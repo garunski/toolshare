@@ -3,9 +3,9 @@
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
+import { ProcessConnections } from "@/apiApp/social/connections/processConnections";
+import { PerformMessage } from "@/apiApp/social/messages/send/performMessage";
 import { useAuth } from "@/common/hooks/useAuth";
-import { MessageOperations } from "@/common/operations/messageOperations";
-import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
 import type { Message, SocialProfile } from "@/types/social";
 
 import { MessageContainer } from "./components/MessageContainer";
@@ -27,7 +27,7 @@ export default function MessagesPage() {
     if (!user?.id) return;
 
     try {
-      const result = await MessageOperations.getMessages(user.id, otherUserId);
+      const result = await PerformMessage.getMessages(user.id, otherUserId);
       if (result.success) {
         setMessages(result.data || []);
       }
@@ -40,7 +40,7 @@ export default function MessagesPage() {
 
   const loadOtherUser = useCallback(async () => {
     try {
-      const result = await SocialConnectionProcessor.getProfile(otherUserId);
+      const result = await ProcessConnections.getProfile(otherUserId);
       if (result.success && result.data) {
         setOtherUser(result.data);
       }
@@ -61,7 +61,7 @@ export default function MessagesPage() {
 
     setSending(true);
     try {
-      const result = await MessageOperations.sendMessage(
+      const result = await PerformMessage.sendMessage(
         user.id,
         otherUserId,
         newMessage,

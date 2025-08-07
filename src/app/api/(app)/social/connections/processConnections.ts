@@ -1,15 +1,14 @@
+import { PerformFriendRequest } from "@/apiApp/social/friends/request/performFriendRequest";
+import { PerformProfileOperation } from "@/apiApp/social/profiles/performProfileOperation";
+import { SocialStatsProcessor } from "@/common/operations/socialStatsProcessor";
 import type { SocialConnection } from "@/types/social";
 
-import { FriendOperations } from "./friendOperations";
-import { SocialProfileOperations } from "./socialProfileOperations";
-import { SocialStatsProcessor } from "./socialStatsProcessor";
-
-export class SocialConnectionProcessor {
+export class ProcessConnections {
   static async getFriends(
     userId: string,
   ): Promise<{ success: boolean; data: SocialConnection[] }> {
     try {
-      const data = await FriendOperations.getFriends(userId);
+      const data = await PerformFriendRequest.getFriends(userId);
       return { success: true, data };
     } catch (error) {
       console.error("Failed to get friends:", error);
@@ -22,7 +21,7 @@ export class SocialConnectionProcessor {
     friendId: string,
   ): Promise<{ success: boolean }> {
     try {
-      await FriendOperations.removeFriend(userId, friendId);
+      await PerformFriendRequest.removeFriend(userId, friendId);
       return { success: true };
     } catch (error) {
       console.error("Failed to remove friend:", error);
@@ -41,14 +40,14 @@ export class SocialConnectionProcessor {
     currentUserId: string,
     limit = 10,
   ): Promise<{ success: boolean; data: any[] }> {
-    return SocialProfileOperations.searchUsers(query, currentUserId, limit);
+    return PerformProfileOperation.searchUsers(query, currentUserId, limit);
   }
 
   static async getSuggestedFriends(
     userId: string,
     limit = 5,
   ): Promise<{ success: boolean; data: any[] }> {
-    return SocialProfileOperations.getSuggestedFriends(userId, limit);
+    return PerformProfileOperation.getSuggestedFriends(userId, limit);
   }
 
   static async checkFriendshipStatus(
@@ -59,7 +58,7 @@ export class SocialConnectionProcessor {
     data: "friends" | "pending_sent" | "pending_received" | "none";
   }> {
     try {
-      const data = await FriendOperations.checkFriendshipStatus(
+      const data = await PerformFriendRequest.checkFriendshipStatus(
         userId,
         otherUserId,
       );
@@ -82,7 +81,7 @@ export class SocialConnectionProcessor {
     receiverId: string,
   ): Promise<{ success: boolean }> {
     try {
-      await FriendOperations.sendFriendRequest(senderId, receiverId);
+      await PerformFriendRequest.sendFriendRequest(senderId, receiverId);
       return { success: true };
     } catch (error) {
       console.error("Failed to send friend request:", error);
@@ -93,6 +92,6 @@ export class SocialConnectionProcessor {
   static async getProfile(
     userId: string,
   ): Promise<{ success: boolean; data: any }> {
-    return SocialProfileOperations.getProfile(userId);
+    return PerformProfileOperation.getProfile(userId);
   }
 }

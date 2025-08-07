@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { PerformConversation } from "@/apiApp/social/conversations/performConversation";
 import { useAuth } from "@/common/hooks/useAuth";
-import { ConversationOperations } from "@/common/operations/conversationOperations";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
@@ -18,7 +18,7 @@ export function MessagesTab() {
     if (!user?.id) return;
 
     try {
-      const result = await ConversationOperations.getConversations(user.id);
+      const result = await PerformConversation.getConversations(user.id);
       if (result.success) {
         setConversations(result.data || []);
       }

@@ -1,7 +1,7 @@
 import { createClient } from "@/common/supabase/client";
 import type { FriendRequest, FriendRequestFormData } from "@/types/social";
 
-export class FriendRequestQueries {
+export class GetFriendRequests {
   static async createRequest(
     senderId: string,
     validatedData: FriendRequestFormData,

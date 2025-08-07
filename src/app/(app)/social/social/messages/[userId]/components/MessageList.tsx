@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { PerformMessage } from "@/apiApp/social/messages/send/performMessage";
 import { useAuth } from "@/common/hooks/useAuth";
-import { MessageOperations } from "@/common/operations/messageOperations";
 import { Text } from "@/primitives/text";
 import type { Message } from "@/types/social";
 
@@ -20,7 +20,7 @@ export function MessageList({ otherUserId }: MessageListProps) {
     if (!user?.id) return;
 
     try {
-      const result = await MessageOperations.getMessages(user.id, otherUserId);
+      const result = await PerformMessage.getMessages(user.id, otherUserId);
       if (result.success) {
         setMessages(result.data || []);
       }

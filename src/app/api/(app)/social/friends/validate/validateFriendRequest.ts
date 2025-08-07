@@ -2,7 +2,7 @@ import { createClient } from "@/common/supabase/client";
 import { friendRequestValidator } from "@/common/validators/socialFeatureValidator";
 import type { FriendRequestFormData } from "@/types/social";
 
-export class FriendRequestValidator {
+export class ValidateFriendRequest {
   static async validateRequest(senderId: string, receiverId: string) {
     const supabase = createClient();
     const [existingRequest, existingConnection] = await Promise.all([

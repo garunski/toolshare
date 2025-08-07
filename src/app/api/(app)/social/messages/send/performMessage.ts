@@ -1,7 +1,7 @@
 import { createClient } from "@/common/supabase/client";
 import type { Message } from "@/types/social";
 
-export class MessageOperations {
+export class PerformMessage {
   static async getMessages(
     userId: string,
     otherUserId: string,

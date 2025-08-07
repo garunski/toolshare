@@ -3,8 +3,8 @@
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
+import { ProcessConnections } from "@/apiApp/social/connections/processConnections";
 import { useAuth } from "@/common/hooks/useAuth";
-import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
 import type { SocialProfile, SocialStats } from "@/types/social";
 
 import { ProfileActions } from "./components/ProfileActions";
@@ -36,8 +36,8 @@ export default function ProfilePage() {
 
     try {
       const [profileResult, statsResult] = await Promise.all([
-        SocialConnectionProcessor.getProfile(userId),
-        SocialConnectionProcessor.getSocialStats(userId),
+        ProcessConnections.getProfile(userId),
+        ProcessConnections.getSocialStats(userId),
       ]);
 
       if (profileResult.success && profileResult.data) {
@@ -49,11 +49,10 @@ export default function ProfilePage() {
       }
 
       if (user?.id && !isOwnProfile) {
-        const statusResult =
-          await SocialConnectionProcessor.checkFriendshipStatus(
-            user.id,
-            userId,
-          );
+        const statusResult = await ProcessConnections.checkFriendshipStatus(
+          user.id,
+          userId,
+        );
         if (statusResult.success) {
           setFriendshipStatus(statusResult.data);
         }
@@ -72,7 +71,7 @@ export default function ProfilePage() {
 
     setSendingRequest(true);
     try {
-      const result = await SocialConnectionProcessor.sendFriendRequest(
+      const result = await ProcessConnections.sendFriendRequest(
         user.id,
         profile.id,
       );

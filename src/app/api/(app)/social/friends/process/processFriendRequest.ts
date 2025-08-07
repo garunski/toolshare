@@ -1,21 +1,20 @@
+import { GetFriendRequests } from "@/apiApp/social/friends/list/getFriendRequests";
+import { ValidateFriendRequest } from "@/apiApp/social/friends/validate/validateFriendRequest";
 import { friendRequestResponseValidator } from "@/common/validators/socialFeatureValidator";
 import type { FriendRequest, FriendRequestFormData } from "@/types/social";
 
-import { FriendRequestQueries } from "./friendRequestQueries";
-import { FriendRequestValidator } from "./friendRequestValidator";
-
-export class FriendRequestProcessor {
+export class ProcessFriendRequest {
   static async sendFriendRequest(
     formData: FriendRequestFormData,
     senderId: string,
   ): Promise<{ success: boolean; data: FriendRequest }> {
     try {
-      const validatedData = FriendRequestValidator.validateFormData(formData);
-      await FriendRequestValidator.validateRequest(
+      const validatedData = ValidateFriendRequest.validateFormData(formData);
+      await ValidateFriendRequest.validateRequest(
         senderId,
         validatedData.receiver_id,
       );
-      const data = await FriendRequestQueries.createRequest(
+      const data = await GetFriendRequests.createRequest(
         senderId,
         validatedData,
       );
@@ -45,7 +44,7 @@ export class FriendRequestProcessor {
     requestId: string,
     action: "accept" | "reject",
   ) {
-    const { error } = await FriendRequestQueries.processResponse(
+    const { error } = await GetFriendRequests.processResponse(
       requestId,
       action,
     );
@@ -57,7 +56,7 @@ export class FriendRequestProcessor {
     userId: string,
   ): Promise<{ success: boolean; data: FriendRequest[] }> {
     try {
-      const { data, error } = await FriendRequestQueries.fetchRequests(
+      const { data, error } = await GetFriendRequests.fetchRequests(
         userId,
         "receiver_id",
       );
@@ -74,7 +73,7 @@ export class FriendRequestProcessor {
     userId: string,
   ): Promise<{ success: boolean; data: FriendRequest[] }> {
     try {
-      const { data, error } = await FriendRequestQueries.fetchRequests(
+      const { data, error } = await GetFriendRequests.fetchRequests(
         userId,
         "sender_id",
       );
@@ -92,7 +91,7 @@ export class FriendRequestProcessor {
     userId: string,
   ): Promise<{ success: boolean }> {
     try {
-      const { error } = await FriendRequestQueries.cancelRequest(
+      const { error } = await GetFriendRequests.cancelRequest(
         requestId,
         userId,
       );

@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { ProcessConnections } from "@/apiApp/social/connections/processConnections";
 import { useAuth } from "@/common/hooks/useAuth";
-import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
@@ -18,7 +18,7 @@ export function FriendsTab() {
     if (!user?.id) return;
 
     try {
-      const result = await SocialConnectionProcessor.getFriends(user.id);
+      const result = await ProcessConnections.getFriends(user.id);
       if (result.success) {
         setFriends(result.data || []);
       }
@@ -39,10 +39,7 @@ export function FriendsTab() {
     if (!user?.id) return;
 
     try {
-      const result = await SocialConnectionProcessor.removeFriend(
-        user.id,
-        friendId,
-      );
+      const result = await ProcessConnections.removeFriend(user.id, friendId);
       if (result.success) {
         // Remove the friend from the list
         setFriends((prev) =>

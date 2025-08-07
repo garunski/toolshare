@@ -1,8 +1,8 @@
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { ProcessFriendRequest } from "@/apiApp/social/friends/process/processFriendRequest";
 import { useAuth } from "@/common/hooks/useAuth";
-import { FriendRequestProcessor } from "@/common/operations/friendRequestProcessor";
 import type { SocialProfile, SocialStats } from "@/types/social";
 
 export function useProfileLogic() {
@@ -34,7 +34,7 @@ export function useProfileLogic() {
 
     try {
       setSendingRequest(true);
-      await FriendRequestProcessor.sendFriendRequest(
+      await ProcessFriendRequest.sendFriendRequest(
         {
           receiver_id: profile.id,
           message: `Hi ${profile.first_name}! I&apos;d like to connect with you on ToolShare.`,

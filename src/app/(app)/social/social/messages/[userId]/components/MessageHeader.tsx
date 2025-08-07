@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
+import { ProcessConnections } from "@/apiApp/social/connections/processConnections";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
@@ -19,7 +19,7 @@ export function MessageHeader({ otherUserId, onBack }: MessageHeaderProps) {
 
   const loadProfile = useCallback(async () => {
     try {
-      const result = await SocialConnectionProcessor.getProfile(otherUserId);
+      const result = await ProcessConnections.getProfile(otherUserId);
       if (result.success && result.data) {
         setOtherUser(result.data);
       }

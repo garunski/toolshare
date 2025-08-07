@@ -2,12 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { ProcessConnections } from "@/apiApp/social/connections/processConnections";
 import { useAuth } from "@/common/hooks/useAuth";
 import type {
   FriendshipStatus,
   ProfileActionHandlers,
 } from "@/common/hooks/useProfileActions";
-import { SocialConnectionProcessor } from "@/common/operations/socialConnectionProcessor";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 import type { SocialProfile } from "@/types/social";
@@ -41,7 +41,7 @@ export function ProfileCard({
 
   const loadProfile = useCallback(async () => {
     try {
-      const result = await SocialConnectionProcessor.getProfile(userId);
+      const result = await ProcessConnections.getProfile(userId);
       if (result.success && result.data) {
         setProfile(result.data);
       }
