@@ -40,6 +40,10 @@ export function useCategoryAttributes(category: Category) {
           setAvailableAttributes(
             allAttributes.filter((attr) => !assignedIds.has(attr.id)),
           );
+        } else {
+          // If no attributes are assigned to this category, all attributes are available
+          setCategoryAttributes([]);
+          setAvailableAttributes(allAttributes);
         }
       } catch (error) {
         console.error("Failed to load category attributes:", error);
