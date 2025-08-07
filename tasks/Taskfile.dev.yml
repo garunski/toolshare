@@ -25,13 +25,13 @@ tasks:
     silent: true
     desc: Run ESLint to check code quality
     cmds:
-      - npm run lint
+      - npx eslint .
 
   lint-fix:
     silent: true
     desc: Automatically fix ESLint issues
     cmds:
-      - npm run lint:fix
+      - npx eslint --fix .
 
   type-check:
     silent: true
@@ -66,6 +66,16 @@ tasks:
     silent: true
     desc: Run all code quality checks
     deps: [lint, type-check, format-check]
+
+  clean-all:
+    silent: true
+    desc: Clean everything including node_modules (requires reinstall)
+    cmds:
+      - |
+        rm -rf .next
+        rm -rf node_modules
+        rm -rf .turbo
+        echo "⚠️  Run 'task setup:install-deps' to reinstall dependencies"
 
   code-fix:
     silent: true

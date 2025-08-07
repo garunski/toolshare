@@ -6,24 +6,20 @@ const urlsToCache = [
   "/manifest.json",
 ];
 
-// Install event
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache)),
   );
 });
 
-// Fetch event
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
-      // Return cached version or fetch from network
       return response || fetch(event.request);
     }),
   );
 });
 
-// Background sync for offline actions
 self.addEventListener("sync", (event) => {
   if (event.tag === "background-sync-items") {
     event.waitUntil(syncItems());
@@ -31,7 +27,6 @@ self.addEventListener("sync", (event) => {
 });
 
 async function syncItems() {
-  // Sync pending item uploads when back online
   const pendingItems = await getStoredItems();
   for (const item of pendingItems) {
     try {
@@ -43,7 +38,6 @@ async function syncItems() {
   }
 }
 
-// Store item for offline sync
 async function storeItem(item) {
   const db = await openDB();
   const tx = db.transaction("offline_items", "readwrite");
@@ -51,7 +45,6 @@ async function storeItem(item) {
   await store.put(item);
 }
 
-// Get stored items
 async function getStoredItems() {
   const db = await openDB();
   const tx = db.transaction("offline_items", "readonly");
@@ -59,7 +52,6 @@ async function getStoredItems() {
   return await store.getAll();
 }
 
-// Remove stored item
 async function removeStoredItem(id) {
   const db = await openDB();
   const tx = db.transaction("offline_items", "readwrite");
@@ -67,7 +59,6 @@ async function removeStoredItem(id) {
   await store.delete(id);
 }
 
-// Upload item to server
 async function uploadItem(item) {
   const response = await fetch("/api/items", {
     method: "POST",
@@ -84,7 +75,6 @@ async function uploadItem(item) {
   return response.json();
 }
 
-// Open IndexedDB
 async function openDB() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open("ToolShareOffline", 1);
@@ -101,7 +91,6 @@ async function openDB() {
   });
 }
 
-// Handle push notifications
 self.addEventListener("push", (event) => {
   const options = {
     body: event.data ? event.data.text() : "New notification from ToolShare",
@@ -129,7 +118,6 @@ self.addEventListener("push", (event) => {
   event.waitUntil(self.registration.showNotification("ToolShare", options));
 });
 
-// Handle notification clicks
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
 
@@ -138,16 +126,13 @@ self.addEventListener("notificationclick", (event) => {
   }
 });
 
-// Cache API responses for offline use
 self.addEventListener("fetch", (event) => {
   if (event.request.url.includes("/api/")) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          // Clone the response
           const responseClone = response.clone();
 
-          // Cache the response
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseClone);
           });
@@ -155,7 +140,6 @@ self.addEventListener("fetch", (event) => {
           return response;
         })
         .catch(() => {
-          // Return cached response if network fails
           return caches.match(event.request);
         }),
     );

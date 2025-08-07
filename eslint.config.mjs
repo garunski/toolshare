@@ -1,6 +1,7 @@
-import { FlatCompat } from "@eslint/eslintrc";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+
+import { FlatCompat } from "@eslint/eslintrc";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,11 +14,20 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
   ...compat.extends("prettier"), // Disable ESLint rules that conflict with Prettier
   {
+    languageOptions: {
+      parserOptions: {
+        warnOnUnsupportedTypeScriptVersion: false,
+      },
+    },
+  },
+  {
     ignores: [
       // Protected primitives folder - NEVER modify
       "src/primitives/**/*",
       // Backup directory - will be deleted during migration
       "src/common.backup/**/*",
+      // Next.js generated files
+      ".next/**/*",
     ],
   },
   {

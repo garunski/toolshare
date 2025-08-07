@@ -31,7 +31,7 @@ tasks:
 
   validate:
     desc: Run format, lint, build and fail if any are bad
-    deps: [dev:format, dev:lint, dev:build]
+    deps: [dev:format-fix, dev:lint-fix, dev:format-check, dev:lint, dev:build]
 
   # ============================================================================
   # QUICK ACCESS TASKS
