@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
+import { AppHeader } from "@/common/components/AppHeader";
 import { useAuth } from "@/common/hooks/useAuth";
 
 import { AddToolForm } from "./components/AddToolForm";
@@ -24,14 +25,10 @@ export default function AddToolPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="py-6">
-            <h1 className="text-3xl font-bold text-gray-900">Add New Tool</h1>
-            <p className="text-gray-600">Share your tools with the community</p>
-          </div>
-        </div>
-      </header>
+      <AppHeader
+        title="Add New Tool"
+        subtitle="Share your tools with the community"
+      />
 
       <main className="mx-auto max-w-4xl py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">

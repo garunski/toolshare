@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
+import { AppHeader } from "@/common/components/AppHeader";
 import { useAuth } from "@/common/hooks/useAuth";
 import { ToolDataProcessor } from "@/common/operations/toolDataProcessor";
 import { Button } from "@/primitives/button";
-import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 import type { Database } from "@/types/supabase";
 
@@ -49,19 +49,11 @@ export default function ToolsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">My Tools</h1>
-              <p className="text-gray-600">Manage your tool inventory</p>
-            </div>
-            <Link href="/tools/add">
-              <Button>Add New Tool</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <AppHeader title="My Tools" subtitle="Manage your tool inventory">
+        <Link href="/tools/add">
+          <Button>Add New Tool</Button>
+        </Link>
+      </AppHeader>
 
       <main className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
@@ -79,7 +71,7 @@ export default function ToolsPage() {
                 No tools yet
               </h3>
               <p className="mb-6 text-gray-600">
-                Start building your tool collection by adding your first tool.
+                Start sharing your tools with the community!
               </p>
               <Link href="/tools/add">
                 <Button>Add Your First Tool</Button>
@@ -90,16 +82,8 @@ export default function ToolsPage() {
               {tools.map((tool) => (
                 <div
                   key={tool.id}
-                  className="rounded-lg border border-zinc-950/10 bg-white p-6 shadow-sm transition-shadow hover:shadow-lg dark:border-white/10 dark:bg-zinc-900"
+                  className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
                 >
-                  <div className="mb-4">
-                    <Heading level={3} className="text-lg">
-                      {tool.name}
-                    </Heading>
-                    <Text className="text-sm text-zinc-600 dark:text-zinc-400">
-                      {tool.category}
-                    </Text>
-                  </div>
                   <div>
                     <Text className="mb-4 line-clamp-2 text-sm text-gray-600 dark:text-gray-400">
                       {tool.description}

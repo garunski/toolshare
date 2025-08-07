@@ -186,6 +186,41 @@ export type Database = {
           },
         ];
       };
+      external_product_taxonomy: {
+        Row: {
+          category_path: string;
+          external_id: number;
+          is_active: boolean | null;
+          last_updated: string | null;
+          level: number;
+          parent_id: number | null;
+        };
+        Insert: {
+          category_path: string;
+          external_id: number;
+          is_active?: boolean | null;
+          last_updated?: string | null;
+          level: number;
+          parent_id?: number | null;
+        };
+        Update: {
+          category_path?: string;
+          external_id?: number;
+          is_active?: boolean | null;
+          last_updated?: string | null;
+          level?: number;
+          parent_id?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "external_product_taxonomy_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "external_product_taxonomy";
+            referencedColumns: ["external_id"];
+          },
+        ];
+      };
       friend_requests: {
         Row: {
           created_at: string | null;
@@ -231,6 +266,90 @@ export type Database = {
           },
         ];
       };
+      import_log: {
+        Row: {
+          backup_id: string | null;
+          completed_at: string | null;
+          error_count: number | null;
+          errors: Json | null;
+          id: string;
+          import_type: string;
+          processed_count: number | null;
+          source: string;
+          started_at: string | null;
+          success_count: number | null;
+        };
+        Insert: {
+          backup_id?: string | null;
+          completed_at?: string | null;
+          error_count?: number | null;
+          errors?: Json | null;
+          id?: string;
+          import_type: string;
+          processed_count?: number | null;
+          source: string;
+          started_at?: string | null;
+          success_count?: number | null;
+        };
+        Update: {
+          backup_id?: string | null;
+          completed_at?: string | null;
+          error_count?: number | null;
+          errors?: Json | null;
+          id?: string;
+          import_type?: string;
+          processed_count?: number | null;
+          source?: string;
+          started_at?: string | null;
+          success_count?: number | null;
+        };
+        Relationships: [];
+      };
+      import_sessions: {
+        Row: {
+          completed_at: string | null;
+          current_batch: number | null;
+          errors: Json | null;
+          estimated_completion: string | null;
+          id: string;
+          processed: number | null;
+          progress: number | null;
+          stage: string;
+          started_at: string | null;
+          total: number | null;
+          total_batches: number | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          completed_at?: string | null;
+          current_batch?: number | null;
+          errors?: Json | null;
+          estimated_completion?: string | null;
+          id: string;
+          processed?: number | null;
+          progress?: number | null;
+          stage?: string;
+          started_at?: string | null;
+          total?: number | null;
+          total_batches?: number | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          completed_at?: string | null;
+          current_batch?: number | null;
+          errors?: Json | null;
+          estimated_completion?: string | null;
+          id?: string;
+          processed?: number | null;
+          progress?: number | null;
+          stage?: string;
+          started_at?: string | null;
+          total?: number | null;
+          total_batches?: number | null;
+          updated_at?: string | null;
+        };
+        Relationships: [];
+      };
       items: {
         Row: {
           attributes: Json | null;
@@ -238,6 +357,7 @@ export type Database = {
           condition: string;
           created_at: string | null;
           description: string | null;
+          external_category_id: number | null;
           id: string;
           images: string[] | null;
           is_available: boolean | null;
@@ -256,6 +376,7 @@ export type Database = {
           condition: string;
           created_at?: string | null;
           description?: string | null;
+          external_category_id?: number | null;
           id?: string;
           images?: string[] | null;
           is_available?: boolean | null;
@@ -274,6 +395,7 @@ export type Database = {
           condition?: string;
           created_at?: string | null;
           description?: string | null;
+          external_category_id?: number | null;
           id?: string;
           images?: string[] | null;
           is_available?: boolean | null;
@@ -293,6 +415,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "items_external_category_id_fkey";
+            columns: ["external_category_id"];
+            isOneToOne: false;
+            referencedRelation: "external_product_taxonomy";
+            referencedColumns: ["external_id"];
           },
           {
             foreignKeyName: "items_owner_id_fkey";
@@ -633,6 +762,33 @@ export type Database = {
           },
         ];
       };
+      taxonomy_backups: {
+        Row: {
+          created_at: string | null;
+          description: string | null;
+          id: string;
+          name: string;
+          record_count: number | null;
+          size: number | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          description?: string | null;
+          id: string;
+          name: string;
+          record_count?: number | null;
+          size?: number | null;
+        };
+        Update: {
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          name?: string;
+          record_count?: number | null;
+          size?: number | null;
+        };
+        Relationships: [];
+      };
       tools: {
         Row: {
           category: string;
@@ -788,19 +944,43 @@ export type Database = {
         Args: { request_id: string };
         Returns: undefined;
       };
+      copy_taxonomy_to_backup: {
+        Args: { backup_name: string };
+        Returns: undefined;
+      };
+      create_taxonomy_backup_table: {
+        Args: { backup_name: string };
+        Returns: undefined;
+      };
+      drop_taxonomy_backup_table: {
+        Args: { backup_name: string };
+        Returns: undefined;
+      };
+      find_external_category_by_path: {
+        Args: { category_path: string };
+        Returns: number;
+      };
       get_category_path: {
         Args: { category_uuid: string };
+        Returns: string;
+      };
+      get_external_category_path: {
+        Args: { external_id: number };
         Returns: string;
       };
       get_user_roles: {
         Args: { user_uuid: string };
         Returns: {
-          role_description: string;
           role_name: string;
+          role_description: string;
         }[];
       };
       reject_friend_request: {
         Args: { request_id: string };
+        Returns: undefined;
+      };
+      restore_taxonomy_from_backup: {
+        Args: { backup_name: string };
         Returns: undefined;
       };
       user_has_permission: {

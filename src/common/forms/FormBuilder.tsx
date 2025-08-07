@@ -194,7 +194,9 @@ export function FormBuilder({
         {/* Only show generalError here if onGeneralError is not provided */}
         {!onGeneralError && generalError && (
           <div className="mb-4 rounded border border-red-200 bg-red-50 px-3 py-2 text-center text-sm text-red-700">
-            {generalError}
+            {typeof generalError === "string"
+              ? generalError
+              : "An error occurred"}
           </div>
         )}
 

@@ -3,6 +3,7 @@ import { seedTools } from './tools';
 import { seedLoans } from './loans';
 import { seedMessages } from './messages';
 import { seedRoles } from './roles';
+import { seedExternalTaxonomy } from './externalTaxonomy';
 
 export async function runAllSeeds() {
   console.log('🚀 Starting seed data creation...');
@@ -14,6 +15,7 @@ export async function runAllSeeds() {
     await seedLoans();
     await seedMessages();
     await seedRoles();
+    await seedExternalTaxonomy();
 
     console.log('🎉 All seed data creation complete!');
 

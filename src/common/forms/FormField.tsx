@@ -127,7 +127,7 @@ export function FormField({
           {renderInput()}
           {error && (
             <Text className="mt-1 text-sm text-red-600 dark:text-red-400">
-              {error}
+              {typeof error === "string" ? error : "Invalid value"}
             </Text>
           )}
         </div>
@@ -145,7 +145,9 @@ export function FormField({
       )}
       {renderInput()}
       {error && (
-        <Text className="text-sm text-red-600 dark:text-red-400">{error}</Text>
+        <Text className="text-sm text-red-600 dark:text-red-400">
+          {typeof error === "string" ? error : "Invalid value"}
+        </Text>
       )}
     </div>
   );

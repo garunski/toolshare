@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 
-import {
-  SessionState,
-  SessionStateHandler,
-} from "@/common/operations/sessionStateHandler";
+import { type SessionState } from "@/common/operations/authListener";
+import { SessionStateHandler } from "@/common/operations/sessionStateHandler";
+import { SessionValidation } from "@/common/operations/sessionValidation";
 
 export function useAuth() {
   const [authState, setAuthState] = useState<SessionState>({
@@ -30,6 +29,19 @@ export function useAuth() {
     await sessionManager.refreshSession();
   };
 
+  const validateSession = async () => {
+    return await SessionValidation.validateSession();
+  };
+
+  const needsRefresh = async () => {
+    return await SessionValidation.needsRefresh();
+  };
+
+  const clearError = () => {
+    // Update state to clear error
+    setAuthState((prev: SessionState) => ({ ...prev, error: null }));
+  };
+
   return {
     user: authState.user,
     session: authState.session,
@@ -38,5 +50,8 @@ export function useAuth() {
     isAuthenticated: !!authState.user,
     signOut,
     refreshSession,
+    validateSession,
+    needsRefresh,
+    clearError,
   };
 }

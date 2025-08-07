@@ -1,88 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
+import { AppHeader } from "@/common/components/AppHeader";
 import { useAuth } from "@/common/hooks/useAuth";
-import { ToolDataProcessor } from "@/common/operations/toolDataProcessor";
-import type { Database } from "@/types/supabase";
 
 import { ToolGrid } from "./components/ToolGrid";
 import { ToolSearchForm } from "./components/ToolSearchForm";
-
-type Tool = Database["public"]["Tables"]["tools"]["Row"] & {
-  profiles: {
-    id: string;
-    first_name: string;
-    last_name: string;
-  };
-};
+import { useToolSearch } from "./hooks/useToolSearch";
 
 export default function BrowseToolsPage() {
   const { user } = useAuth();
-  const [tools, setTools] = useState<Tool[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { tools, loading, error, loadTools, handleSearch } = useToolSearch();
 
   useEffect(() => {
-    loadAvailableTools();
-  }, []);
+    loadTools();
+  }, [loadTools]);
 
-  const loadAvailableTools = async () => {
-    setLoading(true);
-    const result = await ToolDataProcessor.getAvailableTools();
-
-    if (result.success) {
-      setTools(
-        result.data?.map((tool: any) => ({
-          ...tool,
-          profiles: {
-            id: tool.owner_id,
-            first_name: "Unknown",
-            last_name: "User",
-          },
-        })) || [],
-      );
-    } else {
-      setError(result.error || "Failed to load tools");
-    }
-
-    setLoading(false);
-  };
-
-  const handleSearch = async (searchData: any) => {
-    setLoading(true);
-    const result = await ToolDataProcessor.searchTools(searchData);
-
-    if (result.success) {
-      setTools(
-        result.data?.map((tool: any) => ({
-          ...tool,
-          profiles: {
-            id: tool.owner_id,
-            first_name: "Unknown",
-            last_name: "User",
-          },
-        })) || [],
-      );
-    } else {
-      setError(result.error || "Failed to search tools");
-    }
-
-    setLoading(false);
-  };
+  // Ensure error is always a string
+  const errorMessage = typeof error === "string" ? error : "An error occurred";
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="py-6">
-            <h1 className="text-3xl font-bold text-gray-900">Browse Tools</h1>
-            <p className="text-gray-600">
-              Discover tools available in your community
-            </p>
-          </div>
-        </div>
-      </header>
+      <AppHeader
+        title="Browse Tools"
+        subtitle="Discover tools available in your community"
+      />
 
       <main className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
@@ -100,7 +43,7 @@ export default function BrowseToolsPage() {
                 </div>
               ) : error ? (
                 <div className="rounded-md bg-red-50 p-4">
-                  <p className="text-red-600">{error}</p>
+                  <p className="text-red-600">{errorMessage}</p>
                 </div>
               ) : tools.length === 0 ? (
                 <div className="py-12 text-center">

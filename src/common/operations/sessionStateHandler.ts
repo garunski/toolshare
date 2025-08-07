@@ -1,26 +1,13 @@
-import { Session, User } from "@supabase/supabase-js";
-
 import { createClient } from "@/common/supabase/client";
 
-export interface SessionState {
-  user: User | null;
-  session: Session | null;
-  loading: boolean;
-  error: string | null;
-}
+import { AuthListener, type SessionState } from "./authListener";
 
 export class SessionStateHandler {
   private static instance: SessionStateHandler;
-  private listeners: Set<(state: SessionState) => void> = new Set();
-  private currentState: SessionState = {
-    user: null,
-    session: null,
-    loading: true,
-    error: null,
-  };
+  private authListener: AuthListener;
 
   private constructor() {
-    this.initializeAuthListener();
+    this.authListener = AuthListener.getInstance();
   }
 
   static getInstance(): SessionStateHandler {
@@ -30,78 +17,79 @@ export class SessionStateHandler {
     return SessionStateHandler.instance;
   }
 
-  private async initializeAuthListener() {
-    const supabase = createClient();
-    // Get initial session
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.getSession();
-
-    if (error) {
-      this.updateState({ error: error.message });
-    } else {
-      this.updateState({
-        user: session?.user ?? null,
-        session,
-        loading: false,
-        error: null,
-      });
-    }
-
-    // Listen for auth changes
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      this.updateState({
-        user: session?.user ?? null,
-        session,
-        loading: false,
-        error: null,
-      });
-    });
-  }
-
-  private updateState(newState: Partial<SessionState>) {
-    this.currentState = { ...this.currentState, ...newState };
-    this.notifyListeners();
-  }
-
-  private notifyListeners() {
-    this.listeners.forEach((listener) => listener(this.currentState));
-  }
-
   subscribe(listener: (state: SessionState) => void): () => void {
-    this.listeners.add(listener);
-    // Immediately call with current state
-    listener(this.currentState);
-
-    // Return unsubscribe function
-    return () => {
-      this.listeners.delete(listener);
-    };
+    return this.authListener.subscribe(listener);
   }
 
   getCurrentState(): SessionState {
-    return { ...this.currentState };
+    return this.authListener.getCurrentState();
   }
 
   async signOut(): Promise<void> {
     const supabase = createClient();
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      this.updateState({ error: error.message });
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        this.authListener.updateSessionState({ error: error.message });
+      } else {
+        // Clear state on successful sign out
+        this.authListener.updateSessionState({
+          user: null,
+          session: null,
+          error: null,
+        });
+      }
+    } catch (error) {
+      this.authListener.updateSessionState({
+        error: error instanceof Error ? error.message : "Sign out failed",
+      });
     }
   }
 
   async refreshSession(): Promise<void> {
     const supabase = createClient();
-    const { data, error } = await supabase.auth.refreshSession();
-    if (error) {
-      this.updateState({ error: error.message });
-    } else {
-      this.updateState({
-        user: data.user,
-        session: data.session,
-        error: null,
+    try {
+      const { data, error } = await supabase.auth.refreshSession();
+      if (error) {
+        // If refresh fails, clear the session
+        if (
+          error.message.includes("Refresh Token") ||
+          error.message.includes("Invalid")
+        ) {
+          await this.clearInvalidSession();
+        } else {
+          this.authListener.updateSessionState({ error: error.message });
+        }
+      } else {
+        this.authListener.updateSessionState({
+          user: data.user,
+          session: data.session,
+          error: null,
+        });
+      }
+    } catch (error) {
+      this.authListener.updateSessionState({
+        error:
+          error instanceof Error ? error.message : "Session refresh failed",
+      });
+    }
+  }
+
+  private async clearInvalidSession(): Promise<void> {
+    const supabase = createClient();
+    try {
+      await supabase.auth.signOut();
+      this.authListener.updateSessionState({
+        user: null,
+        session: null,
+        error: "Session expired. Please sign in again.",
+      });
+    } catch (error) {
+      // Even if sign out fails, clear the local state
+      this.authListener.updateSessionState({
+        user: null,
+        session: null,
+        error: "Session expired. Please sign in again.",
       });
     }
   }

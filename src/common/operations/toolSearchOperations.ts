@@ -30,12 +30,10 @@ export function buildSearchQuery(filters: SearchFilters) {
     condition,
     images,
     is_available,
+    location,
+    owner_id,
     created_at,
-    profiles!tools_owner_id_fkey (
-      id,
-      first_name,
-      last_name
-    )
+    updated_at
   `);
 
   // Apply filters

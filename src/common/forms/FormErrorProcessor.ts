@@ -5,7 +5,8 @@ export function processFormError(error: unknown) {
 
   if (typeof error === "object" && error !== null) {
     const errObj = error as {
-      error?: string;
+      error?: string | Error;
+      message?: string;
       details?: {
         errors?: Array<{ field?: string; message?: string }>;
       };
@@ -23,7 +24,18 @@ export function processFormError(error: unknown) {
     }
 
     if (!handled && errObj.error) {
-      generalError = errObj.error;
+      if (typeof errObj.error === "string") {
+        generalError = errObj.error;
+      } else if (errObj.error instanceof Error) {
+        generalError = errObj.error.message;
+      } else {
+        generalError = "An error occurred";
+      }
+      handled = true;
+    }
+
+    if (!handled && errObj.message) {
+      generalError = errObj.message;
       handled = true;
     }
   }
@@ -31,6 +43,8 @@ export function processFormError(error: unknown) {
   if (!handled) {
     if (error instanceof Error) {
       generalError = error.message;
+    } else if (typeof error === "string") {
+      generalError = error;
     } else {
       generalError = "Operation failed";
     }

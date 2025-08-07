@@ -27,9 +27,39 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  try {
+    // Try to get the current user
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser()
 
-  return supabaseResponse
+    // If there's an error getting the user, try to refresh the session
+    if (userError) {
+      const {
+        data: { session },
+        error: refreshError,
+      } = await supabase.auth.refreshSession()
+
+      // If refresh also fails, clear the session and continue
+      if (refreshError) {
+        // Clear invalid session cookies
+        supabaseResponse.cookies.delete('sb-access-token')
+        supabaseResponse.cookies.delete('sb-refresh-token')
+        return supabaseResponse
+      }
+
+      // If refresh succeeds, update the response with new session
+      if (session) {
+        return supabaseResponse
+      }
+    }
+
+    return supabaseResponse
+  } catch (error) {
+    // If any unexpected error occurs, clear session and continue
+    supabaseResponse.cookies.delete('sb-access-token')
+    supabaseResponse.cookies.delete('sb-refresh-token')
+    return supabaseResponse
+  }
 } 

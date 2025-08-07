@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 
+import { AppHeader } from "@/common/components/AppHeader";
 import { useAuth } from "@/common/hooks/useAuth";
+import { usePermissions } from "@/common/hooks/usePermissions";
 import { Button } from "@/primitives/button";
 
 import { DashboardCard } from "./components/DashboardCard";
@@ -54,8 +56,17 @@ const dashboardCards = [
   },
 ];
 
+const adminCard = {
+  title: "Admin Panel",
+  description: "System administration and management",
+  content: "Access administrative tools, user management, and system settings.",
+  buttonText: "Go to Admin",
+  href: "/admin",
+};
+
 export default function DashboardPage() {
-  const { user, signOut, loading } = useAuth();
+  const { user, loading } = useAuth();
+  const { isAdmin } = usePermissions(user?.id);
 
   if (loading) {
     return (
@@ -78,26 +89,17 @@ export default function DashboardPage() {
     );
   }
 
+  // Add admin card for non-admin users
+  const allCards = isAdmin ? dashboardCards : [...dashboardCards, adminCard];
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">ToolShare</h1>
-              <p className="text-gray-600">Welcome back, {user.email}</p>
-            </div>
-            <Button onClick={signOut} outline>
-              Sign Out
-            </Button>
-          </div>
-        </div>
-      </header>
+      <AppHeader title="ToolShare" subtitle={`Welcome back, ${user.email}`} />
 
       <main className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {dashboardCards.map((card) => (
+            {allCards.map((card) => (
               <DashboardCard key={card.title} {...card} />
             ))}
           </div>
