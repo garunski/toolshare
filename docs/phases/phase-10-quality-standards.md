@@ -356,6 +356,7 @@ Ensure ESLint works properly in IDEs:
 - [ ] TypeScript path mapping validation added
 - [ ] IDE integration configured
 - [ ] All existing code passes ESLint rules
+- [ ] Run `task validate` to ensure all quality standards are enforced
 
 ## 🎯 Success Criteria
 
@@ -366,6 +367,7 @@ Ensure ESLint works properly in IDEs:
 - ✅ Consistent naming conventions enforced
 - ✅ High code quality maintained through automated checks
 - ✅ No custom scripts needed - using industry-standard tools
+- ✅ Run `task validate` to ensure no breaking changes
 
 ## ⚠️ Common Issues and Solutions
 

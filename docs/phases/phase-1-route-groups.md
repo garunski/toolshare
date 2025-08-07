@@ -415,7 +415,7 @@ find src -name "*.ts" -o -name "*.tsx" | xargs sed -i '' 's|@/app/api/profiles/|
 
 ### ✅ Functionality Verification
 
-- [ ] Application builds and runs without errors
+- [ ] Run `task validate` to ensure application builds and runs without errors
 - [ ] All existing functionality preserved
 - [ ] Middleware correctly handles route protection
 - [ ] Import paths updated correctly
@@ -428,7 +428,7 @@ find src -name "*.ts" -o -name "*.tsx" | xargs sed -i '' 's|@/app/api/profiles/|
 - ✅ Navigation works correctly between all sections
 - ✅ Authentication and authorization work properly
 - ✅ API routes organized by section
-- ✅ Application builds and runs without errors
+- ✅ Run `task validate` to ensure application builds and runs without errors
 - ✅ All existing functionality preserved
 - ✅ Middleware correctly handles route protection
 

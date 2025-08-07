@@ -421,6 +421,7 @@ const response = await fetch('/api/tools/create', {
 - [ ] Error handling consistent across all routes
 - [ ] Authentication and authorization working
 - [ ] File size limits enforced
+- [ ] Run `task validate` to ensure API routes work correctly
 
 ## 🎯 Success Criteria
 
@@ -431,6 +432,7 @@ const response = await fetch('/api/tools/create', {
 - ✅ Proper validation and business logic organization
 - ✅ Clean import paths maintained
 - ✅ Frontend integration working correctly
+- ✅ Run `task validate` to ensure no breaking changes
 
 ## ⚠️ Common Issues and Solutions
 

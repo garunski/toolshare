@@ -367,6 +367,7 @@ export const config = {
 - [ ] All API routes updated to use error handling
 - [ ] User context properly passed through middleware headers
 - [ ] Rate limiting tested with different user scenarios
+- [ ] Run `task validate` to ensure middleware works correctly
 
 ## 🎯 Success Criteria
 
@@ -377,6 +378,7 @@ export const config = {
 - ✅ Centralized error handling provides consistent responses
 - ✅ Request logging enables debugging and monitoring
 - ✅ User context properly available in API route handlers
+- ✅ Run `task validate` to ensure no breaking changes
 
 ## ⚠️ Common Issues and Solutions
 

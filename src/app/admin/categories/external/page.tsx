@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { AdminProtection } from "@/app/admin/components/AdminProtection";
+import { AdminProtection } from "@/admin/components/AdminProtection";
 import { ExternalTaxonomyOperations } from "@/common/operations/externalTaxonomyOperations";
 import { Heading } from "@/primitives/heading";
 import type { ExternalTaxonomyNode } from "@/types/categories";

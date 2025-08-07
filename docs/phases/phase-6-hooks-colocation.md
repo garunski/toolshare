@@ -220,7 +220,7 @@ find src -type d -empty -delete
 
 ### ✅ Testing Verification
 
-- [ ] All components using hooks still function correctly
+- [ ] Run `task validate` to ensure all components using hooks still function correctly
 - [ ] No runtime errors from missing hook imports
 - [ ] All hook functionality preserved after moving
 - [ ] Performance not degraded by hook colocation
@@ -237,6 +237,7 @@ find src -type d -empty -delete
 - ✅ Truly shared hooks remain in `src/common/supabase/hooks/`
 - ✅ No circular dependencies
 - ✅ All functionality preserved
+- ✅ Run `task validate` to ensure no breaking changes
 
 ---
 

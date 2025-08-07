@@ -438,7 +438,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
 ### ✅ Performance Verification
 
-- [ ] Server-side rendering working correctly
+- [ ] Run `task validate` to ensure server-side rendering working correctly
 - [ ] No client-side data fetching
 - [ ] Proper caching implemented
 - [ ] No unnecessary re-renders
@@ -465,6 +465,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 - ✅ Server-side rendering working correctly
 - ✅ Performance improved through server-side data fetching
 - ✅ SEO-friendly pages with proper metadata
+- ✅ Run `task validate` to ensure no breaking changes
 
 ---
 

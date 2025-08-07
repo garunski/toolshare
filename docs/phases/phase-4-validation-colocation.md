@@ -331,6 +331,7 @@ find src -type d -empty -delete
 - [ ] Form validation working correctly
 - [ ] Error handling implemented in forms
 - [ ] TypeScript types properly exported
+- [ ] Run `task validate` to ensure validation works correctly
 
 ### ✅ API Validation Verification
 
@@ -351,6 +352,7 @@ find src -type d -empty -delete
 - ✅ All imports updated to use new locations
 - ✅ Form and API validation working correctly
 - ✅ All existing functionality preserved
+- ✅ Run `task validate` to ensure no breaking changes
 
 ---
 

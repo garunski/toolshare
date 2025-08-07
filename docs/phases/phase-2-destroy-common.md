@@ -196,6 +196,7 @@ EOF
 - [ ] No validation moved yet (waiting for Phase 4)
 - [ ] No forms moved yet (waiting for Phase 5)
 - [ ] No hooks moved yet (waiting for Phase 6)
+- [ ] Run `task validate` to ensure no breaking changes
 
 ---
 
@@ -208,6 +209,7 @@ EOF
 - ✅ Target directories prepared for other phases
 - ✅ No files moved to wrong locations
 - ✅ Clear separation of concerns established
+- ✅ Run `task validate` to ensure no breaking changes
 
 ---
 

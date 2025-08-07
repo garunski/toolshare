@@ -529,7 +529,7 @@ find src -type d -empty -delete
 
 ### ✅ Form Functionality Verification
 
-- [ ] All forms work correctly after moving
+- [ ] Run `task validate` to ensure all forms work correctly after moving
 - [ ] Form validation working properly
 - [ ] Form submission working correctly
 - [ ] Error handling implemented in forms
@@ -555,6 +555,7 @@ find src -type d -empty -delete
 - ✅ All imports updated to use new locations
 - ✅ All forms working correctly
 - ✅ All existing functionality preserved
+- ✅ Run `task validate` to ensure no breaking changes
 
 ---
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { AdminProtection } from "@/app/admin/components/AdminProtection";
+import { AdminProtection } from "@/admin/components/AdminProtection";
 import { useAttributes } from "@/common/hooks/useAttributes";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";

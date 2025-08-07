@@ -23,7 +23,7 @@ You are helping refactor a Next.js App Router application called "ToolShare" fro
 - ✅ Follow the phase documentation exactly
 - ✅ Preserve all existing functionality
 - ✅ Use the architectural rules as your guide
-- ✅ Test thoroughly after each step
+- ✅ Use `task validate` to test thoroughly after each step
 - ✅ Ask questions if anything is unclear
 
 ### What NOT to Do:
@@ -31,6 +31,7 @@ You are helping refactor a Next.js App Router application called "ToolShare" fro
 - ❌ Break existing functionality
 - ❌ Create abstractions not in the plan
 - ❌ Ignore the architectural rules
+- ❌ Use custom scripts - only use `task validate` and root-level TASKs
 
 ## 🎯 Ready to Start
 

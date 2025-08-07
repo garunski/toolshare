@@ -117,3 +117,4 @@ src/
 - ❌ Don't mix sections without proper route group organization
 - ❌ Don't use `shared/`, `utils/`, `helpers/`, or `lib/` directories
 - ❌ Don't repeat context in filenames that's already clear from folder structure
+- ❌ Don't use custom scripts - only use `task validate` and root-level TASKs

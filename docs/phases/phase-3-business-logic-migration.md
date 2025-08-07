@@ -428,7 +428,7 @@ export async function GET(request: NextRequest) {
 
 ### ✅ Functionality Verification
 
-- [ ] All API endpoints work correctly
+- [ ] Run `task validate` to ensure all API endpoints work correctly
 - [ ] Business logic preserved after moving
 - [ ] No functionality broken
 - [ ] Proper error handling maintained
@@ -445,6 +445,7 @@ export async function GET(request: NextRequest) {
 - ✅ All imports updated to use new locations
 - ✅ API routes properly structured and functional
 - ✅ All existing functionality preserved
+- ✅ Run `task validate` to ensure no breaking changes
 
 ---
 
