@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { RoleAssignmentOperations } from "@/common/operations/roleAssignments";
-import { RolePermissionOperations } from "@/common/operations/rolePermissions";
-import { RoleQueryOperations } from "@/common/operations/roleQueries";
 import { createClient } from "@/common/supabase/server";
 import { RoleValidator } from "@/common/validators/roleValidator";
+
+import { RoleAssignmentOperations } from "../../../roles/assign/performRoleAssignment";
+import { RoleQueryOperations } from "../../../roles/list/getRoles";
+import { RolePermissionOperations } from "../../../roles/permissions/managePermissions";
 
 type RouteParams = {
   params: Promise<{
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const hasPermission = await RolePermissionOperations.hasPermission(
+    const hasPermission = await RolePermissionOperations.managePermissions(
       user.id,
       "manage_users",
     );
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const hasPermission = await RolePermissionOperations.hasPermission(
+    const hasPermission = await RolePermissionOperations.managePermissions(
       user.id,
       "assign_roles",
     );
@@ -82,7 +83,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     });
 
     const userRole =
-      await RoleAssignmentOperations.assignUserRole(validatedData);
+      await RoleAssignmentOperations.performRoleAssignment(validatedData);
 
     return NextResponse.json({
       success: true,
@@ -108,7 +109,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const hasPermission = await RolePermissionOperations.hasPermission(
+    const hasPermission = await RolePermissionOperations.managePermissions(
       user.id,
       "assign_roles",
     );
@@ -132,7 +133,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       userId,
       roleId,
     });
-    await RoleAssignmentOperations.removeUserRole(validatedData);
+    await RoleAssignmentOperations.assignRoleToUser(validatedData);
     return NextResponse.json({
       success: true,
       message: "Role removed successfully",

@@ -1,6 +1,7 @@
-import { RoleAssignmentOperations } from "@/common/operations/roleAssignments";
 import { createClient } from "@/common/supabase/client";
 import type { UserCreationRequest, UserWithRoles } from "@/types/roles";
+
+import { RoleAssignmentOperations } from "../../app/api/admin/roles/assign/performRoleAssignment";
 
 export class UserCreationOperations {
   // Create a new user with profile and optional role assignments
@@ -55,11 +56,13 @@ export class UserCreationOperations {
     if (request.roleIds && request.roleIds.length > 0) {
       for (const roleId of request.roleIds) {
         try {
-          const userRole = await RoleAssignmentOperations.assignUserRole({
-            userId: authData.user.id,
-            roleId,
-            expiresAt: request.roleExpiresAt || undefined,
-          });
+          const userRole = await RoleAssignmentOperations.performRoleAssignment(
+            {
+              userId: authData.user.id,
+              roleId,
+              expiresAt: request.roleExpiresAt || undefined,
+            },
+          );
           userRoles.push(userRole);
         } catch (error) {
           console.error(`Failed to assign role ${roleId}:`, error);

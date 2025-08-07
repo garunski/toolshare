@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { RolePermissionOperations } from "@/common/operations/rolePermissions";
-import { RoleQueryOperations } from "@/common/operations/roleQueries";
 import { createClient } from "@/common/supabase/server";
+
+import { RoleQueryOperations } from "./list/getRoles";
+import { RolePermissionOperations } from "./permissions/managePermissions";
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,7 +16,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const hasPermission = await RolePermissionOperations.hasPermission(
+    const hasPermission = await RolePermissionOperations.managePermissions(
       user.id,
       "view_roles",
     );
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const hasPermission = await RolePermissionOperations.hasPermission(
+    const hasPermission = await RolePermissionOperations.managePermissions(
       user.id,
       "manage_roles",
     );

@@ -19,19 +19,31 @@ tasks:
   
   setup:
     desc: Complete project setup - installs dependencies, sets up environment, and initializes Supabase
-    deps: [setup:install-deps, setup:setup-env, setup:fix-docker-auth, setup:setup-supabase]
+    cmds:
+      - task: setup:install-deps
+      - task: setup:setup-env
+      - task: setup:fix-docker-auth
+      - task: setup:setup-supabase
 
   dev:
     desc: Start development server with Supabase (full stack)
-    deps: [database:supabase-start, dev:dev-only]
+    cmds:
+      - task: database:supabase-start
+      - task: dev:dev-only
 
   db-reset:
     desc: Reset database, generate types, and seed all data (including users)
-    deps: [database:db-reset]
+    cmds:
+      - task: database:db-reset
 
   validate:
     desc: Run format, lint, build and fail if any are bad
-    deps: [dev:format-fix, dev:lint-fix, dev:format-check, dev:lint, dev:build]
+    cmds:
+      - task: dev:format-fix
+      - task: dev:lint-fix
+      - task: dev:format-check
+      - task: dev:lint
+      - task: dev:build
 
   # ============================================================================
   # QUICK ACCESS TASKS

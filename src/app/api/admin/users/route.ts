@@ -1,14 +1,15 @@
 import { NextRequest } from "next/server";
 
-import {
-  createApiResponse,
-  handleApiError,
-} from "@/common/operations/apiResponseHandler";
-import { RolePermissionOperations } from "@/common/operations/rolePermissions";
-import { RoleQueryOperations } from "@/common/operations/roleQueries";
 import { UserCreationOperations } from "@/common/operations/userCreation";
 import { createClient } from "@/common/supabase/server";
 import { UserCreationValidator } from "@/common/validators/userCreationValidator";
+
+import { RoleQueryOperations } from "../roles/list/getRoles";
+import { RolePermissionOperations } from "../roles/permissions/managePermissions";
+import {
+  createApiResponse,
+  handleApiError,
+} from "../roles/responses/responseHandler";
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,7 +27,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const hasPermission = await RolePermissionOperations.hasPermission(
+    const hasPermission = await RolePermissionOperations.managePermissions(
       user.id,
       "manage_users",
     );
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check admin permissions
-    const hasPermission = await RolePermissionOperations.hasPermission(
+    const hasPermission = await RolePermissionOperations.managePermissions(
       user.id,
       "manage_users",
     );

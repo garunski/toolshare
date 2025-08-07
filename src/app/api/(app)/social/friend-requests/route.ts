@@ -1,12 +1,13 @@
 import { NextRequest } from "next/server";
 
+import { createClient } from "@/common/supabase/server";
+
 import {
   createMissingFieldsResponse,
   createSuccessResponse,
   handleApiError,
   validateRequiredFields,
-} from "@/common/operations/apiResponseHandler";
-import { createClient } from "@/common/supabase/server";
+} from "../../../admin/roles/responses/responseHandler";
 
 export async function POST(request: NextRequest) {
   try {

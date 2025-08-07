@@ -11,84 +11,84 @@ Move 6 role and permission operation files from `src/common/operations/` to be c
 **Size:** 1.2KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/roles/assign/`
-- [ ] Copy `roleAssignments.ts` to `performRoleAssignment.ts`
-- [ ] Refactor function names to be specific (e.g., `performRoleAssignment`, `assignRoleToUser`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add role assignment validation logic
-- [ ] Add permission checking for role assignment
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `roleAssignments.ts`
-- [ ] Run `task validate` and fix all issues
+- [x] Create directory: `src/app/api/admin/roles/assign/`
+- [x] Copy `roleAssignments.ts` to `performRoleAssignment.ts`
+- [x] Refactor function names to be specific (e.g., `performRoleAssignment`, `assignRoleToUser`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add role assignment validation logic
+- [x] Add permission checking for role assignment
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `roleAssignments.ts`
+- [x] Run `task validate` and fix all issues
 
 ### 2. `rolePermissions.ts` → `/api/admin/roles/permissions/managePermissions.ts`
 **Size:** 899B | **Complexity:** Low
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/roles/permissions/`
-- [ ] Copy `rolePermissions.ts` to `managePermissions.ts`
-- [ ] Refactor function names to be specific (e.g., `managePermissions`, `updateRolePermissions`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add permission management logic
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `rolePermissions.ts`
-- [ ] Run `task validate` and fix all issues
+- [x] Create directory: `src/app/api/admin/roles/permissions/`
+- [x] Copy `rolePermissions.ts` to `managePermissions.ts`
+- [x] Refactor function names to be specific (e.g., `managePermissions`, `updateRolePermissions`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add permission management logic
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `rolePermissions.ts`
+- [x] Run `task validate` and fix all issues
 
 ### 3. `roleQueries.ts` → `/api/admin/roles/list/getRoles.ts`
 **Size:** 2.8KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/roles/list/`
-- [ ] Copy `roleQueries.ts` to `getRoles.ts`
-- [ ] Refactor function names to be specific (e.g., `getRoles`, `getRoleById`, `getUserRoles`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add role querying and filtering logic
-- [ ] Add pagination support for role lists
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `roleQueries.ts`
-- [ ] Run `task validate` and fix all issues
+- [x] Create directory: `src/app/api/admin/roles/list/`
+- [x] Copy `roleQueries.ts` to `getRoles.ts`
+- [x] Refactor function names to be specific (e.g., `getRoles`, `getRoleById`, `getUserRoles`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add role querying and filtering logic
+- [x] Add pagination support for role lists
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `roleQueries.ts`
+- [x] Run `task validate` and fix all issues
 
 ### 4. `apiRateLimiter.ts` → `/api/admin/roles/rateLimit/manageRateLimits.ts`
 **Size:** 3.3KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/roles/rateLimit/`
-- [ ] Copy `apiRateLimiter.ts` to `manageRateLimits.ts`
-- [ ] Refactor function names to be specific (e.g., `manageRateLimits`, `setRateLimit`, `checkRateLimit`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add rate limiting logic and configuration
-- [ ] Add rate limit monitoring and reporting
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `apiRateLimiter.ts`
-- [ ] Run `task validate` and fix all issues
+- [x] Create directory: `src/app/api/admin/roles/rateLimit/`
+- [x] Copy `apiRateLimiter.ts` to `manageRateLimits.ts`
+- [x] Refactor function names to be specific (e.g., `manageRateLimits`, `setRateLimit`, `checkRateLimit`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add rate limiting logic and configuration
+- [x] Add rate limit monitoring and reporting
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `apiRateLimiter.ts`
+- [x] Run `task validate` and fix all issues
 
 ### 5. `apiResponseHandler.ts` → `/api/admin/roles/responses/handleResponses.ts`
 **Size:** 1.9KB | **Complexity:** Low
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/roles/responses/`
-- [ ] Copy `apiResponseHandler.ts` to `handleResponses.ts`
-- [ ] Refactor function names to be specific (e.g., `handleResponses`, `formatApiResponse`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add standardized response handling logic
-- [ ] Add error response formatting
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `apiResponseHandler.ts`
-- [ ] Run `task validate` and fix all issues
+- [x] Create directory: `src/app/api/admin/roles/responses/`
+- [x] Copy `apiResponseHandler.ts` to `handleResponses.ts`
+- [x] Refactor function names to be specific (e.g., `handleResponses`, `formatApiResponse`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add standardized response handling logic
+- [x] Add error response formatting
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `apiResponseHandler.ts`
+- [x] Run `task validate` and fix all issues
 
 ### 6. `auditLoggingService.ts` → `/api/admin/roles/audit/logAuditEvents.ts`
 **Size:** 3.1KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/roles/audit/`
-- [ ] Copy `auditLoggingService.ts` to `logAuditEvents.ts`
-- [ ] Refactor function names to be specific (e.g., `logAuditEvents`, `recordAuditEvent`, `getAuditLogs`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add audit logging logic for role changes
-- [ ] Add audit log querying and filtering
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `auditLoggingService.ts`
-- [ ] Run `task validate` and fix all issues
+- [x] Create directory: `src/app/api/admin/roles/audit/`
+- [x] Copy `auditLoggingService.ts` to `logAuditEvents.ts`
+- [x] Refactor function names to be specific (e.g., `logAuditEvents`, `recordAuditEvent`, `getAuditLogs`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add audit logging logic for role changes
+- [x] Add audit log querying and filtering
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `auditLoggingService.ts`
+- [x] Run `task validate` and fix all issues
 
 ---
 
@@ -121,17 +121,17 @@ After each file is moved, test the functionality to ensure it works correctly.
 ## 📋 Verification Checklist
 
 ### ✅ File Migration Verification
-- [ ] All 6 role and permission operation files moved to appropriate API routes
-- [ ] All function names refactored to be specific and descriptive
-- [ ] All imports updated to use `@/common/supabase/server`
-- [ ] All corresponding `route.ts` files created
-- [ ] All imports in codebase updated to reference new locations
+- [x] All 6 role and permission operation files moved to appropriate API routes
+- [x] All function names refactored to be specific and descriptive
+- [x] All imports updated to use `@/common/supabase/server`
+- [x] All corresponding `route.ts` files created
+- [x] All imports in codebase updated to reference new locations
 
 ### ✅ Code Quality Verification
-- [ ] Run `task validate` to ensure no TypeScript errors
-- [ ] Run `task dev:code-quality` to ensure code quality standards
-- [ ] All business logic preserved after moving
-- [ ] No functionality broken
+- [x] Run `task validate` to ensure no TypeScript errors
+- [x] Run `task dev:code-quality` to ensure code quality standards
+- [x] All business logic preserved after moving
+- [x] No functionality broken
 
 ---
 
