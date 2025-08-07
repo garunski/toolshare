@@ -11,152 +11,152 @@ Move 12 category and attribute operation files from `src/common/operations/` to 
 **Size:** 3.2KB | **Complexity:** High
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/taxonomy/categories/`
-- [ ] Copy `categoryOperations.ts` to `performCategory.ts`
-- [ ] Refactor function names to be specific (e.g., `performCategory`, `createCategory`, `updateCategory`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add category CRUD operations logic
-- [ ] Add category validation and hierarchy management
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `categoryOperations.ts`
+- [x] Create directory: `src/app/api/admin/taxonomy/categories/`
+- [x] Copy `categoryOperations.ts` to `performCategory.ts`
+- [x] Refactor function names to be specific (e.g., `performCategory`, `createCategory`, `updateCategory`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add category CRUD operations logic
+- [x] Add category validation and hierarchy management
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `categoryOperations.ts`
 
 ### 2. `categoryCRUDOperations.ts` → `/api/admin/taxonomy/categories/crud/performCategoryCRUD.ts`
 **Size:** 2.3KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/taxonomy/categories/crud/`
-- [ ] Copy `categoryCRUDOperations.ts` to `performCategoryCRUD.ts`
-- [ ] Refactor function names to be specific (e.g., `performCategoryCRUD`, `createCategory`, `readCategory`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add CRUD operation logic for categories
-- [ ] Add category data validation
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `categoryCRUDOperations.ts`
+- [x] Create directory: `src/app/api/admin/taxonomy/categories/crud/`
+- [x] Copy `categoryCRUDOperations.ts` to `performCategoryCRUD.ts`
+- [x] Refactor function names to be specific (e.g., `performCategoryCRUD`, `createCategory`, `readCategory`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add CRUD operation logic for categories
+- [x] Add category data validation
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `categoryCRUDOperations.ts`
 
 ### 3. `categoryAttributeOperations.ts` → `/api/admin/taxonomy/attributes/performAttribute.ts`
 **Size:** 2.3KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/taxonomy/attributes/`
-- [ ] Copy `categoryAttributeOperations.ts` to `performAttribute.ts`
-- [ ] Refactor function names to be specific (e.g., `performAttribute`, `manageCategoryAttributes`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add attribute management logic for categories
-- [ ] Add attribute validation and type checking
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `categoryAttributeOperations.ts`
+- [x] Create directory: `src/app/api/admin/taxonomy/attributes/`
+- [x] Copy `categoryAttributeOperations.ts` to `performAttribute.ts`
+- [x] Refactor function names to be specific (e.g., `performAttribute`, `manageCategoryAttributes`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add attribute management logic for categories
+- [x] Add attribute validation and type checking
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `categoryAttributeOperations.ts`
 
 ### 4. `categoryTreeBuilder.ts` → `/api/admin/taxonomy/tree/buildCategoryTree.ts`
 **Size:** 2.3KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/taxonomy/tree/`
-- [ ] Copy `categoryTreeBuilder.ts` to `buildCategoryTree.ts`
-- [ ] Refactor function names to be specific (e.g., `buildCategoryTree`, `getCategoryHierarchy`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add category tree building logic
-- [ ] Add hierarchical category structure management
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `categoryTreeBuilder.ts`
+- [x] Create directory: `src/app/api/admin/taxonomy/tree/`
+- [x] Copy `categoryTreeBuilder.ts` to `buildCategoryTree.ts`
+- [x] Refactor function names to be specific (e.g., `buildCategoryTree`, `getCategoryHierarchy`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add category tree building logic
+- [x] Add hierarchical category structure management
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `categoryTreeBuilder.ts`
 
 ### 5. `categoryBasedSuggestions.ts` → `/api/admin/taxonomy/suggestions/getCategorySuggestions.ts`
 **Size:** 2.3KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/taxonomy/suggestions/`
-- [ ] Copy `categoryBasedSuggestions.ts` to `getCategorySuggestions.ts`
-- [ ] Refactor function names to be specific (e.g., `getCategorySuggestions`, `suggestCategories`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add category suggestion logic
-- [ ] Add suggestion ranking and filtering
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `categoryBasedSuggestions.ts`
+- [x] Create directory: `src/app/api/admin/taxonomy/suggestions/`
+- [x] Copy `categoryBasedSuggestions.ts` to `getCategorySuggestions.ts`
+- [x] Refactor function names to be specific (e.g., `getCategorySuggestions`, `suggestCategories`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add category suggestion logic
+- [x] Add suggestion ranking and filtering
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `categoryBasedSuggestions.ts`
 
 ### 6. `categoryScoringHelper.ts` → `/api/admin/taxonomy/scoring/scoreCategories.ts`
 **Size:** 2.3KB | **Complexity:** Low
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/taxonomy/scoring/`
-- [ ] Copy `categoryScoringHelper.ts` to `scoreCategories.ts`
-- [ ] Refactor function names to be specific (e.g., `scoreCategories`, `calculateCategoryScore`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add category scoring logic
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `categoryScoringHelper.ts`
+- [x] Create directory: `src/app/api/admin/taxonomy/scoring/`
+- [x] Copy `categoryScoringHelper.ts` to `scoreCategories.ts`
+- [x] Refactor function names to be specific (e.g., `scoreCategories`, `calculateCategoryScore`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add category scoring logic
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `categoryScoringHelper.ts`
 
 ### 7. `categorySelectOperations.ts` → `/api/admin/taxonomy/select/performCategorySelect.ts`
 **Size:** 498B | **Complexity:** Low
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/taxonomy/select/`
-- [ ] Copy `categorySelectOperations.ts` to `performCategorySelect.ts`
-- [ ] Refactor function names to be specific (e.g., `performCategorySelect`, `selectCategories`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add category selection logic
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `categorySelectOperations.ts`
+- [x] Create directory: `src/app/api/admin/taxonomy/select/`
+- [x] Copy `categorySelectOperations.ts` to `performCategorySelect.ts`
+- [x] Refactor function names to be specific (e.g., `performCategorySelect`, `selectCategories`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add category selection logic
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `categorySelectOperations.ts`
 
 ### 8. `categorySuggestionEngine.ts` → `/api/admin/taxonomy/suggestions/engine/suggestCategories.ts`
 **Size:** 3.3KB | **Complexity:** High
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/taxonomy/suggestions/engine/`
-- [ ] Copy `categorySuggestionEngine.ts` to `suggestCategories.ts`
-- [ ] Refactor function names to be specific (e.g., `suggestCategories`, `runSuggestionEngine`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add advanced category suggestion engine logic
-- [ ] Add machine learning-based suggestions
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `categorySuggestionEngine.ts`
+- [x] Create directory: `src/app/api/admin/taxonomy/suggestions/engine/`
+- [x] Copy `categorySuggestionEngine.ts` to `suggestCategories.ts`
+- [x] Refactor function names to be specific (e.g., `suggestCategories`, `runSuggestionEngine`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add advanced category suggestion engine logic
+- [x] Add machine learning-based suggestions
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `categorySuggestionEngine.ts`
 
 ### 9. `attributeOperations.ts` → `/api/admin/taxonomy/attributes/performAttributeOperations.ts`
 **Size:** 4.3KB | **Complexity:** High
 
 **Subtasks:**
-- [ ] Copy `attributeOperations.ts` to `performAttributeOperations.ts` (same directory as attributes)
-- [ ] Refactor function names to be specific (e.g., `performAttributeOperations`, `manageAttributes`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add comprehensive attribute management logic
-- [ ] Add attribute CRUD operations
-- [ ] Update all imports in codebase that reference `attributeOperations.ts`
+- [x] Copy `attributeOperations.ts` to `performAttributeOperations.ts` (same directory as attributes)
+- [x] Refactor function names to be specific (e.g., `performAttributeOperations`, `manageAttributes`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add comprehensive attribute management logic
+- [x] Add attribute CRUD operations
+- [x] Update all imports in codebase that reference `attributeOperations.ts`
 
 ### 10. `attributeMappingSystem.ts` → `/api/admin/taxonomy/attributes/mapping/manageAttributeMapping.ts`
 **Size:** 3.8KB | **Complexity:** High
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/taxonomy/attributes/mapping/`
-- [ ] Copy `attributeMappingSystem.ts` to `manageAttributeMapping.ts`
-- [ ] Refactor function names to be specific (e.g., `manageAttributeMapping`, `mapAttributes`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add attribute mapping system logic
-- [ ] Add mapping validation and conflict resolution
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `attributeMappingSystem.ts`
+- [x] Create directory: `src/app/api/admin/taxonomy/attributes/mapping/`
+- [x] Copy `attributeMappingSystem.ts` to `manageAttributeMapping.ts`
+- [x] Refactor function names to be specific (e.g., `manageAttributeMapping`, `mapAttributes`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add attribute mapping system logic
+- [x] Add mapping validation and conflict resolution
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `attributeMappingSystem.ts`
 
 ### 11. `attributeValidationHelper.ts` → `/api/admin/taxonomy/attributes/validation/validateAttributes.ts`
 **Size:** 1.7KB | **Complexity:** Low
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/taxonomy/attributes/validation/`
-- [ ] Copy `attributeValidationHelper.ts` to `validateAttributes.ts`
-- [ ] Refactor function names to be specific (e.g., `validateAttributes`, `checkAttributeValidity`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add attribute validation logic
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `attributeValidationHelper.ts`
+- [x] Create directory: `src/app/api/admin/taxonomy/attributes/validation/`
+- [x] Copy `attributeValidationHelper.ts` to `validateAttributes.ts`
+- [x] Refactor function names to be specific (e.g., `validateAttributes`, `checkAttributeValidity`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add attribute validation logic
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `attributeValidationHelper.ts`
 
 ### 12. `externalTaxonomyOperations.ts` → `/api/admin/taxonomy/external/performExternalTaxonomy.ts`
 **Size:** 3.5KB | **Complexity:** High
 
 **Subtasks:**
-- [ ] Create directory: `src/app/api/admin/taxonomy/external/`
-- [ ] Copy `externalTaxonomyOperations.ts` to `performExternalTaxonomy.ts`
-- [ ] Refactor function names to be specific (e.g., `performExternalTaxonomy`, `importExternalTaxonomy`)
-- [ ] Update imports to use `@/common/supabase/server`
-- [ ] Add external taxonomy import/export logic
-- [ ] Add external API integration
-- [ ] Create corresponding `route.ts` file
-- [ ] Update all imports in codebase that reference `externalTaxonomyOperations.ts`
+- [x] Create directory: `src/app/api/admin/taxonomy/external/`
+- [x] Copy `externalTaxonomyOperations.ts` to `performExternalTaxonomy.ts`
+- [x] Refactor function names to be specific (e.g., `performExternalTaxonomy`, `importExternalTaxonomy`)
+- [x] Update imports to use `@/common/supabase/server`
+- [x] Add external taxonomy import/export logic
+- [x] Add external API integration
+- [x] Create corresponding `route.ts` file
+- [x] Update all imports in codebase that reference `externalTaxonomyOperations.ts`
 
 ---
 
@@ -194,17 +194,17 @@ After each file is moved, test the functionality to ensure it works correctly.
 ## 📋 Verification Checklist
 
 ### ✅ File Migration Verification
-- [ ] All 12 category and attribute operation files moved to appropriate API routes
-- [ ] All function names refactored to be specific and descriptive
-- [ ] All imports updated to use `@/common/supabase/server`
-- [ ] All corresponding `route.ts` files created
-- [ ] All imports in codebase updated to reference new locations
+- [x] All 12 category and attribute operation files moved to appropriate API routes
+- [x] All function names refactored to be specific and descriptive
+- [x] All imports updated to use `@/common/supabase/server`
+- [x] All corresponding `route.ts` files created
+- [x] All imports in codebase updated to reference new locations
 
 ### ✅ Code Quality Verification
-- [ ] Run `task validate` to ensure no TypeScript errors
-- [ ] Run `task dev:code-quality` to ensure code quality standards
-- [ ] All business logic preserved after moving
-- [ ] No functionality broken
+- [x] Run `task validate` to ensure no TypeScript errors
+- [x] Run `task dev:code-quality` to ensure code quality standards
+- [x] All business logic preserved after moving
+- [x] No functionality broken
 
 ---
 
