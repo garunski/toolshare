@@ -13,6 +13,12 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
   ...compat.extends("prettier"), // Disable ESLint rules that conflict with Prettier
   {
+    ignores: [
+      // Protected primitives folder - NEVER modify
+      "src/primitives/**/*",
+    ],
+  },
+  {
     rules: {
       // Enforce file size limits (approximate)
       "max-lines": ["error", { max: 150 }],
