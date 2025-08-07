@@ -1,6 +1,6 @@
 import { createClient } from "@/common/supabase/client";
 
-import { QueryOptimizationHelpers } from "./helpers/queryOptimizationHelpers";
+import { OptimizationHelpers } from "../../app/api/admin/system/optimization/helpers/optimizationHelpers";
 
 interface QueryCache {
   key: string;
@@ -25,10 +25,7 @@ export class QueryOptimizationService {
     const cached = this.getFromCache(cacheKey);
     if (cached) return cached;
 
-    const query = QueryOptimizationHelpers.buildItemSearchQuery(
-      supabase,
-      filters,
-    );
+    const query = OptimizationHelpers.buildItemSearchQuery(supabase, filters);
     const { data, error, count } = await query;
 
     if (error) throw error;
@@ -59,7 +56,7 @@ export class QueryOptimizationService {
 
     if (error) throw error;
 
-    const hierarchy = QueryOptimizationHelpers.buildCategoryTree(data);
+    const hierarchy = OptimizationHelpers.buildCategoryTree(data);
     this.setCache(cacheKey, hierarchy, 15 * 60 * 1000);
 
     return hierarchy;

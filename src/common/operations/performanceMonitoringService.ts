@@ -1,4 +1,4 @@
-import { PerformanceMonitoringHelpers } from "./helpers/performanceMonitoringHelpers";
+import { PerformanceHelpers } from "../../app/api/admin/system/performance/helpers/performanceHelpers";
 
 interface PerformanceMetric {
   name: string;
@@ -14,12 +14,9 @@ export class PerformanceMonitoringService {
   static recordPageLoad(pageName: string): void {
     if (typeof window === "undefined") return;
 
-    PerformanceMonitoringHelpers.recordCoreWebVitals(
-      pageName,
-      (name, value) => {
-        this.addMetric(name, value);
-      },
-    );
+    PerformanceHelpers.recordCoreWebVitals(pageName, (name, value) => {
+      this.addMetric(name, value);
+    });
 
     const navigation = performance.getEntriesByType(
       "navigation",
@@ -82,7 +79,7 @@ export class PerformanceMonitoringService {
   }
 
   static getPerformanceSummary(timeRange = 300000) {
-    return PerformanceMonitoringHelpers.calculatePerformanceSummary(
+    return PerformanceHelpers.calculatePerformanceMetrics(
       this.metrics,
       timeRange,
     );

@@ -1,11 +1,7 @@
 import { AttributeMappingHelper } from "@/common/operations/attributeMappingHelper";
-import {
-  CORE_MAPPINGS,
-  processCategoryAttributes,
-  processCategoryAttributesForValidation,
-} from "@/common/operations/helpers/attributeMappingHelpers";
 import { createClient } from "@/common/supabase/client";
 
+import { CORE_MAPPINGS, MappingHelpers } from "../helpers/mappingHelpers";
 import { ValidateAttributes } from "../validation/validateAttributes";
 
 interface AttributeMapping {
@@ -82,7 +78,7 @@ export class ManageAttributeMapping {
       )
       .eq("category_id", categoryId);
 
-    return processCategoryAttributes(categoryAttrs || []);
+    return MappingHelpers.processCategoryAttributes(categoryAttrs || []);
   }
 
   /**
@@ -108,7 +104,9 @@ export class ManageAttributeMapping {
       )
       .eq("category_id", categoryId);
 
-    return processCategoryAttributesForValidation(attributes || []);
+    return MappingHelpers.processCategoryAttributesForValidation(
+      attributes || [],
+    );
   }
 
   /**

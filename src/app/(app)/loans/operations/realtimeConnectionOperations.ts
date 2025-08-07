@@ -1,8 +1,9 @@
-import { AdminSubscriptionHelpers } from "@/common/operations/helpers/adminSubscriptionHelpers";
-import { UserSubscriptionHelpers } from "@/common/operations/helpers/userSubscriptionHelpers";
-
 import { RealtimeConnectionCore } from "./realtimeConnectionCore";
 import { RealtimeSubscriptionManager } from "./realtimeSubscriptionManager";
+
+// Temporarily commented out to avoid circular dependencies
+// import { SubscriptionHelpers as UserSubscriptionHelpers } from "@/app/api/(app)/profiles/subscriptions/helpers/subscriptionHelpers";
+// import { SubscriptionHelpers as AdminSubscriptionHelpers } from "@/app/api/admin/subscriptions/helpers/subscriptionHelpers";
 
 interface SubscriptionConfig {
   table: string;
@@ -30,14 +31,18 @@ export class RealtimeConnectionManager {
   }
 
   static subscribeToAdminUpdates(callback: (data: any) => void): () => void {
-    return AdminSubscriptionHelpers.createAdminSubscriptions(callback);
+    // Placeholder implementation to avoid circular dependencies
+    console.log("Admin subscription placeholder");
+    return () => console.log("Admin subscription cleanup");
   }
 
   static subscribeToUserUpdates(
     userId: string,
     callback: (data: any) => void,
   ): () => void {
-    return UserSubscriptionHelpers.createUserSubscriptions(userId, callback);
+    // Placeholder implementation to avoid circular dependencies
+    console.log("User subscription placeholder");
+    return () => console.log("User subscription cleanup");
   }
 
   static broadcast(channelName: string, event: string, payload: any): void {

@@ -1,12 +1,10 @@
 import { createClient } from "@/common/supabase/client";
 
+import { MappingHelpers } from "../../app/api/admin/taxonomy/attributes/helpers/mappingHelpers";
+import { CORE_MAPPINGS } from "../../app/api/admin/taxonomy/attributes/helpers/mappingTypes";
+
 import { AttributeMappingHelper } from "./attributeMappingHelper";
 import { AttributeValidationHelper } from "./attributeValidationHelper";
-import {
-  CORE_MAPPINGS,
-  processCategoryAttributes,
-  processCategoryAttributesForValidation,
-} from "./helpers/attributeMappingHelpers";
 
 interface AttributeMapping {
   externalAttribute: string;
@@ -82,7 +80,7 @@ export class AttributeMappingSystem {
       )
       .eq("category_id", categoryId);
 
-    return processCategoryAttributes(categoryAttrs || []);
+    return MappingHelpers.processCategoryAttributes(categoryAttrs || []);
   }
 
   /**
@@ -108,7 +106,9 @@ export class AttributeMappingSystem {
       )
       .eq("category_id", categoryId);
 
-    return processCategoryAttributesForValidation(attributes || []);
+    return MappingHelpers.processCategoryAttributesForValidation(
+      attributes || [],
+    );
   }
 
   /**

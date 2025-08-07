@@ -1,7 +1,8 @@
 import { createClient } from "@/common/supabase/client";
 
+import { findSimilarItems } from "../../app/api/(app)/tools/suggestions/helpers/similarItemsHelper";
+
 import { CategoryBasedSuggestions } from "./categoryBasedSuggestions";
-import { findSimilarItems } from "./helpers/similarItemsHelper";
 import { SimilarItemSuggestions } from "./similarItemSuggestions";
 import { SmartDefaults } from "./smartDefaults";
 

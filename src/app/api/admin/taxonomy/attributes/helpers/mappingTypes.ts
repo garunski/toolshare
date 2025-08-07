@@ -1,7 +1,6 @@
-import { AttributeMappingHelper } from "../attributeMappingHelper";
-import { AttributeValidationHelper } from "../attributeValidationHelper";
+import { AttributeMappingHelper } from "@/common/operations/attributeMappingHelper";
 
-interface AttributeMapping {
+export interface AttributeMapping {
   externalAttribute: string;
   internalField: string;
   mappingType: "direct" | "transform" | "composite";
@@ -68,45 +67,3 @@ export const CORE_MAPPINGS: Record<string, AttributeMapping> = {
     defaultValue: "good",
   },
 };
-
-// Helper function to process category attributes
-export function processCategoryAttributes(
-  categoryAttrs: any[],
-): Record<string, AttributeMapping> {
-  const mappings: Record<string, AttributeMapping> = {};
-
-  categoryAttrs?.forEach((attr) => {
-    const fieldName = attr.attribute_definitions?.name;
-    const externalMapping = attr.external_mapping;
-
-    if (externalMapping && fieldName) {
-      mappings[fieldName] = {
-        externalAttribute: externalMapping,
-        internalField: fieldName,
-        mappingType: "direct",
-        isRequired: attr.is_required,
-        defaultValue: attr.attribute_definitions?.default_value,
-        validation: AttributeValidationHelper.createValidator(
-          attr.attribute_definitions?.validation_rules,
-        ),
-      };
-    }
-  });
-
-  return mappings;
-}
-
-// Helper function to process category attributes for validation
-export function processCategoryAttributesForValidation(
-  attributes: any[],
-): any[] {
-  return (
-    attributes?.map((attr) => ({
-      name: attr.attribute_definitions?.name,
-      dataType: attr.attribute_definitions?.data_type,
-      validationRules: attr.attribute_definitions?.validation_rules,
-      defaultValue: attr.attribute_definitions?.default_value,
-      isRequired: attr.is_required,
-    })) || []
-  );
-}
