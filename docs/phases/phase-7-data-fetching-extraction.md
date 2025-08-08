@@ -509,4 +509,47 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
 ---
 
+## 🤖 AI Implementation Instructions
+
+### Before Starting
+1. **Check Current Progress**: Review the detailed sub-phase files in `docs/phases/`:
+   - `phase-7a-simple-pages.md` - Simple pages with minimal logic (3 files)
+   - `phase-7b-tool-pages.md` - Tool-related pages (4 files)
+   - `phase-7c-admin-pages.md` - Admin pages (5 files)
+   - `phase-7d-social-pages.md` - Social/messaging pages (3 files)
+   - `phase-7e-dynamic-routes.md` - Dynamic route pages (2 files)
+   - `phase-7f-complex-search.md` - Complex search/browse pages (2 files)
+   - `phase-7g-error-loading.md` - Error and loading boundaries (30+ files)
+   - `phase-7h-hook-cleanup.md` - Data hook cleanup (28 files)
+   - `phase-7i-final-validation.md` - Final cleanup and validation
+
+2. **Identify Next Task**: Check which sub-phase files exist and which are missing to determine the next step.
+
+### Implementation Process
+1. **Follow Sub-Phase Files**: Each sub-phase contains detailed file-by-file breakdowns with specific subtasks.
+2. **Complete One Page at a Time**: For each page in the sub-phase:
+   - Create server data fetching function
+   - Convert page to server component
+   - Create UI-only components
+   - Add error and loading boundaries
+   - Run `task validate` after completing each page
+   - Fix any issues before moving to the next page
+3. **Check Progress**: After each page is completed, update the checklist in the sub-phase file.
+4. **Move to Next Sub-Phase**: Only proceed to the next sub-phase after all pages in the current sub-phase are completed.
+
+### Quality Assurance
+- **Run `task validate`** after each individual page migration
+- **Fix all issues** before proceeding to the next page
+- **Update checklists** in sub-phase files to track progress
+- **Verify functionality** after each sub-phase completion
+
+### Success Criteria
+- All 65+ files successfully migrated/created
+- All pages converted to server components
+- All data fetching moved to server functions
+- All UI components are pure and predictable
+- `task validate` passes without errors
+
+---
+
 *Phase 7 focuses on extracting all business logic and data fetching from pages, ensuring they only contain UI orchestration while moving data fetching to dedicated server functions for better performance and maintainability.*
