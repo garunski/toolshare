@@ -76,18 +76,16 @@ export class SocialAttributeValidator {
     const num = Number(value);
     if (isNaN(num))
       return { isValid: false, error: `${label} must be a valid number` };
-    if (rules.minimum !== undefined && num < rules.minimum) {
+    if (rules.minimum !== undefined && num < rules.minimum)
       return {
         isValid: false,
         error: `${label} must be at least ${rules.minimum}`,
       };
-    }
-    if (rules.maximum !== undefined && num > rules.maximum) {
+    if (rules.maximum !== undefined && num > rules.maximum)
       return {
         isValid: false,
         error: `${label} must be at most ${rules.maximum}`,
       };
-    }
     return { isValid: true };
   }
 
@@ -125,9 +123,8 @@ export class SocialAttributeValidator {
     options: any[],
     label: string,
   ) {
-    if (!Array.isArray(values)) {
+    if (!Array.isArray(values))
       return { isValid: false, error: `${label} must be an array of values` };
-    }
     const validValues = options.map((opt: any) => opt.value);
     const invalidValues = values.filter((val) => !validValues.includes(val));
     return invalidValues.length > 0
