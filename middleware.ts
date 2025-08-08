@@ -125,6 +125,7 @@ export async function middleware(request: NextRequest) {
     return supabaseResponse;
   } catch (error) {
     // If any unexpected error occurs, clear session and continue
+    console.error("Global middleware error:", error);
     supabaseResponse.cookies.delete("sb-access-token");
     supabaseResponse.cookies.delete("sb-refresh-token");
     return supabaseResponse;
