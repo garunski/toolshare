@@ -9,7 +9,8 @@ import { Text } from "@/primitives/text";
 
 interface LoanCardContentProps {
   loan: any;
-  userId: string;
+  isBorrower?: boolean;
+  isLender?: boolean;
   showActions?: boolean;
   onAction?: (loan: any, action: string) => void;
   children?: React.ReactNode;
@@ -17,7 +18,8 @@ interface LoanCardContentProps {
 
 export function LoanCardContent({
   loan,
-  userId,
+  isBorrower = false,
+  isLender = false,
   showActions = false,
   onAction,
   children,
@@ -43,9 +45,6 @@ export function LoanCardContent({
 
   const getActionButton = (loan: any) => {
     if (!showActions || !onAction) return null;
-
-    const isLender = loan.lender_id === userId;
-    const isBorrower = loan.borrower_id === userId;
 
     if (isLender && loan.status === "pending") {
       return (
@@ -84,10 +83,10 @@ export function LoanCardContent({
     <div className="flex items-start gap-4">
       {/* Tool Image */}
       <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 dark:bg-zinc-800">
-        {loan.tools?.images?.[0] ? (
+        {loan.items?.image_url ? (
           <Image
-            src={loan.tools.images[0]}
-            alt={loan.tools.name}
+            src={loan.items.image_url}
+            alt={loan.items.name}
             fill
             className="object-cover"
           />
@@ -106,10 +105,10 @@ export function LoanCardContent({
               level={3}
               className="font-semibold text-gray-900 dark:text-white"
             >
-              {loan.tools?.name}
+              {loan.items?.name}
             </Heading>
             <Text className="text-sm text-gray-600 dark:text-gray-400">
-              {loan.tools?.description}
+              {loan.items?.description}
             </Text>
           </div>
           {getStatusBadge(loan.status)}
@@ -127,9 +126,9 @@ export function LoanCardContent({
           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             <User className="h-4 w-4" />
             <span>
-              {loan.lender_id === userId
-                ? `Borrower: ${loan.profiles?.first_name} ${loan.profiles?.last_name}`
-                : `Lender: ${loan.profiles?.first_name} ${loan.profiles?.last_name}`}
+              {isLender
+                ? `Borrower: ${loan.profiles?.name || "Unknown"}`
+                : `Lender: ${loan.profiles?.name || "Unknown"}`}
             </span>
           </div>
         </div>

@@ -11,10 +11,21 @@ import { LoanSummaryCards } from "./LoanSummaryCards";
 
 interface LoansDashboardProps {
   activeLoans: any[];
-  userId: string;
+  borrowedLoans: any[];
+  lentLoans: any[];
+  stats: {
+    active: number;
+    completed: number;
+    pending: number;
+  };
 }
 
-export function LoansDashboard({ activeLoans, userId }: LoansDashboardProps) {
+export function LoansDashboard({
+  activeLoans,
+  borrowedLoans,
+  lentLoans,
+  stats,
+}: LoansDashboardProps) {
   const [selectedTab, setSelectedTab] = useState("active");
 
   const pendingLoans = activeLoans.filter((loan) => loan.status === "pending");
@@ -40,6 +51,7 @@ export function LoansDashboard({ activeLoans, userId }: LoansDashboardProps) {
         pendingLoans={pendingLoans}
         activeLoansList={activeLoansList}
         activeLoans={activeLoans}
+        stats={stats}
       />
 
       {/* Tabs */}
@@ -79,19 +91,30 @@ export function LoansDashboard({ activeLoans, userId }: LoansDashboardProps) {
 
         {selectedTab === "active" && (
           <div className="mt-6">
-            <ActiveLoansList loans={activeLoansList} userId={userId} />
+            <ActiveLoansList
+              loans={activeLoansList}
+              borrowedLoans={borrowedLoans}
+              lentLoans={lentLoans}
+            />
           </div>
         )}
 
         {selectedTab === "pending" && (
           <div className="mt-6">
-            <ActiveLoansList loans={pendingLoans} userId={userId} />
+            <ActiveLoansList
+              loans={pendingLoans}
+              borrowedLoans={borrowedLoans}
+              lentLoans={lentLoans}
+            />
           </div>
         )}
 
         {selectedTab === "history" && (
           <div className="mt-6">
-            <LoanHistoryList userId={userId} />
+            <LoanHistoryList
+              borrowedLoans={borrowedLoans}
+              lentLoans={lentLoans}
+            />
           </div>
         )}
       </div>

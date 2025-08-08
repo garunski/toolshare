@@ -6,12 +6,18 @@ interface LoanSummaryCardsProps {
   pendingLoans: any[];
   activeLoansList: any[];
   activeLoans: any[];
+  stats: {
+    active: number;
+    completed: number;
+    pending: number;
+  };
 }
 
 export function LoanSummaryCards({
   pendingLoans,
   activeLoansList,
   activeLoans,
+  stats,
 }: LoanSummaryCardsProps) {
   return (
     <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -23,11 +29,11 @@ export function LoanSummaryCards({
           >
             Pending Requests
           </Heading>
-          <Badge color="zinc">{pendingLoans.length}</Badge>
+          <Badge color="zinc">{stats.pending}</Badge>
         </div>
         <div>
           <div className="text-2xl font-bold text-zinc-900 dark:text-white">
-            {pendingLoans.length}
+            {stats.pending}
           </div>
           <Text className="text-xs text-zinc-500 dark:text-zinc-400">
             Awaiting approval
@@ -43,11 +49,11 @@ export function LoanSummaryCards({
           >
             Active Loans
           </Heading>
-          <Badge color="blue">{activeLoansList.length}</Badge>
+          <Badge color="blue">{stats.active}</Badge>
         </div>
         <div>
           <div className="text-2xl font-bold text-zinc-900 dark:text-white">
-            {activeLoansList.length}
+            {stats.active}
           </div>
           <Text className="text-xs text-zinc-500 dark:text-zinc-400">
             Currently borrowed
@@ -61,18 +67,16 @@ export function LoanSummaryCards({
             level={3}
             className="text-sm font-medium text-zinc-900 dark:text-white"
           >
-            Overdue
+            Completed
           </Heading>
-          <Badge color="red">
-            {activeLoans.filter((loan) => loan.status === "overdue").length}
-          </Badge>
+          <Badge color="green">{stats.completed}</Badge>
         </div>
         <div>
           <div className="text-2xl font-bold text-zinc-900 dark:text-white">
-            {activeLoans.filter((loan) => loan.status === "overdue").length}
+            {stats.completed}
           </div>
           <Text className="text-xs text-zinc-500 dark:text-zinc-400">
-            Past due date
+            Successfully returned
           </Text>
         </div>
       </div>

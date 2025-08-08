@@ -11,10 +11,15 @@ import { LoanCard } from "./LoanCard";
 
 interface ActiveLoansListProps {
   loans: any[];
-  userId: string;
+  borrowedLoans: any[];
+  lentLoans: any[];
 }
 
-export function ActiveLoansList({ loans, userId }: ActiveLoansListProps) {
+export function ActiveLoansList({
+  loans,
+  borrowedLoans,
+  lentLoans,
+}: ActiveLoansListProps) {
   const [selectedLoan, setSelectedLoan] = useState<any>(null);
   const [showActionModal, setShowActionModal] = useState(false);
 
@@ -49,7 +54,8 @@ export function ActiveLoansList({ loans, userId }: ActiveLoansListProps) {
         <LoanCard
           key={loan.id}
           loan={loan}
-          userId={userId}
+          borrowedLoans={borrowedLoans}
+          lentLoans={lentLoans}
           onAction={handleLoanAction}
         />
       ))}

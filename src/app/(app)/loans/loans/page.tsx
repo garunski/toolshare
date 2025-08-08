@@ -1,22 +1,18 @@
-import { getActiveLoans } from "@/app/loans/operations/loanTrackingOperationsClient";
-import { createClient } from "@/common/supabase/server";
-
 import { LoansDashboard } from "./components/LoansDashboard";
+import { getUserLoans } from "./getUserLoans";
 
 export default async function LoansPage() {
-  const supabase = await createClient();
+  const { borrowedLoans, lentLoans, stats } = await getUserLoans();
 
-  // Get current user
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Combine all loans for the dashboard
+  const allLoans = [...borrowedLoans, ...lentLoans];
 
-  if (!user) {
-    return <div>Please log in to view your loans.</div>;
-  }
-
-  // Get active loans
-  const activeLoans = await getActiveLoans(user.id);
-
-  return <LoansDashboard activeLoans={activeLoans} userId={user.id} />;
+  return (
+    <LoansDashboard
+      activeLoans={allLoans}
+      borrowedLoans={borrowedLoans}
+      lentLoans={lentLoans}
+      stats={stats}
+    />
+  );
 }
