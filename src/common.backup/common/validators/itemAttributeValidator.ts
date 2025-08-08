@@ -1,6 +1,6 @@
 import { createClient } from "@/common/supabase/client";
 
-import { ItemAttributeValueValidator } from "./itemAttributeValueValidator";
+import { SocialAttributeValidator } from "../../../app/api/(app)/social/validation";
 
 export class ItemAttributeValidator {
   // Validate item attributes against category requirements
@@ -75,7 +75,10 @@ export class ItemAttributeValidator {
 
       if (value !== null && value !== undefined && value !== "") {
         const validation =
-          ItemAttributeValueValidator.validateSingleAttributeValue(value, attr);
+          SocialAttributeValidator.validateSingleSocialAttributeValue(
+            value,
+            attr,
+          );
         if (!validation.isValid) {
           errors.push(validation.error!);
         }

@@ -1,7 +1,8 @@
 import { GetFriendRequests } from "@/apiApp/social/friends/list/getFriendRequests";
 import { ValidateFriendRequest } from "@/apiApp/social/friends/validate/validateFriendRequest";
-import { friendRequestResponseValidator } from "@/common/validators/socialFeatureValidator";
 import type { FriendRequest, FriendRequestFormData } from "@/types/social";
+
+import { validateFriendRequestResponse } from "../../validation";
 
 export class ProcessFriendRequest {
   static async sendFriendRequest(
@@ -31,7 +32,7 @@ export class ProcessFriendRequest {
     userId: string,
   ): Promise<{ success: boolean }> {
     try {
-      friendRequestResponseValidator.parse({ request_id: requestId, action });
+      validateFriendRequestResponse({ request_id: requestId, action });
       await this.processResponse(requestId, action);
       return { success: true };
     } catch (error) {

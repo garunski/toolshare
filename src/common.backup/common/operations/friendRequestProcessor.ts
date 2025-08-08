@@ -1,4 +1,3 @@
-import { friendRequestResponseValidator } from "@/common/validators/socialFeatureValidator";
 import type { FriendRequest, FriendRequestFormData } from "@/types/social";
 
 import { FriendRequestQueries } from "./friendRequestQueries";

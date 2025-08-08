@@ -1,6 +1,7 @@
 import { createClient } from "@/common/supabase/client";
-import { friendRequestValidator } from "@/common/validators/socialFeatureValidator";
 import type { FriendRequestFormData } from "@/types/social";
+
+import { validateFriendRequest } from "../../validation";
 
 export class ValidateFriendRequest {
   static async validateRequest(senderId: string, receiverId: string) {
@@ -24,6 +25,6 @@ export class ValidateFriendRequest {
   }
 
   static validateFormData(formData: FriendRequestFormData) {
-    return friendRequestValidator.parse(formData);
+    return validateFriendRequest(formData);
   }
 }

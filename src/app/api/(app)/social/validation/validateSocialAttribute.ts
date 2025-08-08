@@ -1,6 +1,6 @@
-export class ItemAttributeValueValidator {
-  // Validate a single attribute value
-  static validateSingleAttributeValue(
+export class SocialAttributeValidator {
+  // Validate a single social attribute value
+  static validateSingleSocialAttributeValue(
     value: any,
     attribute: any,
   ): { isValid: boolean; error?: string } {
@@ -9,35 +9,47 @@ export class ItemAttributeValueValidator {
     // Type-specific validation
     switch (attribute.data_type) {
       case "text":
-        return this.validateTextValue(value, rules, attribute.display_label);
+        return this.validateSocialTextValue(
+          value,
+          rules,
+          attribute.display_label,
+        );
       case "number":
-        return this.validateNumberValue(value, rules, attribute.display_label);
+        return this.validateSocialNumberValue(
+          value,
+          rules,
+          attribute.display_label,
+        );
       case "email":
-        return this.validateEmailValue(value, attribute.display_label);
+        return this.validateSocialEmailValue(value, attribute.display_label);
       case "url":
-        return this.validateUrlValue(value, attribute.display_label);
+        return this.validateSocialUrlValue(value, attribute.display_label);
       case "select":
-        return this.validateSelectValue(
+        return this.validateSocialSelectValue(
           value,
           attribute.options?.options || [],
           attribute.display_label,
         );
       case "multi_select":
-        return this.validateMultiSelectValue(
+        return this.validateSocialMultiSelectValue(
           value,
           attribute.options?.options || [],
           attribute.display_label,
         );
       case "date":
-        return this.validateDateValue(value, attribute.display_label);
+        return this.validateSocialDateValue(value, attribute.display_label);
       case "boolean":
-        return this.validateBooleanValue(value, attribute.display_label);
+        return this.validateSocialBooleanValue(value, attribute.display_label);
       default:
         return { isValid: true };
     }
   }
 
-  private static validateTextValue(value: string, rules: any, label: string) {
+  private static validateSocialTextValue(
+    value: string,
+    rules: any,
+    label: string,
+  ) {
     if (rules.minLength && value.length < rules.minLength) {
       return {
         isValid: false,
@@ -56,11 +68,14 @@ export class ItemAttributeValueValidator {
     return { isValid: true };
   }
 
-  private static validateNumberValue(value: number, rules: any, label: string) {
+  private static validateSocialNumberValue(
+    value: number,
+    rules: any,
+    label: string,
+  ) {
     const num = Number(value);
-    if (isNaN(num)) {
+    if (isNaN(num))
       return { isValid: false, error: `${label} must be a valid number` };
-    }
     if (rules.minimum !== undefined && num < rules.minimum) {
       return {
         isValid: false,
@@ -76,18 +91,14 @@ export class ItemAttributeValueValidator {
     return { isValid: true };
   }
 
-  private static validateEmailValue(value: string, label: string) {
+  private static validateSocialEmailValue(value: string, label: string) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(value)) {
-      return {
-        isValid: false,
-        error: `${label} must be a valid email address`,
-      };
-    }
-    return { isValid: true };
+    return emailRegex.test(value)
+      ? { isValid: true }
+      : { isValid: false, error: `${label} must be a valid email address` };
   }
 
-  private static validateUrlValue(value: string, label: string) {
+  private static validateSocialUrlValue(value: string, label: string) {
     try {
       new URL(value);
       return { isValid: true };
@@ -96,21 +107,20 @@ export class ItemAttributeValueValidator {
     }
   }
 
-  private static validateSelectValue(
+  private static validateSocialSelectValue(
     value: string,
     options: any[],
     label: string,
   ) {
-    if (!options.some((opt: any) => opt.value === value)) {
-      return {
-        isValid: false,
-        error: `${label} must be one of the available options`,
-      };
-    }
-    return { isValid: true };
+    return options.some((opt: any) => opt.value === value)
+      ? { isValid: true }
+      : {
+          isValid: false,
+          error: `${label} must be one of the available options`,
+        };
   }
 
-  private static validateMultiSelectValue(
+  private static validateSocialMultiSelectValue(
     values: string[],
     options: any[],
     label: string,
@@ -120,27 +130,24 @@ export class ItemAttributeValueValidator {
     }
     const validValues = options.map((opt: any) => opt.value);
     const invalidValues = values.filter((val) => !validValues.includes(val));
-    if (invalidValues.length > 0) {
-      return {
-        isValid: false,
-        error: `${label} contains invalid options: ${invalidValues.join(", ")}`,
-      };
-    }
-    return { isValid: true };
+    return invalidValues.length > 0
+      ? {
+          isValid: false,
+          error: `${label} contains invalid options: ${invalidValues.join(", ")}`,
+        }
+      : { isValid: true };
   }
 
-  private static validateDateValue(value: string, label: string) {
+  private static validateSocialDateValue(value: string, label: string) {
     const date = new Date(value);
-    if (isNaN(date.getTime())) {
-      return { isValid: false, error: `${label} must be a valid date` };
-    }
-    return { isValid: true };
+    return isNaN(date.getTime())
+      ? { isValid: false, error: `${label} must be a valid date` }
+      : { isValid: true };
   }
 
-  private static validateBooleanValue(value: any, label: string) {
-    if (typeof value !== "boolean") {
-      return { isValid: false, error: `${label} must be true or false` };
-    }
-    return { isValid: true };
+  private static validateSocialBooleanValue(value: any, label: string) {
+    return typeof value === "boolean"
+      ? { isValid: true }
+      : { isValid: false, error: `${label} must be true or false` };
   }
 }
