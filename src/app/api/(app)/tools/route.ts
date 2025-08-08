@@ -1,27 +1,26 @@
 import { NextRequest } from "next/server";
 
 import { createClient } from "@/common/supabase/server";
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
 
 import {
   createMissingFieldsResponse,
   createSuccessResponse,
-  handleApiError,
   validateRequiredFields,
 } from "../../admin/roles/responses/responseHandler";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { userId, name, description, category, condition, location, notes } =
-      body;
+    // Get user context from middleware
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated");
+    }
 
-    const requiredFields = [
-      "userId",
-      "name",
-      "description",
-      "category",
-      "condition",
-    ];
+    const body = await request.json();
+    const { name, description, category, condition, location, notes } = body;
+
+    const requiredFields = ["name", "description", "category", "condition"];
     const { isValid, missingFields } = validateRequiredFields(
       body,
       requiredFields,

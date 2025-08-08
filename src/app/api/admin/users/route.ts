@@ -1,46 +1,35 @@
 import { NextRequest } from "next/server";
 
 import { validateUserCreationWithGeneratedPassword } from "@/admin/users/validation";
-import { createClient } from "@/common/supabase/server";
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
 
 import { RoleQueryOperations } from "../roles/list/getRoles";
 import { RolePermissionOperations } from "../roles/permissions/managePermissions";
-import {
-  createApiResponse,
-  handleApiError,
-} from "../roles/responses/responseHandler";
+import { createApiResponse } from "../roles/responses/responseHandler";
 
 import { performUserCreation } from "./create/performUser";
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    // Get admin context from middleware
+    const userId = request.headers.get("x-user-id");
+    const userRole = request.headers.get("x-user-role");
 
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated");
+    }
 
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      });
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required");
     }
 
     const hasPermission = await RolePermissionOperations.managePermissions(
-      user.id,
+      userId,
       "manage_users",
     );
 
     if (!hasPermission.hasPermission) {
-      return new Response(
-        JSON.stringify({ error: "Insufficient permissions" }),
-        {
-          status: 403,
-          headers: { "Content-Type": "application/json" },
-        },
-      );
+      throw new ApiError(403, "Insufficient permissions");
     }
 
     const users = await RoleQueryOperations.getAllUsersWithRoles();
@@ -53,35 +42,26 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    // Get admin context from middleware
+    const userId = request.headers.get("x-user-id");
+    const userRole = request.headers.get("x-user-role");
 
-    // Get the current user from session
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated");
+    }
 
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      });
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required");
     }
 
     // Check admin permissions
     const hasPermission = await RolePermissionOperations.managePermissions(
-      user.id,
+      userId,
       "manage_users",
     );
 
     if (!hasPermission.hasPermission) {
-      return new Response(
-        JSON.stringify({ error: "Insufficient permissions" }),
-        {
-          status: 403,
-          headers: { "Content-Type": "application/json" },
-        },
-      );
+      throw new ApiError(403, "Insufficient permissions");
     }
 
     const body = await request.json();

@@ -1,26 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { createClient } from "@/common/supabase/server";
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
 
 import { RoleQueryOperations } from "./getRoles";
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    // Get admin context from middleware
+    const userId = request.headers.get("x-user-id");
+    const userRole = request.headers.get("x-user-role");
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated");
+    }
+
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required");
     }
 
     const { searchParams } = new URL(request.url);
-    const userId = searchParams.get("userId");
+    const targetUserId = searchParams.get("userId");
 
-    if (userId) {
+    if (targetUserId) {
       // Get roles for specific user
-      const userRoles = await RoleQueryOperations.getUserRoles(userId);
+      const userRoles = await RoleQueryOperations.getUserRoles(targetUserId);
       return NextResponse.json({
         success: true,
         data: userRoles,
@@ -34,10 +37,6 @@ export async function GET(request: NextRequest) {
       });
     }
   } catch (error) {
-    console.error("API Error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch roles" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }

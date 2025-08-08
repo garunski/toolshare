@@ -1,31 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { createClient } from "@/common/supabase/server";
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
 
 import { RoleQueryOperations } from "./list/getRoles";
 import { RolePermissionOperations } from "./permissions/managePermissions";
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Get admin context from middleware
+    const userId = request.headers.get("x-user-id");
+    const userRole = request.headers.get("x-user-role");
+
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated");
+    }
+
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required");
     }
 
     const hasPermission = await RolePermissionOperations.managePermissions(
-      user.id,
+      userId,
       "view_roles",
     );
 
     if (!hasPermission.hasPermission) {
-      return NextResponse.json(
-        { error: "Insufficient permissions" },
-        { status: 403 },
-      );
+      throw new ApiError(403, "Insufficient permissions");
     }
 
     const roles = await RoleQueryOperations.getAllRolesWithPermissions();
@@ -35,39 +36,37 @@ export async function GET(request: NextRequest) {
       data: roles,
     });
   } catch (error) {
-    console.error("API Error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch roles" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Get admin context from middleware
+    const userId = request.headers.get("x-user-id");
+    const userRole = request.headers.get("x-user-role");
+
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated");
+    }
+
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required");
     }
 
     const hasPermission = await RolePermissionOperations.managePermissions(
-      user.id,
+      userId,
       "manage_roles",
     );
 
     if (!hasPermission.hasPermission) {
-      return NextResponse.json(
-        { error: "Insufficient permissions" },
-        { status: 403 },
-      );
+      throw new ApiError(403, "Insufficient permissions");
     }
 
     const body = await request.json();
     const { name, description, isSystemRole } = body;
+
+    const supabase = await createClient();
 
     // Create new role
     const { data, error } = await supabase
@@ -89,10 +88,6 @@ export async function POST(request: NextRequest) {
       data,
     });
   } catch (error) {
-    console.error("API Error:", error);
-    return NextResponse.json(
-      { error: "Failed to create role" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
