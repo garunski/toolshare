@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { useAuth } from "@/common/hooks/useAuth";
+import { useAuth } from "@/common/supabase/hooks/useAuth";
 // Removed direct operation imports - now using API routes
 import type { PermissionCheck, Role } from "@/types/roles";
 

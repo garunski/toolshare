@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { PerformConversation } from "@/apiApp/social/conversations/performConversation";
-import { useAuth } from "@/common/hooks/useAuth";
+import { useAuth } from "@/common/supabase/hooks/useAuth";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";

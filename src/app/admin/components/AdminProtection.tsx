@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 import { usePermissions } from "@/admin/hooks";
 import { useUserRoles } from "@/admin/users/hooks";
-import { useAuth } from "@/common/hooks/useAuth";
+import { useAuth } from "@/common/supabase/hooks/useAuth";
 
 interface AdminProtectionProps {
   children: React.ReactNode;

@@ -16,3 +16,6 @@ export {
   handleTouchMove as handleTouchMoveHandler,
   handleTouchStart as handleTouchStartHandler,
 } from "./useTouchGesturesHandlers";
+
+// Utility hooks
+export { useLazyData, useLazyLoading } from "./useLazyLoading";

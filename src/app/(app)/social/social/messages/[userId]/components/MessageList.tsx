@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { PerformMessage } from "@/apiApp/social/messages/send/performMessage";
-import { useAuth } from "@/common/hooks/useAuth";
+import { useAuth } from "@/common/supabase/hooks/useAuth";
 import { Text } from "@/primitives/text";
 import type { Message } from "@/types/social";
 

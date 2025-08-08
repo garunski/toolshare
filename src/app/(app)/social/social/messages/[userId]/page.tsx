@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { ProcessConnections } from "@/apiApp/social/connections/processConnections";
 import { PerformMessage } from "@/apiApp/social/messages/send/performMessage";
-import { useAuth } from "@/common/hooks/useAuth";
+import { useAuth } from "@/common/supabase/hooks/useAuth";
 import type { Message, SocialProfile } from "@/types/social";
 
 import { MessageContainer } from "./components/MessageContainer";

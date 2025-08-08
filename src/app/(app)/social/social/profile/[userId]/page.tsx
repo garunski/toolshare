@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import { ProcessConnections } from "@/apiApp/social/connections/processConnections";
-import { useAuth } from "@/common/hooks/useAuth";
+import { useAuth } from "@/common/supabase/hooks/useAuth";
 import type { SocialProfile, SocialStats } from "@/types/social";
 
 import { ProfileActions } from "./components/ProfileActions";

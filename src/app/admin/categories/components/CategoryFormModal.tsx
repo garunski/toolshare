@@ -1,6 +1,6 @@
 "use client";
 
-import { useCategories } from "@/common/hooks/useCategories";
+import { useCategories } from "@/common/supabase/hooks/useCategories";
 import { Button } from "@/primitives/button";
 import { Dialog } from "@/primitives/dialog";
 import { Input } from "@/primitives/input";
@@ -38,7 +38,7 @@ export function CategoryFormModal({ category, onClose, onSuccess }: Props) {
     .filter((cat) => !category || cat.id !== category.id)
     .map((cat) => ({
       value: cat.id,
-      label: cat.path,
+      label: cat.name,
     }));
 
   return (

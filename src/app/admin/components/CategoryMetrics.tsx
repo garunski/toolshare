@@ -3,12 +3,28 @@
 import { ChartBarIcon, TagIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 
-import { useCategories } from "@/common/hooks/useCategories";
 import { ItemStatisticsOperations } from "@/common/operations/itemStatisticsOperations";
+import { useCategories } from "@/common/supabase/hooks/useCategories";
 import { Badge } from "@/primitives/badge";
 import { Heading } from "@/primitives/heading";
+import type { Category, CategoryTreeNode } from "@/types/categories";
 
 import { CategoryStatItem } from "./CategoryStatItem";
+
+// Helper function to transform Category to CategoryTreeNode
+function transformCategoryToTreeNode(category: Category): CategoryTreeNode {
+  return {
+    id: category.id,
+    name: category.name,
+    slug: category.slug,
+    icon: category.icon || undefined,
+    color: category.color || undefined,
+    level: 0, // Default level
+    path: category.name, // Use name as path for now
+    hasChildren: false, // Default to false
+    children: [],
+  };
+}
 
 interface CategoryStats {
   category_name: string;
@@ -86,12 +102,15 @@ export function CategoryMetrics() {
             const category = categories.find(
               (cat) => cat.name === stat.category_name,
             );
+            const categoryTreeNode = category
+              ? transformCategoryToTreeNode(category)
+              : undefined;
 
             return (
               <CategoryStatItem
                 key={stat.category_name}
                 stat={stat}
-                category={category}
+                category={categoryTreeNode}
                 index={index}
               />
             );

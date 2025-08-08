@@ -8,7 +8,7 @@ import {
   type BorrowingRequestData,
   borrowingRequestSchema,
 } from "@/app/tools/tools/[id]/validation";
-import { useAuth } from "@/common/hooks/useAuth";
+import { useAuth } from "@/common/supabase/hooks/useAuth";
 import { Button } from "@/primitives/button";
 import { Tool } from "@/types/tool";
 

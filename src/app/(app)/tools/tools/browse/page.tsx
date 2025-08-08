@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 import { AppHeader } from "@/common/components/AppHeader";
-import { useAuth } from "@/common/hooks/useAuth";
+import { useAuth } from "@/common/supabase/hooks/useAuth";
 
 import { ToolGrid } from "./components/ToolGrid";
 import { ToolSearchForm } from "./components/ToolSearchForm";

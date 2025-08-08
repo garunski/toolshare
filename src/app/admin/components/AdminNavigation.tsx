@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { useAuthWithRoles } from "@/common/hooks/useAuthWithRoles";
+import { useAuthWithRoles } from "@/common/supabase/hooks/useAuthWithRoles";
 import { Button } from "@/primitives/button";
 import {
   Navbar,

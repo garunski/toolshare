@@ -2,7 +2,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { ProcessFriendRequest } from "@/apiApp/social/friends/process/processFriendRequest";
-import { useAuth } from "@/common/hooks/useAuth";
+import { useAuth } from "@/common/supabase/hooks/useAuth";
 import type { SocialProfile, SocialStats } from "@/types/social";
 
 export function useProfileLogic() {

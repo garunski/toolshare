@@ -3,14 +3,31 @@
 import { useState } from "react";
 
 import { AdminProtection } from "@/admin/components/AdminProtection";
-import { useCategories } from "@/common/hooks/useCategories";
+import { useCategories } from "@/common/supabase/hooks/useCategories";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
-import type { Category } from "@/types/categories";
+import type { Category, CategoryTreeNode } from "@/types/categories";
 
 import { CategoryAttributeModal } from "./components/CategoryAttributeModal";
 import { CategoryFormModal } from "./components/CategoryFormModal";
 import { CategoryTreeView } from "./components/CategoryTreeView";
+
+// Helper function to transform Category[] to CategoryTreeNode[]
+function transformCategoriesToTreeNodes(
+  categories: Category[],
+): CategoryTreeNode[] {
+  return categories.map((cat) => ({
+    id: cat.id,
+    name: cat.name,
+    slug: cat.slug,
+    icon: cat.icon || undefined,
+    color: cat.color || undefined,
+    level: 0, // We'll need to calculate this based on parent relationships
+    path: cat.name, // For now, just use the name as path
+    hasChildren: false, // We'll need to calculate this based on parent relationships
+    children: [],
+  }));
+}
 
 export default function AdminCategoriesPage() {
   const { categories, loading, error, refetch } = useCategories();
@@ -19,6 +36,9 @@ export default function AdminCategoriesPage() {
   const [managingAttributes, setManagingAttributes] = useState<Category | null>(
     null,
   );
+
+  // Transform categories to tree nodes
+  const categoryTreeNodes = transformCategoriesToTreeNodes(categories);
 
   const handleCreateCategory = () => {
     setEditingCategory(null);
@@ -87,7 +107,7 @@ export default function AdminCategoriesPage() {
 
         <div className="rounded-lg bg-white shadow">
           <CategoryTreeView
-            categories={categories}
+            categories={categoryTreeNodes}
             onEdit={handleEditCategory}
             onManageAttributes={handleManageAttributes}
             onRefresh={refetch}

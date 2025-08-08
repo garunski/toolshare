@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { usePermissions } from "@/admin/hooks";
 import { AppHeader } from "@/common/components/AppHeader";
-import { useAuth } from "@/common/hooks/useAuth";
+import { useAuth } from "@/common/supabase/hooks/useAuth";
 import { Button } from "@/primitives/button";
 
 import { DashboardCard } from "./components/DashboardCard";

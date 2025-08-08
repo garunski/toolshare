@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { AppHeader } from "@/common/components/AppHeader";
-import { useAuth } from "@/common/hooks/useAuth";
+import { useAuth } from "@/common/supabase/hooks/useAuth";
 
 import { AddToolForm } from "./components/AddToolForm";
 

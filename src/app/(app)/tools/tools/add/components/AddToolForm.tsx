@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
-import { useCategories } from "@/common/hooks/useCategories";
+import { useCategories } from "@/common/supabase/hooks/useCategories";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
