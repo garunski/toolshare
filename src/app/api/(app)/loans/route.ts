@@ -1,13 +1,7 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { createClient } from "@/common/supabase/server";
 import { ApiError, handleApiError } from "@/lib/api-error-handler";
-
-import {
-  createMissingFieldsResponse,
-  createSuccessResponse,
-  validateRequiredFields,
-} from "../../admin/roles/responses/responseHandler";
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,14 +14,16 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { toolId, startDate, endDate, message } = body;
 
+    // Validate required fields
     const requiredFields = ["toolId", "startDate", "endDate"];
-    const { isValid, missingFields } = validateRequiredFields(
-      body,
-      requiredFields,
-    );
+    const missingFields = requiredFields.filter((field) => !body[field]);
 
-    if (!isValid) {
-      return createMissingFieldsResponse(missingFields);
+    if (missingFields.length > 0) {
+      throw new ApiError(
+        400,
+        `Missing required fields: ${missingFields.join(", ")}`,
+        "MISSING_REQUIRED_FIELDS",
+      );
     }
 
     const supabase = await createClient();
@@ -42,10 +38,13 @@ export async function POST(request: NextRequest) {
     });
 
     if (error) {
-      throw error;
+      throw new ApiError(500, "Failed to create loan", "LOAN_CREATION_FAILED");
     }
 
-    return createSuccessResponse();
+    return NextResponse.json({
+      success: true,
+      message: "Loan created successfully",
+    });
   } catch (error) {
     return handleApiError(error);
   }

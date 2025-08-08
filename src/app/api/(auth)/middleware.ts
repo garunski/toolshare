@@ -24,18 +24,11 @@ export async function middleware(request: NextRequest) {
   );
 
   // Auth routes - redirect if already authenticated
-  // Global middleware already handles session refresh, so we just check current state
-  try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (user) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
-  } catch (error) {
-    // If there's an error checking user, allow the request to proceed
-    // The auth API routes will handle authentication properly
-    console.error("Auth middleware error:", error);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return res;

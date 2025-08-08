@@ -13,17 +13,10 @@ export interface ToolOperationResult<T = any> {
 
 export async function performTool(
   toolData: ToolCreationData,
+  userId: string,
 ): Promise<ToolOperationResult<Tool>> {
   try {
     const supabase = await createClient();
-
-    // Get authenticated user
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      return { success: false, error: "Unauthorized" };
-    }
 
     const insertData: ToolInsert = {
       name: toolData.name,
@@ -32,7 +25,7 @@ export async function performTool(
       condition: toolData.condition,
       is_available: toolData.is_available,
       images: toolData.images || [],
-      owner_id: user.id,
+      owner_id: userId,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };

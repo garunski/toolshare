@@ -1,22 +1,40 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
+
 import { performTool } from "./performTool";
 
 export async function POST(request: NextRequest) {
   try {
+    // Get user context from middleware headers
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated", "MISSING_USER_CONTEXT");
+    }
+
     const body = await request.json();
-    const result = await performTool(body);
+
+    // Validate required fields
+    if (!body.name || !body.description || !body.category) {
+      throw new ApiError(
+        400,
+        "Missing required fields",
+        "MISSING_REQUIRED_FIELDS",
+      );
+    }
+
+    const result = await performTool(body, userId);
 
     if (!result.success) {
-      return NextResponse.json({ error: result.error }, { status: 400 });
+      throw new ApiError(
+        400,
+        result.error || "Tool creation failed",
+        "TOOL_CREATION_FAILED",
+      );
     }
 
     return NextResponse.json(result.data);
   } catch (error) {
-    console.error("Tool creation route error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
