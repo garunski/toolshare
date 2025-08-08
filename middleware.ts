@@ -84,8 +84,8 @@ export async function middleware(request: NextRequest) {
       return supabaseResponse;
     }
 
-    // Admin routes - require admin role
-    if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
+    // Admin routes - require admin role (page-level protection)
+    if (pathname.startsWith("/admin")) {
       if (!user) {
         return NextResponse.redirect(new URL("/login", request.url));
       }
@@ -103,17 +103,22 @@ export async function middleware(request: NextRequest) {
       return supabaseResponse;
     }
 
-    // App routes - require authentication
+    // App routes - require authentication (page-level protection)
     if (
       pathname.startsWith("/dashboard") ||
       pathname.startsWith("/tools") ||
       pathname.startsWith("/loans") ||
-      pathname.startsWith("/social") ||
-      pathname.startsWith("/api/(app)")
+      pathname.startsWith("/social")
     ) {
       if (!user) {
         return NextResponse.redirect(new URL("/login", request.url));
       }
+      return supabaseResponse;
+    }
+
+    // API routes - let route group middleware handle them
+    // Global middleware provides basic session management
+    if (pathname.startsWith("/api/")) {
       return supabaseResponse;
     }
 
