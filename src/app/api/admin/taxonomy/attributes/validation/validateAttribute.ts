@@ -1,11 +1,12 @@
 import { z } from "zod";
 
 import { createClient } from "@/common/supabase/client";
+
 import {
   attributeCreationSchema,
   attributeUpdateSchema,
-} from "@/common/validators/attributeSchemas";
-import { AttributeValidationHelpers } from "@/common/validators/attributeValidationHelpers";
+} from "./attributeSchemas";
+import { AttributeValidationHelpers } from "./attributeValidationHelpers";
 
 export { attributeCreationSchema, attributeUpdateSchema };
 export type AttributeCreationData = z.infer<typeof attributeCreationSchema>;

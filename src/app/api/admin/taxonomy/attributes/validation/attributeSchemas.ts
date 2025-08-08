@@ -61,3 +61,42 @@ export const attributeCreationSchema = z.object({
 export const attributeUpdateSchema = attributeCreationSchema.partial().extend({
   id: z.string().uuid("Invalid attribute ID"),
 });
+
+// Export types
+export type AttributeCreationData = z.infer<typeof attributeCreationSchema>;
+export type AttributeUpdateData = z.infer<typeof attributeUpdateSchema>;
+
+// Validation functions
+export function validateAttributeCreation(
+  data: unknown,
+): AttributeCreationData {
+  return attributeCreationSchema.parse(data);
+}
+
+export function validateAttributeUpdate(data: unknown): AttributeUpdateData {
+  return attributeUpdateSchema.parse(data);
+}
+
+// Get attribute schema by data type
+export function getAttributeSchema(dataType: string) {
+  switch (dataType) {
+    case "text":
+      return z.string();
+    case "number":
+      return z.number();
+    case "boolean":
+      return z.boolean();
+    case "date":
+      return z.string().datetime();
+    case "select":
+      return z.string();
+    case "multi_select":
+      return z.array(z.string());
+    case "url":
+      return z.string().url();
+    case "email":
+      return z.string().email();
+    default:
+      return z.any();
+  }
+}

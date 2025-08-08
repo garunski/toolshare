@@ -1,9 +1,12 @@
 export {
-  AttributeValidator,
   attributeCreationSchema,
   attributeUpdateSchema,
+  getAttributeSchema,
+  validateAttributeCreation,
+  validateAttributeUpdate,
   type AttributeCreationData,
   type AttributeUpdateData,
-} from "./validateAttribute";
+} from "./attributeSchemas";
 
+export { AttributeValidator } from "./validateAttribute";
 export { ValidateAttributes } from "./validateAttributes";

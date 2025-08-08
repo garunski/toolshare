@@ -1,10 +1,11 @@
 import { createClient } from "@/common/supabase/client";
-import { AttributeValidator } from "@/common/validators/attributeValidator";
 import type {
   AttributeCreationRequest,
   AttributeDefinition,
   AttributeUpdateRequest,
 } from "@/types/categories";
+
+import { AttributeValidator } from "../../app/api/admin/taxonomy/attributes/validation";
 
 export class AttributeOperations {
   // Get all attribute definitions

@@ -4,11 +4,12 @@ import { useFieldArray, useForm } from "react-hook-form";
 import type { z } from "zod";
 
 // Removed direct operation import - now using API routes
+import type { AttributeDefinition } from "@/types/categories";
+
 import {
   attributeCreationSchema,
   AttributeValidator,
-} from "@/common/validators/attributeValidator";
-import type { AttributeDefinition } from "@/types/categories";
+} from "../../../api/admin/taxonomy/attributes/validation";
 
 type FormData = z.infer<typeof attributeCreationSchema>;
 
