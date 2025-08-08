@@ -2,7 +2,7 @@
 
 import { useFormContext } from "react-hook-form";
 
-import { type RegisterFormData } from "@/common/validators/authenticationFormValidator";
+import { type RegisterFormData } from "@/auth/login/validation";
 import { Input } from "@/primitives/input";
 import { Text } from "@/primitives/text";
 

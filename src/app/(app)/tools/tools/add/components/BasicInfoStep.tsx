@@ -2,7 +2,7 @@
 
 import { UseFormReturn } from "react-hook-form";
 
-import type { ToolCreationData } from "@/common/validators/toolCreationValidator";
+import type { ToolCreationData } from "@/app/tools/tools/add/validation";
 import { Input } from "@/primitives/input";
 import { Select } from "@/primitives/select";
 import { Text } from "@/primitives/text";

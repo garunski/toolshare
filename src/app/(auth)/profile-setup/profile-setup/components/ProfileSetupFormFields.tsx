@@ -2,7 +2,7 @@
 
 import { useFormContext } from "react-hook-form";
 
-import { type ProfileCreationData } from "@/common/validators/authenticationFormValidator";
+import { type ProfileCreationData } from "@/auth/login/validation";
 import { Input } from "@/primitives/input";
 import { Text } from "@/primitives/text";
 import { Textarea } from "@/primitives/textarea";

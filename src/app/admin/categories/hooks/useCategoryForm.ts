@@ -5,9 +5,10 @@ import type { z } from "zod";
 
 // Removed direct operation import - now using API routes
 import {
-  CategoryValidator,
   categoryCreationSchema,
-} from "@/common/validators/categoryValidator";
+  generateSlug,
+  isSlugAvailable,
+} from "@/admin/categories/validation";
 import type { Category } from "@/types/categories";
 
 type FormData = z.infer<typeof categoryCreationSchema>;
@@ -40,7 +41,7 @@ export function useCategoryForm(category?: Category | null) {
 
   useEffect(() => {
     if (!category && watchedName) {
-      const generatedSlug = CategoryValidator.generateSlug(watchedName);
+      const generatedSlug = generateSlug(watchedName);
       setValue("slug", generatedSlug);
     }
   }, [watchedName, setValue, category]);
@@ -48,10 +49,7 @@ export function useCategoryForm(category?: Category | null) {
   useEffect(() => {
     if (watchedSlug && watchedSlug.length > 1) {
       const checkSlug = async () => {
-        const available = await CategoryValidator.isSlugAvailable(
-          watchedSlug,
-          category?.id,
-        );
+        const available = await isSlugAvailable(watchedSlug, category?.id);
         setSlugAvailable(available);
       };
       checkSlug();

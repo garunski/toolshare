@@ -1,6 +1,6 @@
 "use client";
 
-import type { ToolSearchData } from "@/common/validators/toolCreationValidator";
+import type { ToolSearchData } from "@/app/tools/tools/add/validation";
 import { Button } from "@/primitives/button";
 import { Select } from "@/primitives/select";
 

@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
+import { validateUserCreationWithGeneratedPassword } from "@/admin/users/validation";
 import { createClient } from "@/common/supabase/server";
-import { UserCreationValidator } from "@/common/validators/userCreationValidator";
 
 import { RoleQueryOperations } from "../roles/list/getRoles";
 import { RolePermissionOperations } from "../roles/permissions/managePermissions";
@@ -87,8 +87,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Validate the request data
-    const validatedData =
-      UserCreationValidator.validateUserCreationWithGeneratedPassword(body);
+    const validatedData = validateUserCreationWithGeneratedPassword(body);
 
     // Create the user with roles
     const newUser = await performUserCreation(validatedData);

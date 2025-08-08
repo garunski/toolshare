@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 // Removed direct operation imports - now using API routes
-import { toolCreationSchema } from "@/common/validators/toolCreationValidator";
+import { toolCreationSchema } from "@/app/tools/tools/add/validation";
 
 type FormStep = "basic" | "details" | "images" | "review";
 

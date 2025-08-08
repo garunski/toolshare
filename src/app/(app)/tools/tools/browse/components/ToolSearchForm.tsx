@@ -3,7 +3,7 @@
 import { Filter, Search, X } from "lucide-react";
 import { useState } from "react";
 
-import type { ToolSearchData } from "@/common/validators/toolCreationValidator";
+import type { ToolSearchData } from "@/app/tools/tools/add/validation";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import { Input } from "@/primitives/input";

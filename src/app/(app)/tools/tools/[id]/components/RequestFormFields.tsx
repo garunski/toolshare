@@ -2,13 +2,13 @@
 
 import { UseFormReturn } from "react-hook-form";
 
-import { BorrowingRequest } from "@/common/validators/borrowingRequestValidator";
+import { type BorrowingRequestData } from "@/app/tools/tools/[id]/validation";
 import { Input } from "@/primitives/input";
 import { Text } from "@/primitives/text";
 import { Textarea } from "@/primitives/textarea";
 
 interface RequestFormFieldsProps {
-  form: UseFormReturn<BorrowingRequest>;
+  form: UseFormReturn<BorrowingRequestData>;
 }
 
 export function RequestFormFields({ form }: RequestFormFieldsProps) {

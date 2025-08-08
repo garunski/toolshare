@@ -1,12 +1,15 @@
 import {
-  LoanReturn,
-  LoanStatusUpdate,
+  type LoanReturnData,
+  type LoanStatusUpdateData,
   validateLoanReturn,
   validateLoanStatusUpdate,
-} from "@/common/validators/borrowingRequestValidator";
+} from "@/app/tools/tools/[id]/validation";
 
 // Re-export types for API routes
-export type { LoanReturn, LoanStatusUpdate };
+export type {
+  LoanReturnData as LoanReturn,
+  LoanStatusUpdateData as LoanStatusUpdate,
+};
 
 import {
   getLoanWithDetails,
@@ -31,7 +34,9 @@ export interface LoanStatusChange {
   message?: string;
 }
 
-export async function trackLoanStatus(data: LoanStatusUpdate): Promise<void> {
+export async function trackLoanStatus(
+  data: LoanStatusUpdateData,
+): Promise<void> {
   const validatedData = validateLoanStatusUpdate(data);
 
   // Get loan details
@@ -52,7 +57,7 @@ export async function trackLoanStatus(data: LoanStatusUpdate): Promise<void> {
   }
 }
 
-export async function processLoanReturn(data: LoanReturn): Promise<void> {
+export async function processLoanReturn(data: LoanReturnData): Promise<void> {
   const validatedData = validateLoanReturn(data);
 
   // Get loan details

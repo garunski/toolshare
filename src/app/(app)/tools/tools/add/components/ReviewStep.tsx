@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { UseFormReturn } from "react-hook-form";
 
-import type { ToolCreationData } from "@/common/validators/toolCreationValidator";
+import type { ToolCreationData } from "@/app/tools/tools/add/validation";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 

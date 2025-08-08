@@ -1,5 +1,5 @@
+import { type ToolSearchData } from "@/app/tools/tools/add/validation";
 import { createClient } from "@/common/supabase/server";
-import { ToolSearchData } from "@/common/validators/toolCreationValidator";
 import type { Database } from "@/types/supabase";
 
 type Tool = Database["public"]["Tables"]["tools"]["Row"];

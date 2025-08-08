@@ -4,11 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { useAuth } from "@/common/hooks/useAuth";
 import {
-  BorrowingRequest,
+  type BorrowingRequestData,
   borrowingRequestSchema,
-} from "@/common/validators/borrowingRequestValidator";
+} from "@/app/tools/tools/[id]/validation";
+import { useAuth } from "@/common/hooks/useAuth";
 import { Button } from "@/primitives/button";
 import { Tool } from "@/types/tool";
 
@@ -31,7 +31,7 @@ export function RequestForm({ tool, onSubmit }: RequestFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAuth();
 
-  const form = useForm<BorrowingRequest>({
+  const form = useForm<BorrowingRequestData>({
     resolver: zodResolver(borrowingRequestSchema),
     defaultValues: {
       tool_id: tool.id,
@@ -41,7 +41,7 @@ export function RequestForm({ tool, onSubmit }: RequestFormProps) {
     },
   });
 
-  const handleSubmit = async (data: BorrowingRequest) => {
+  const handleSubmit = async (data: BorrowingRequestData) => {
     if (!user) return;
 
     setIsSubmitting(true);

@@ -1,8 +1,8 @@
 import {
-  ToolCreationData,
-  ToolSearchData,
-  ToolUpdateData,
-} from "@/common/validators/toolCreationValidator";
+  type ToolCreationData,
+  type ToolSearchData,
+  type ToolUpdateData,
+} from "@/app/tools/tools/add/validation";
 import type { Database } from "@/types/supabase";
 
 import { ToolCRUD, type ToolOperationResult } from "./toolCRUD";
