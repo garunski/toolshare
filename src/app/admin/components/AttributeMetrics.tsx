@@ -1,5 +1,3 @@
-"use client";
-
 import {
   AdjustmentsHorizontalIcon,
   CheckCircleIcon,
@@ -9,8 +7,7 @@ import {
 
 import { Badge } from "@/primitives/badge";
 import { Heading } from "@/primitives/heading";
-
-import { useAttributes } from "../attributes/hooks/useAttributes";
+import type { AttributeDefinition } from "@/types/categories";
 
 import { DataTypeDistribution } from "./DataTypeDistribution";
 import { RecentAttributesList } from "./RecentAttributesList";
@@ -23,24 +20,11 @@ interface AttributeStats {
   withOptions: number;
 }
 
-export function AttributeMetrics() {
-  const { attributes, loading } = useAttributes();
+interface AttributeMetricsProps {
+  attributes: AttributeDefinition[];
+}
 
-  if (loading) {
-    return (
-      <div className="rounded-lg bg-white p-6 shadow">
-        <div className="animate-pulse">
-          <div className="mb-6 h-6 w-1/3 rounded bg-gray-200"></div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-16 rounded bg-gray-200"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
+export function AttributeMetrics({ attributes }: AttributeMetricsProps) {
   const stats: AttributeStats = {
     total: attributes.length,
     required: attributes.filter((attr) => attr.is_required).length,

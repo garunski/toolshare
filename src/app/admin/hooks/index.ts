@@ -1,2 +1,2 @@
 export { usePermissions } from "./usePermissions";
-export { useRealtimeAdminData } from "./useRealtimeAdminData";
+// useRealtimeAdminData removed - replaced with server functions

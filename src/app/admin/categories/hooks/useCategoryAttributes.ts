@@ -1,10 +1,7 @@
+/* eslint-disable max-lines */
 import { useEffect, useState } from "react";
 
-// Removed direct operation import - now using API routes
-import { createClient } from "@/common/supabase/client";
-import type { Category } from "@/types/categories";
-
-import { useAttributes } from "../../attributes/hooks/useAttributes";
+import type { AttributeDefinition, Category } from "@/types/categories";
 
 interface CategoryAttribute {
   attribute_definition_id: string;
@@ -14,25 +11,38 @@ interface CategoryAttribute {
 }
 
 export function useCategoryAttributes(category: Category) {
-  const { attributes: allAttributes } = useAttributes();
+  const [allAttributes, setAllAttributes] = useState<AttributeDefinition[]>([]);
   const [categoryAttributes, setCategoryAttributes] = useState<
     CategoryAttribute[]
   >([]);
-  const [availableAttributes, setAvailableAttributes] = useState<any[]>([]);
+  const [availableAttributes, setAvailableAttributes] = useState<
+    AttributeDefinition[]
+  >([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadCategoryAttributes = async () => {
+    const loadData = async () => {
       try {
-        const response = await fetch(
+        // Load all attributes first
+        const attributesResponse = await fetch(
+          "/api/admin/taxonomy/attributes",
+        );
+        if (!attributesResponse.ok) {
+          throw new Error("Failed to load attributes");
+        }
+        const attributes = await attributesResponse.json();
+        setAllAttributes(attributes);
+
+        // Load category attributes
+        const categoryResponse = await fetch(
           `/api/admin/taxonomy/categories?id=${category.id}`,
         );
 
-        if (!response.ok) {
+        if (!categoryResponse.ok) {
           throw new Error("Failed to load category attributes");
         }
 
-        const categoryWithAttrs = await response.json();
+        const categoryWithAttrs = await categoryResponse.json();
 
         if (categoryWithAttrs) {
           const attrs = categoryWithAttrs.attributes.map((attr: any) => ({
@@ -47,34 +57,46 @@ export function useCategoryAttributes(category: Category) {
             attrs.map((ca: any) => ca.attribute_definition_id),
           );
           setAvailableAttributes(
-            allAttributes.filter((attr) => !assignedIds.has(attr.id)),
+            attributes.filter(
+              (attr: AttributeDefinition) => !assignedIds.has(attr.id),
+            ),
           );
         } else {
           // If no attributes are assigned to this category, all attributes are available
           setCategoryAttributes([]);
-          setAvailableAttributes(allAttributes);
+          setAvailableAttributes(attributes as AttributeDefinition[]);
         }
       } catch (error) {
-        console.error("Failed to load category attributes:", error);
+        console.error("Failed to load data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    loadCategoryAttributes();
-  }, [category.id, allAttributes]);
+    loadData();
+  }, [category.id]);
 
   const handleAddAttribute = async (attributeId: string) => {
     try {
-      const supabase = createClient();
-      const { error } = await supabase.from("category_attributes").insert({
-        category_id: category.id,
-        attribute_definition_id: attributeId,
-        is_required: false,
-        display_order: categoryAttributes.length,
-      });
+      const response = await fetch(
+        "/api/admin/taxonomy/categories/attributes",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            category_id: category.id,
+            attribute_definition_id: attributeId,
+            is_required: false,
+            display_order: categoryAttributes.length,
+          }),
+        },
+      );
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error("Failed to add attribute to category");
+      }
 
       const attribute = allAttributes.find((attr) => attr.id === attributeId);
       if (attribute) {
@@ -101,14 +123,16 @@ export function useCategoryAttributes(category: Category) {
 
   const handleRemoveAttribute = async (attributeId: string) => {
     try {
-      const supabase = createClient();
-      const { error } = await supabase
-        .from("category_attributes")
-        .delete()
-        .eq("category_id", category.id)
-        .eq("attribute_definition_id", attributeId);
+      const response = await fetch(
+        `/api/admin/taxonomy/categories/attributes?categoryId=${category.id}&attributeId=${attributeId}`,
+        {
+          method: "DELETE",
+        },
+      );
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error("Failed to remove attribute from category");
+      }
 
       const removedAttribute = categoryAttributes.find(
         (ca) => ca.attribute_definition_id === attributeId,

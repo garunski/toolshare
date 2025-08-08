@@ -2,6 +2,7 @@ import { Suspense } from "react";
 
 import { Heading } from "@/primitives/heading";
 
+import { getAttributes } from "./attributes/getAttributes";
 import { AdminDashboardStats } from "./components/AdminDashboardStats/index";
 import { AdminProtection } from "./components/AdminProtection";
 import { AdminRecentActivity } from "./components/AdminRecentActivity";
@@ -13,7 +14,10 @@ import { SystemHealthMonitor } from "./components/SystemHealthMonitor";
 import { getAdminDashboardData } from "./getAdminDashboardData";
 
 export default async function AdminDashboardPage() {
-  const stats = await getAdminDashboardData();
+  const [stats, attributes] = await Promise.all([
+    getAdminDashboardData(),
+    getAttributes(),
+  ]);
 
   return (
     <AdminProtection>
@@ -35,7 +39,7 @@ export default async function AdminDashboardPage() {
           {/* Main Content */}
           <div className="space-y-8 lg:col-span-2">
             <CategoryMetrics />
-            <AttributeMetrics />
+            <AttributeMetrics attributes={attributes} />
             <LiveActivityFeed />
             <Suspense fallback={<div>Loading activity...</div>}>
               <AdminRecentActivity />

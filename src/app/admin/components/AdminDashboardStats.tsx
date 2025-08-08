@@ -1,36 +1,21 @@
-"use client";
-
-import { useRealtimeAdminData } from "@/admin/hooks";
 import { Text } from "@/primitives/text";
 
-export function AdminDashboardStats() {
-  const { stats, loading, lastUpdate } = useRealtimeAdminData();
+interface AdminDashboardStatsProps {
+  stats: {
+    totalUsers: number;
+    totalItems: number;
+    totalCategories: number;
+    activeLoans: number;
+  };
+}
 
-  if (loading) {
-    return (
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="rounded-lg bg-white p-6 shadow">
-            <div className="animate-pulse">
-              <div className="mb-2 h-4 w-3/4 rounded bg-gray-200"></div>
-              <div className="h-8 w-1/2 rounded bg-gray-200"></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
-
+export function AdminDashboardStats({ stats }: AdminDashboardStatsProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <Text className="text-sm text-gray-500">
-          Last updated: {lastUpdate.toLocaleTimeString()}
+          Last updated: {new Date().toLocaleTimeString()}
         </Text>
-        <div className="flex items-center space-x-2">
-          <div className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
-          <Text className="text-xs text-green-600">Live</Text>
-        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
