@@ -14,7 +14,7 @@ Delete 4 over-engineered form field component files from `src/common/forms/` to 
 - [ ] Check for any imports of `FormField.tsx` in the codebase
 - [ ] Verify no active usage of this form field component
 - [ ] Delete `src/common/forms/FormField.tsx`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `FormFieldRenderers.tsx` (2.8KB)
 **Complexity:** Medium | **Dependencies:** Some
@@ -23,7 +23,7 @@ Delete 4 over-engineered form field component files from `src/common/forms/` to 
 - [ ] Check for any imports of `FormFieldRenderers.tsx` in the codebase
 - [ ] Verify no active usage of this field renderers component
 - [ ] Delete `src/common/forms/FormFieldRenderers.tsx`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. `DynamicField.tsx` (4.7KB)
 **Complexity:** High | **Dependencies:** Multiple
@@ -32,7 +32,7 @@ Delete 4 over-engineered form field component files from `src/common/forms/` to 
 - [ ] Check for any imports of `DynamicField.tsx` in the codebase
 - [ ] Verify no active usage of this dynamic field component
 - [ ] Delete `src/common/forms/DynamicField.tsx`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. `MultiSelect.tsx` (6.4KB)
 **Complexity:** High | **Dependencies:** Multiple
@@ -41,7 +41,7 @@ Delete 4 over-engineered form field component files from `src/common/forms/` to 
 - [ ] Check for any imports of `MultiSelect.tsx` in the codebase
 - [ ] Verify no active usage of this multi-select component
 - [ ] Delete `src/common/forms/MultiSelect.tsx`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

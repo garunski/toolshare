@@ -14,7 +14,7 @@ Complete the Phase 3 migration by cleaning up the empty operations directory and
 - [ ] Verify all operation files have been moved from `src/common/operations/`
 - [ ] Check for any remaining files in the operations directory
 - [ ] Remove the empty `src/common/operations/` directory
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. Update Remaining Import References
 **Priority:** Critical
@@ -23,7 +23,7 @@ Complete the Phase 3 migration by cleaning up the empty operations directory and
 - [ ] Search for any remaining imports referencing `@/common/operations/`
 - [ ] Update all remaining import statements to use new locations
 - [ ] Check for any TypeScript compilation errors
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. Verify All Business Logic Works
 **Priority:** High
@@ -38,7 +38,7 @@ Complete the Phase 3 migration by cleaning up the empty operations directory and
 - [ ] Verify all search and analytics operations are properly imported
 - [ ] Verify all system and performance operations are properly imported
 - [ ] Verify all helper operations are properly imported
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. Clean Up Empty Directories
 **Priority:** Medium
@@ -46,7 +46,7 @@ Complete the Phase 3 migration by cleaning up the empty operations directory and
 **Subtasks:**
 - [ ] Find and remove any empty directories created during migration
 - [ ] Ensure directory structure is clean and organized
-- [ ] Run `task validate` and fix all issues
+
 
 ### 5. Final Validation and Testing
 **Priority:** Critical

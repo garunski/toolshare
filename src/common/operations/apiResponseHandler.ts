@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-import { processFormError } from "@/common/forms/FormErrorProcessor";
-
 export interface ApiResponse<T = any> {
   success?: boolean;
   data?: T;
@@ -54,7 +52,50 @@ export const createMissingFieldsResponse = (
 };
 
 export const handleApiError = (error: any): NextResponse<ApiResponse> => {
-  const { fieldErrors, generalError } = processFormError(error);
+  let fieldErrors: Record<string, string> = {};
+  let generalError: string | null = null;
+
+  if (typeof error === "object" && error !== null) {
+    const errObj = error as {
+      error?: string | Error;
+      message?: string;
+      details?: {
+        errors?: Array<{ field?: string; message?: string }>;
+      };
+    };
+
+    if (errObj.details && Array.isArray(errObj.details.errors)) {
+      errObj.details.errors.forEach((err) => {
+        if (err.field) {
+          fieldErrors[err.field] = err.message || "Invalid value";
+        }
+      });
+    }
+
+    if (Object.keys(fieldErrors).length === 0) {
+      if (errObj.error) {
+        if (typeof errObj.error === "string") {
+          generalError = errObj.error;
+        } else if (errObj.error instanceof Error) {
+          generalError = errObj.error.message;
+        } else {
+          generalError = "An error occurred";
+        }
+      } else if (errObj.message) {
+        generalError = errObj.message;
+      }
+    }
+  }
+
+  if (!generalError && Object.keys(fieldErrors).length === 0) {
+    if (error instanceof Error) {
+      generalError = error.message;
+    } else if (typeof error === "string") {
+      generalError = error;
+    } else {
+      generalError = "Operation failed";
+    }
+  }
 
   if (Object.keys(fieldErrors).length > 0) {
     return createValidationErrorResponse(fieldErrors);

@@ -14,7 +14,7 @@ Delete 10 over-engineered form builder files from `src/common/forms/` to remove 
 - [ ] Check for any imports of `FormBuilder.tsx` in the codebase
 - [ ] Verify no active usage of this component
 - [ ] Delete `src/common/forms/FormBuilder.tsx`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `MultiStepFormBuilder.tsx` (2.8KB)
 **Complexity:** High | **Dependencies:** Multiple
@@ -23,7 +23,7 @@ Delete 10 over-engineered form builder files from `src/common/forms/` to remove 
 - [ ] Check for any imports of `MultiStepFormBuilder.tsx` in the codebase
 - [ ] Verify no active usage of this component
 - [ ] Delete `src/common/forms/MultiStepFormBuilder.tsx`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. `DynamicFormBuilder.tsx` (4.7KB)
 **Complexity:** High | **Dependencies:** Multiple
@@ -32,7 +32,7 @@ Delete 10 over-engineered form builder files from `src/common/forms/` to remove 
 - [ ] Check for any imports of `DynamicFormBuilder.tsx` in the codebase
 - [ ] Verify no active usage of this component
 - [ ] Delete `src/common/forms/DynamicFormBuilder.tsx`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. `DynamicValidationEngine.ts` (13KB)
 **Complexity:** High | **Dependencies:** Multiple
@@ -41,7 +41,7 @@ Delete 10 over-engineered form builder files from `src/common/forms/` to remove 
 - [ ] Check for any imports of `DynamicValidationEngine.ts` in the codebase
 - [ ] Verify no active usage of this validation engine
 - [ ] Delete `src/common/forms/DynamicValidationEngine.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 5. `FormStateManager.ts` (7.2KB)
 **Complexity:** High | **Dependencies:** Multiple
@@ -50,7 +50,7 @@ Delete 10 over-engineered form builder files from `src/common/forms/` to remove 
 - [ ] Check for any imports of `FormStateManager.ts` in the codebase
 - [ ] Verify no active usage of this state manager
 - [ ] Delete `src/common/forms/FormStateManager.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 6. `FormErrorProcessor.ts` (1.4KB)
 **Complexity:** Medium | **Dependencies:** Some
@@ -59,7 +59,7 @@ Delete 10 over-engineered form builder files from `src/common/forms/` to remove 
 - [ ] Check for any imports of `FormErrorProcessor.ts` in the codebase
 - [ ] Verify no active usage of this error processor
 - [ ] Delete `src/common/forms/FormErrorProcessor.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 7. `FormProgressIndicator.tsx` (3.2KB)
 **Complexity:** Medium | **Dependencies:** Some
@@ -68,7 +68,7 @@ Delete 10 over-engineered form builder files from `src/common/forms/` to remove 
 - [ ] Check for any imports of `FormProgressIndicator.tsx` in the codebase
 - [ ] Verify no active usage of this progress indicator
 - [ ] Delete `src/common/forms/FormProgressIndicator.tsx`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 8. `SmartDefaultsProvider.tsx` (5.6KB)
 **Complexity:** High | **Dependencies:** Multiple
@@ -77,7 +77,7 @@ Delete 10 over-engineered form builder files from `src/common/forms/` to remove 
 - [ ] Check for any imports of `SmartDefaultsProvider.tsx` in the codebase
 - [ ] Verify no active usage of this defaults provider
 - [ ] Delete `src/common/forms/SmartDefaultsProvider.tsx`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 9. `useAutoSave.ts` (3.5KB)
 **Complexity:** Medium | **Dependencies:** Some
@@ -86,7 +86,7 @@ Delete 10 over-engineered form builder files from `src/common/forms/` to remove 
 - [ ] Check for any imports of `useAutoSave.ts` in the codebase
 - [ ] Verify no active usage of this auto-save hook
 - [ ] Delete `src/common/forms/useAutoSave.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 10. `ValidationMessage.tsx` (1.7KB)
 **Complexity:** Low | **Dependencies:** Minimal
@@ -95,7 +95,7 @@ Delete 10 over-engineered form builder files from `src/common/forms/` to remove 
 - [ ] Check for any imports of `ValidationMessage.tsx` in the codebase
 - [ ] Verify no active usage of this validation message component
 - [ ] Delete `src/common/forms/ValidationMessage.tsx`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

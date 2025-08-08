@@ -2,7 +2,6 @@
 
 import { useFormContext } from "react-hook-form";
 
-import { ValidationMessage } from "@/common/forms/ValidationMessage";
 import { Input } from "@/primitives/input";
 
 export function ItemLocationField() {
@@ -27,11 +26,9 @@ export function ItemLocationField() {
         maxLength={100}
       />
       {errors.location && (
-        <ValidationMessage
-          type="error"
-          message={errors.location.message as string}
-          className="mt-2"
-        />
+        <div className="mt-2 text-sm text-red-600">
+          {errors.location.message as string}
+        </div>
       )}
     </div>
   );

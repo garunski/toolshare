@@ -18,7 +18,7 @@ Move 4 admin-related hook files from `src/common/hooks/` to be colocated with th
 - [ ] Add proper error handling for user roles operations
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `useUserRoles.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `usePermissions.ts` → `/app/admin/hooks/usePermissions.ts`
 **Size:** 1.8KB | **Complexity:** Medium
@@ -31,7 +31,7 @@ Move 4 admin-related hook files from `src/common/hooks/` to be colocated with th
 - [ ] Add proper error handling for permissions operations
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `usePermissions.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. `useRealtimeAdminData.ts` → `/app/admin/hooks/useRealtimeAdminData.ts`
 **Size:** 3.8KB | **Complexity:** High
@@ -43,7 +43,7 @@ Move 4 admin-related hook files from `src/common/hooks/` to be colocated with th
 - [ ] Add proper error handling for realtime operations
 - [ ] Add proper cleanup for realtime subscriptions
 - [ ] Update all imports in codebase that reference `useRealtimeAdminData.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. `useAttributeHook.ts` → `/app/admin/attributes/hooks/useAttributeHook.ts`
 **Size:** 1.0KB | **Complexity:** Low
@@ -56,7 +56,7 @@ Move 4 admin-related hook files from `src/common/hooks/` to be colocated with th
 - [ ] Add proper error handling for attribute operations
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `useAttributeHook.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

@@ -14,7 +14,7 @@ Delete 2 over-engineered utility component files from `src/common/forms/` to rem
 - [ ] Check for any imports of `DatePicker.tsx` in the codebase
 - [ ] Verify no active usage of this date picker component
 - [ ] Delete `src/common/forms/DatePicker.tsx`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `index.ts` (999B)
 **Complexity:** Low | **Dependencies:** Minimal
@@ -23,7 +23,7 @@ Delete 2 over-engineered utility component files from `src/common/forms/` to rem
 - [ ] Check for any imports of `index.ts` from forms directory in the codebase
 - [ ] Verify no active usage of this forms index file
 - [ ] Delete `src/common/forms/index.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

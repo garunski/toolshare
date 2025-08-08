@@ -2,7 +2,6 @@
 
 import { useFormContext } from "react-hook-form";
 
-import { ValidationMessage } from "@/common/forms/ValidationMessage";
 import { Textarea } from "@/primitives/textarea";
 
 export function ItemDescriptionField() {
@@ -35,11 +34,9 @@ export function ItemDescriptionField() {
         maxLength={500}
       />
       {errors.description && (
-        <ValidationMessage
-          type="error"
-          message={errors.description.message as string}
-          className="mt-2"
-        />
+        <div className="mt-2 text-sm text-red-600">
+          {errors.description.message as string}
+        </div>
       )}
       {descriptionValue && (
         <p className="mt-1 text-right text-xs text-gray-500">

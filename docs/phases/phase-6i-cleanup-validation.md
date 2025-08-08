@@ -14,7 +14,7 @@ Complete the Phase 6 migration by cleaning up the empty hooks directory and perf
 - [ ] Verify all hook files have been moved from `src/common/hooks/`
 - [ ] Check for any remaining files in the hooks directory
 - [ ] Remove the empty `src/common/hooks/` directory
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. Update Remaining Import References
 **Priority:** Critical
@@ -23,7 +23,7 @@ Complete the Phase 6 migration by cleaning up the empty hooks directory and perf
 - [ ] Search for any remaining imports referencing `@/common/hooks/`
 - [ ] Update all remaining import statements to use new locations
 - [ ] Check for any TypeScript compilation errors
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. Verify All Hooks Work
 **Priority:** High
@@ -36,7 +36,7 @@ Complete the Phase 6 migration by cleaning up the empty hooks directory and perf
 - [ ] Verify all mobile/touch hooks are properly imported
 - [ ] Verify all utility hooks are properly imported
 - [ ] Verify all shared hooks are properly imported
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. Clean Up Empty Directories
 **Priority:** Medium
@@ -44,7 +44,7 @@ Complete the Phase 6 migration by cleaning up the empty hooks directory and perf
 **Subtasks:**
 - [ ] Find and remove any empty directories created during migration
 - [ ] Ensure directory structure is clean and organized
-- [ ] Run `task validate` and fix all issues
+
 
 ### 5. Final Validation and Testing
 **Priority:** Critical

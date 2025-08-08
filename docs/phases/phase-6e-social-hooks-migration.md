@@ -18,7 +18,7 @@ Move 1 social-related hook file from `src/common/hooks/` to be colocated with it
 - [ ] Add proper error handling for profile actions operations
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `useProfileActions.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

@@ -20,7 +20,7 @@ Move 4 admin API validator files from `src/common/validators/` to be colocated w
 - [ ] Add admin permission validation logic
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `userCreationValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `roleValidator.ts` → `/api/admin/roles/assign/validation/validateRoleAssignment.ts`
 **Size:** 2.7KB | **Complexity:** Medium
@@ -35,7 +35,7 @@ Move 4 admin API validator files from `src/common/validators/` to be colocated w
 - [ ] Add role assignment validation logic
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `roleValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. `categoryValidator.ts` → `/api/admin/taxonomy/categories/validation/validateCategory.ts`
 **Size:** 4.0KB | **Complexity:** High
@@ -51,7 +51,7 @@ Move 4 admin API validator files from `src/common/validators/` to be colocated w
 - [ ] Add category attribute validation
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `categoryValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. `attributeValidator.ts` → `/api/admin/taxonomy/attributes/validation/validateAttribute.ts`
 **Size:** 3.6KB | **Complexity:** High
@@ -67,7 +67,7 @@ Move 4 admin API validator files from `src/common/validators/` to be colocated w
 - [ ] Add attribute constraint validation
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `attributeValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

@@ -14,7 +14,7 @@ Complete the Phase 5 migration by cleaning up the empty forms directory and perf
 - [ ] Verify all form files have been deleted from `src/common/forms/`
 - [ ] Check for any remaining files in the forms directory
 - [ ] Remove the empty `src/common/forms/` directory
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. Update Remaining Import References
 **Priority:** Critical
@@ -23,7 +23,7 @@ Complete the Phase 5 migration by cleaning up the empty forms directory and perf
 - [ ] Search for any remaining imports referencing `@/common/forms/`
 - [ ] Update all remaining import statements to remove dependencies
 - [ ] Check for any TypeScript compilation errors
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. Verify All Forms Still Work
 **Priority:** High
@@ -33,7 +33,7 @@ Complete the Phase 5 migration by cleaning up the empty forms directory and perf
 - [ ] Verify all tool forms are working
 - [ ] Verify all admin forms are working
 - [ ] Verify all loan forms are working
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. Clean Up Empty Directories
 **Priority:** Medium
@@ -41,7 +41,7 @@ Complete the Phase 5 migration by cleaning up the empty forms directory and perf
 **Subtasks:**
 - [ ] Find and remove any empty directories created during migration
 - [ ] Ensure directory structure is clean and organized
-- [ ] Run `task validate` and fix all issues
+
 
 ### 5. Final Validation and Testing
 **Priority:** Critical

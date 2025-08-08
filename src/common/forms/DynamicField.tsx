@@ -8,9 +8,29 @@ import { Switch } from "@/primitives/switch";
 import { Textarea } from "@/primitives/textarea";
 
 import { DatePicker } from "./DatePicker";
-import type { AttributeDefinitionWithOptions } from "./DynamicValidationEngine";
 import { MultiSelect } from "./MultiSelect";
-import { ValidationMessage } from "./ValidationMessage";
+
+interface AttributeDefinitionWithOptions {
+  id: string;
+  name: string;
+  display_label: string;
+  data_type:
+    | "text"
+    | "number"
+    | "boolean"
+    | "date"
+    | "select"
+    | "multi_select"
+    | "url"
+    | "email";
+  is_required: boolean;
+  validation_rules?: Record<string, any>;
+  default_value?: string;
+  options?: Record<string, any>;
+  display_order: number;
+  help_text?: string;
+  parsedOptions?: Array<{ value: string; label: string }>;
+}
 
 interface Props {
   attribute: AttributeDefinitionWithOptions;
@@ -159,9 +179,7 @@ export function DynamicField({ attribute, className }: Props) {
         )}
 
       {/* Validation message */}
-      {error && (
-        <ValidationMessage type="error" message={error} className="mt-2" />
-      )}
+      {error && <div className="mt-2 text-sm text-red-600">{error}</div>}
     </div>
   );
 }

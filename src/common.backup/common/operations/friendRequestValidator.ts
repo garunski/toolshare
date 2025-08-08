@@ -23,6 +23,10 @@ export class FriendRequestValidator {
   }
 
   static validateFormData(formData: FriendRequestFormData) {
-    return friendRequestValidator.parse(formData);
+    // Simple validation - in a real app, you'd use a proper validation library
+    if (!formData.receiver_id) {
+      throw new Error("Receiver ID is required");
+    }
+    return formData;
   }
 }

@@ -18,7 +18,7 @@ Move 3 truly shared hook files from `src/common/hooks/` to `src/common/supabase/
 - [ ] Add proper error handling for auth operations
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `useAuth.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `useAuthWithRoles.ts` → `/common/supabase/hooks/useAuthWithRoles.ts`
 **Size:** 664B | **Complexity:** Low
@@ -29,7 +29,7 @@ Move 3 truly shared hook files from `src/common/hooks/` to `src/common/supabase/
 - [ ] Add proper TypeScript types for auth with roles data
 - [ ] Add proper error handling for auth with roles operations
 - [ ] Update all imports in codebase that reference `useAuthWithRoles.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. `useCategories.ts` → `/common/supabase/hooks/useCategories.ts`
 **Size:** 3.8KB | **Complexity:** Medium
@@ -40,7 +40,7 @@ Move 3 truly shared hook files from `src/common/hooks/` to `src/common/supabase/
 - [ ] Add proper TypeScript types for categories data
 - [ ] Add proper error handling for categories operations
 - [ ] Update all imports in codebase that reference `useCategories.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

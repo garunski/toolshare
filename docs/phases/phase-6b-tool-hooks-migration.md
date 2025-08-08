@@ -18,7 +18,7 @@ Move 4 tool-related hook files from `src/common/hooks/` to be colocated with the
 - [ ] Add proper error handling for items operations
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `useItems.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `useItemsByOwner.ts` → `/app/(app)/tools/hooks/useItemsByOwner.ts`
 **Size:** 1.0KB | **Complexity:** Low
@@ -29,7 +29,7 @@ Move 4 tool-related hook files from `src/common/hooks/` to be colocated with the
 - [ ] Add proper TypeScript types for owner-specific items data
 - [ ] Add proper error handling for owner-specific operations
 - [ ] Update all imports in codebase that reference `useItemsByOwner.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. `useItemSearch.ts` → `/app/(app)/tools/browse/hooks/useItemSearch.ts`
 **Size:** 1.1KB | **Complexity:** Low
@@ -42,7 +42,7 @@ Move 4 tool-related hook files from `src/common/hooks/` to be colocated with the
 - [ ] Add proper error handling for search operations
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `useItemSearch.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. `useCategorySuggestions.ts` → `/app/(app)/tools/add/hooks/useCategorySuggestions.ts`
 **Size:** 1.2KB | **Complexity:** Low
@@ -55,7 +55,7 @@ Move 4 tool-related hook files from `src/common/hooks/` to be colocated with the
 - [ ] Add proper error handling for category operations
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `useCategorySuggestions.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

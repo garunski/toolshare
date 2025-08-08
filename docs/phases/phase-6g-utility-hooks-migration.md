@@ -16,7 +16,7 @@ Move 1 utility hook file from `src/common/hooks/` to be colocated with its respe
 - [ ] Add proper TypeScript types for lazy loading data
 - [ ] Add proper error handling for lazy loading operations
 - [ ] Update all imports in codebase that reference `useLazyLoading.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

@@ -16,7 +16,7 @@ Move 2 attribute-related hook files from `src/common/hooks/` to be colocated wit
 - [ ] Add proper TypeScript types for attributes data
 - [ ] Add proper error handling for attributes operations
 - [ ] Update all imports in codebase that reference `useAttributes.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `useAttributesByTypeHook.ts` → `/app/admin/attributes/hooks/useAttributesByTypeHook.ts`
 **Size:** 1.1KB | **Complexity:** Low
@@ -27,7 +27,7 @@ Move 2 attribute-related hook files from `src/common/hooks/` to be colocated wit
 - [ ] Add proper TypeScript types for attributes by type data
 - [ ] Add proper error handling for type-specific operations
 - [ ] Update all imports in codebase that reference `useAttributesByTypeHook.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

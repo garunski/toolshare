@@ -3,11 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
-import { MultiStepFormBuilder } from "@/common/forms";
-import { addToolFormSteps } from "@/common/forms/configs/addToolFormSteps";
 import { useCategories } from "@/common/hooks/useCategories";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
+
+import { FormActions } from "./FormActions";
+import { ToolCategoryField } from "./ToolCategoryField";
+import { ToolConditionField } from "./ToolConditionField";
+import { ToolDescriptionField } from "./ToolDescriptionField";
+import { ToolLocationField } from "./ToolLocationField";
+import { ToolNameField } from "./ToolNameField";
 
 interface AddToolFormProps {
   userId: string;
@@ -40,37 +45,15 @@ export function AddToolForm({ userId, onSuccess }: AddToolFormProps) {
     return options;
   }, [categories]);
 
-  // Create dynamic form steps with populated category options
-  const dynamicFormSteps = useMemo(() => {
-    return addToolFormSteps.map((step) => {
-      if (step.key === "details") {
-        return {
-          ...step,
-          config: {
-            ...step.config,
-            fields: step.config.fields.map((field) => {
-              if (field.name === "category") {
-                return {
-                  ...field,
-                  options: categoryOptions,
-                  placeholder: categoriesLoading
-                    ? "Loading categories..."
-                    : "Select a category",
-                  disabled: categoriesLoading,
-                };
-              }
-              return field;
-            }),
-          },
-        };
-      }
-      return step;
-    });
-  }, [categoryOptions, categoriesLoading]);
+  const handleComplete = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const allData = Object.fromEntries(formData.entries()) as Record<
+      string,
+      string
+    >;
 
-  const handleComplete = async (allData: Record<string, string>) => {
     try {
-      // Handle the complete form data
       const response = await fetch("/api/tools", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -100,11 +83,17 @@ export function AddToolForm({ userId, onSuccess }: AddToolFormProps) {
           </Text>
         </div>
 
-        <MultiStepFormBuilder
-          steps={dynamicFormSteps}
-          onComplete={handleComplete}
-          onCancel={() => router.back()}
-        />
+        <form className="space-y-6" onSubmit={handleComplete}>
+          <ToolNameField />
+          <ToolDescriptionField />
+          <ToolCategoryField
+            categoryOptions={categoryOptions}
+            categoriesLoading={categoriesLoading}
+          />
+          <ToolConditionField />
+          <ToolLocationField />
+          <FormActions onCancel={() => router.back()} />
+        </form>
       </div>
     </div>
   );

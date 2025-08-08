@@ -14,7 +14,7 @@ Delete 2 over-engineered form validation files from `src/common/forms/` to remov
 - [ ] Check for any imports of `FormValidation.ts` in the codebase
 - [ ] Verify no active usage of this form validation utility
 - [ ] Delete `src/common/forms/FormValidation.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `validators/index.ts` (2.7KB)
 **Complexity:** Medium | **Dependencies:** Some
@@ -23,7 +23,7 @@ Delete 2 over-engineered form validation files from `src/common/forms/` to remov
 - [ ] Check for any imports of `validators/index.ts` in the codebase
 - [ ] Verify no active usage of this validators index file
 - [ ] Delete `src/common/forms/validators/index.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

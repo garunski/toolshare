@@ -18,7 +18,7 @@ Move 4 mobile/touch-related hook files from `src/common/hooks/` to be colocated 
 - [ ] Add proper error handling for mobile operations
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `useMobileOptimization.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `useTouchGestures.ts` → `/app/(app)/hooks/useTouchGestures.ts`
 **Size:** 2.2KB | **Complexity:** Medium
@@ -29,7 +29,7 @@ Move 4 mobile/touch-related hook files from `src/common/hooks/` to be colocated 
 - [ ] Add proper TypeScript types for touch gestures data
 - [ ] Add proper error handling for touch operations
 - [ ] Update all imports in codebase that reference `useTouchGestures.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. `useTouchGesturesCore.ts` → `/app/(app)/hooks/useTouchGesturesCore.ts`
 **Size:** 2.5KB | **Complexity:** Medium
@@ -40,7 +40,7 @@ Move 4 mobile/touch-related hook files from `src/common/hooks/` to be colocated 
 - [ ] Add proper TypeScript types for touch gestures core data
 - [ ] Add proper error handling for core touch operations
 - [ ] Update all imports in codebase that reference `useTouchGesturesCore.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. `useTouchGesturesHandlers.ts` → `/app/(app)/hooks/useTouchGesturesHandlers.ts`
 **Size:** 2.0KB | **Complexity:** Medium
@@ -51,7 +51,7 @@ Move 4 mobile/touch-related hook files from `src/common/hooks/` to be colocated 
 - [ ] Add proper TypeScript types for touch gesture handlers data
 - [ ] Add proper error handling for handler operations
 - [ ] Update all imports in codebase that reference `useTouchGesturesHandlers.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

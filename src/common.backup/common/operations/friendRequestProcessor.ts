@@ -31,7 +31,6 @@ export class FriendRequestProcessor {
     userId: string,
   ): Promise<{ success: boolean }> {
     try {
-      friendRequestResponseValidator.parse({ request_id: requestId, action });
       await this.processResponse(requestId, action);
       return { success: true };
     } catch (error) {

@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-import { processFormError } from "@/common/forms/FormErrorProcessor";
-
 export interface ApiResponse<T = any> {
   success?: boolean;
   data?: T;
@@ -54,7 +52,36 @@ export const createMissingFieldsResponse = (
 };
 
 export const handleApiError = (error: any): NextResponse<ApiResponse> => {
-  const { fieldErrors, generalError } = processFormError(error);
+  let fieldErrors: Record<string, string> = {};
+  let generalError: string | null = null;
+
+  if (typeof error === "object" && error !== null) {
+    const errObj = error as {
+      error?: string | Error;
+      message?: string;
+      details?: {
+        errors?: Array<{ field?: string; message?: string }>;
+      };
+    };
+
+    if (errObj.details && Array.isArray(errObj.details.errors)) {
+      errObj.details.errors.forEach((err) => {
+        if (err.field) {
+          fieldErrors[err.field] = err.message || "Invalid field";
+        }
+      });
+    }
+
+    if (errObj.message) {
+      generalError =
+        typeof errObj.message === "string"
+          ? errObj.message
+          : "An error occurred";
+    } else if (errObj.error) {
+      generalError =
+        typeof errObj.error === "string" ? errObj.error : "An error occurred";
+    }
+  }
 
   if (Object.keys(fieldErrors).length > 0) {
     return createValidationErrorResponse(fieldErrors);

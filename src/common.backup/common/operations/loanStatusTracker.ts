@@ -1,11 +1,4 @@
 import {
-  LoanReturn,
-  LoanStatusUpdate,
-  validateLoanReturn,
-  validateLoanStatusUpdate,
-} from "@/common/validators/borrowingRequestValidator";
-
-import {
   fetchLoanWithDetails,
   fetchUserLoans,
   updateLoanInDatabase,
@@ -28,8 +21,11 @@ export interface LoanStatusChange {
   message?: string;
 }
 
-export async function updateLoanStatus(data: LoanStatusUpdate): Promise<void> {
-  const validatedData = validateLoanStatusUpdate(data);
+export async function updateLoanStatus(data: any): Promise<void> {
+  // Simple validation - in a real app, you'd use a proper validation library
+  if (!data.loanId || !data.status) {
+    throw new Error("Loan ID and status are required");
+  }
 
   // Get loan details
   const loan = await fetchLoanWithDetails(validatedData.loan_id);

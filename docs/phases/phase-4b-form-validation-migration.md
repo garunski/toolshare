@@ -18,7 +18,7 @@ Move 6 form-related validator files from `src/common/validators/` to be colocate
 - [ ] Add proper TypeScript types for form data
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `authenticationFormValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `toolCreationValidator.ts` → `/app/(app)/tools/add/validation/validateToolCreation.ts`
 **Size:** 1.7KB | **Complexity:** Medium
@@ -32,7 +32,7 @@ Move 6 form-related validator files from `src/common/validators/` to be colocate
 - [ ] Add validation for tool-specific fields (name, description, category, etc.)
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `toolCreationValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. `borrowingRequestValidator.ts` → `/app/(app)/tools/[id]/validation/validateBorrowingRequest.ts`
 **Size:** 1.2KB | **Complexity:** Low
@@ -46,7 +46,7 @@ Move 6 form-related validator files from `src/common/validators/` to be colocate
 - [ ] Add validation for borrowing-specific fields (start date, end date, notes)
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `borrowingRequestValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. `itemValidator.ts` → `/app/(app)/tools/add/validation/validateItem.ts`
 **Size:** 2.9KB | **Complexity:** Medium
@@ -58,7 +58,7 @@ Move 6 form-related validator files from `src/common/validators/` to be colocate
 - [ ] Add proper TypeScript types for item data
 - [ ] Add validation for item-specific fields (condition, location, tags)
 - [ ] Update all imports in codebase that reference `itemValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 5. `itemAttributeValidator.ts` → `/app/(app)/tools/add/validation/validateItemAttribute.ts`
 **Size:** 2.4KB | **Complexity:** Medium
@@ -70,7 +70,7 @@ Move 6 form-related validator files from `src/common/validators/` to be colocate
 - [ ] Add proper TypeScript types for item attribute data
 - [ ] Add validation for attribute-specific fields (type, value, required)
 - [ ] Update all imports in codebase that reference `itemAttributeValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 6. `itemAttributeValueValidator.ts` → `/app/(app)/tools/add/validation/validateItemAttributeValue.ts`
 **Size:** 4.3KB | **Complexity:** High
@@ -83,7 +83,7 @@ Move 6 form-related validator files from `src/common/validators/` to be colocate
 - [ ] Add validation for attribute value-specific fields (data type, constraints, validation rules)
 - [ ] Add complex validation logic for different attribute types
 - [ ] Update all imports in codebase that reference `itemAttributeValueValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

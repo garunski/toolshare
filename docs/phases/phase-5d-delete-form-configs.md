@@ -14,7 +14,7 @@ Delete 8 over-engineered form configuration files from `src/common/forms/configs
 - [ ] Check for any imports of `baseFormConfig.ts` in the codebase
 - [ ] Verify no active usage of this base form configuration
 - [ ] Delete `src/common/forms/configs/baseFormConfig.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `addToolFormConfig.ts` (596B)
 **Complexity:** Low | **Dependencies:** Minimal
@@ -23,7 +23,7 @@ Delete 8 over-engineered form configuration files from `src/common/forms/configs
 - [ ] Check for any imports of `addToolFormConfig.ts` in the codebase
 - [ ] Verify no active usage of this tool form configuration
 - [ ] Delete `src/common/forms/configs/addToolFormConfig.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. `addToolFormSteps.ts` (2.0KB)
 **Complexity:** Medium | **Dependencies:** Some
@@ -32,7 +32,7 @@ Delete 8 over-engineered form configuration files from `src/common/forms/configs
 - [ ] Check for any imports of `addToolFormSteps.ts` in the codebase
 - [ ] Verify no active usage of this tool form steps configuration
 - [ ] Delete `src/common/forms/configs/addToolFormSteps.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. `loginFormConfig.ts` (698B)
 **Complexity:** Low | **Dependencies:** Minimal
@@ -41,7 +41,7 @@ Delete 8 over-engineered form configuration files from `src/common/forms/configs
 - [ ] Check for any imports of `loginFormConfig.ts` in the codebase
 - [ ] Verify no active usage of this login form configuration
 - [ ] Delete `src/common/forms/configs/loginFormConfig.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 5. `registerFormConfig.ts` (503B)
 **Complexity:** Low | **Dependencies:** Minimal
@@ -50,7 +50,7 @@ Delete 8 over-engineered form configuration files from `src/common/forms/configs
 - [ ] Check for any imports of `registerFormConfig.ts` in the codebase
 - [ ] Verify no active usage of this register form configuration
 - [ ] Delete `src/common/forms/configs/registerFormConfig.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 6. `profileSetupFormConfig.ts` (751B)
 **Complexity:** Low | **Dependencies:** Minimal
@@ -59,7 +59,7 @@ Delete 8 over-engineered form configuration files from `src/common/forms/configs
 - [ ] Check for any imports of `profileSetupFormConfig.ts` in the codebase
 - [ ] Verify no active usage of this profile setup form configuration
 - [ ] Delete `src/common/forms/configs/profileSetupFormConfig.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 7. `loanRequestFormConfig.ts` (1.6KB)
 **Complexity:** Medium | **Dependencies:** Some
@@ -68,7 +68,7 @@ Delete 8 over-engineered form configuration files from `src/common/forms/configs
 - [ ] Check for any imports of `loanRequestFormConfig.ts` in the codebase
 - [ ] Verify no active usage of this loan request form configuration
 - [ ] Delete `src/common/forms/configs/loanRequestFormConfig.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 8. `friendRequestFormConfig.ts` (706B)
 **Complexity:** Low | **Dependencies:** Minimal
@@ -77,7 +77,7 @@ Delete 8 over-engineered form configuration files from `src/common/forms/configs
 - [ ] Check for any imports of `friendRequestFormConfig.ts` in the codebase
 - [ ] Verify no active usage of this friend request form configuration
 - [ ] Delete `src/common/forms/configs/friendRequestFormConfig.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

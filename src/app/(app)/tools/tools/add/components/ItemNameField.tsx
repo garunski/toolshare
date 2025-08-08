@@ -2,7 +2,6 @@
 
 import { useFormContext } from "react-hook-form";
 
-import { ValidationMessage } from "@/common/forms/ValidationMessage";
 import { Input } from "@/primitives/input";
 
 export function ItemNameField() {
@@ -34,11 +33,9 @@ export function ItemNameField() {
         maxLength={100}
       />
       {errors.name && (
-        <ValidationMessage
-          type="error"
-          message={errors.name.message as string}
-          className="mt-2"
-        />
+        <div className="mt-2 text-sm text-red-600">
+          {errors.name.message as string}
+        </div>
       )}
       {nameValue && (
         <p className="mt-1 text-right text-xs text-gray-500">

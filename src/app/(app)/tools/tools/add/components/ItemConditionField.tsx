@@ -2,8 +2,6 @@
 
 import { useFormContext } from "react-hook-form";
 
-import { ValidationMessage } from "@/common/forms/ValidationMessage";
-
 export function ItemConditionField() {
   const {
     register,
@@ -30,11 +28,9 @@ export function ItemConditionField() {
         <option value="poor">Poor</option>
       </select>
       {errors.condition && (
-        <ValidationMessage
-          type="error"
-          message={errors.condition.message as string}
-          className="mt-2"
-        />
+        <div className="mt-2 text-sm text-red-600">
+          {errors.condition.message as string}
+        </div>
       )}
     </div>
   );
