@@ -18,7 +18,7 @@ A community-driven tool sharing platform that connects neighbors and friends to 
 - **UI Components**: Catalyst UI (shadcn/ui based)
 - **Styling**: Tailwind CSS with Catalyst presets
 - **Backend**: Supabase Cloud (PostgreSQL, Auth, Storage, Real-time)
-- **Notifications**: Novu Cloud
+- **Notifications**: Supabase Real-time + Browser Notifications
 - **Language**: TypeScript (strict mode)
 - **Forms**: React Hook Form with Zod validation
 - **Development**: Taskfile for streamlined workflows
@@ -30,7 +30,6 @@ A community-driven tool sharing platform that connects neighbors and friends to 
 - Node.js 18+
 - npm or yarn
 - Supabase CLI
-- Novu account (for notifications)
 
 ### Quick Start with Taskfile
 
@@ -72,13 +71,11 @@ If you prefer to set up manually:
    cp env.example .env.local
    ```
 
-   Edit `.env.local` and add your Supabase and Novu credentials:
+   Edit `.env.local` and add your Supabase credentials:
 
    ```env
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   NOVU_API_KEY=your_novu_api_key
-   NEXT_PUBLIC_NOVU_APP_ID=your_novu_app_id
    ```
 
 4. **Set up Supabase Database**
