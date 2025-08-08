@@ -3,9 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+import { usePermissions } from "@/admin/hooks";
+import { useUserRoles } from "@/admin/users/hooks";
 import { useAuth } from "@/common/hooks/useAuth";
-import { usePermissions } from "@/common/hooks/usePermissions";
-import { useUserRoles } from "@/common/hooks/useUserRoles";
 
 interface AdminProtectionProps {
   children: React.ReactNode;

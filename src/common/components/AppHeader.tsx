@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 
+import { usePermissions } from "@/admin/hooks";
 import { useAuth } from "@/common/hooks/useAuth";
-import { usePermissions } from "@/common/hooks/usePermissions";
 import { Button } from "@/primitives/button";
 
 interface AppHeaderProps {

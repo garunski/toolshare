@@ -1,6 +1,6 @@
 "use client";
 
-import { useRealtimeAdminData } from "@/common/hooks/useRealtimeAdminData";
+import { useRealtimeAdminData } from "@/admin/hooks";
 import { Text } from "@/primitives/text";
 
 export function AdminDashboardStats() {

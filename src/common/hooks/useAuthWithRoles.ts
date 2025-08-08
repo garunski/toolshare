@@ -1,6 +1,6 @@
+import { usePermissions } from "@/admin/hooks";
+import { useUserRoles } from "@/admin/users/hooks";
 import { useAuth } from "@/common/hooks/useAuth";
-import { usePermissions } from "@/common/hooks/usePermissions";
-import { useUserRoles } from "@/common/hooks/useUserRoles";
 
 export function useAuthWithRoles() {
   const auth = useAuth();

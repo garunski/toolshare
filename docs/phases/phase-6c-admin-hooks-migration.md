@@ -11,51 +11,51 @@ Move 4 admin-related hook files from `src/common/hooks/` to be colocated with th
 **Size:** 2.2KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/admin/users/hooks/`
-- [ ] Copy `useUserRoles.ts` to the new location
-- [ ] Update imports to use relative paths and local dependencies
-- [ ] Add proper TypeScript types for user roles data
-- [ ] Add proper error handling for user roles operations
-- [ ] Create corresponding `index.ts` file for exports
-- [ ] Update all imports in codebase that reference `useUserRoles.ts`
+- [x] Create directory: `src/app/admin/users/hooks/`
+- [x] Copy `useUserRoles.ts` to the new location
+- [x] Update imports to use relative paths and local dependencies
+- [x] Add proper TypeScript types for user roles data
+- [x] Add proper error handling for user roles operations
+- [x] Create corresponding `index.ts` file for exports
+- [x] Update all imports in codebase that reference `useUserRoles.ts`
 
 
 ### 2. `usePermissions.ts` → `/app/admin/hooks/usePermissions.ts`
 **Size:** 1.8KB | **Complexity:** Medium
 
 **Subtasks:**
-- [ ] Create directory: `src/app/admin/hooks/`
-- [ ] Copy `usePermissions.ts` to the new location
-- [ ] Update imports to use relative paths and local dependencies
-- [ ] Add proper TypeScript types for permissions data
-- [ ] Add proper error handling for permissions operations
-- [ ] Create corresponding `index.ts` file for exports
-- [ ] Update all imports in codebase that reference `usePermissions.ts`
+- [x] Create directory: `src/app/admin/hooks/`
+- [x] Copy `usePermissions.ts` to the new location
+- [x] Update imports to use relative paths and local dependencies
+- [x] Add proper TypeScript types for permissions data
+- [x] Add proper error handling for permissions operations
+- [x] Create corresponding `index.ts` file for exports
+- [x] Update all imports in codebase that reference `usePermissions.ts`
 
 
 ### 3. `useRealtimeAdminData.ts` → `/app/admin/hooks/useRealtimeAdminData.ts`
 **Size:** 3.8KB | **Complexity:** High
 
 **Subtasks:**
-- [ ] Copy `useRealtimeAdminData.ts` to the same directory as usePermissions.ts
-- [ ] Update imports to use relative paths and local dependencies
-- [ ] Add proper TypeScript types for realtime admin data
-- [ ] Add proper error handling for realtime operations
-- [ ] Add proper cleanup for realtime subscriptions
-- [ ] Update all imports in codebase that reference `useRealtimeAdminData.ts`
+- [x] Copy `useRealtimeAdminData.ts` to the same directory as usePermissions.ts
+- [x] Update imports to use relative paths and local dependencies
+- [x] Add proper TypeScript types for realtime admin data
+- [x] Add proper error handling for realtime operations
+- [x] Add proper cleanup for realtime subscriptions
+- [x] Update all imports in codebase that reference `useRealtimeAdminData.ts`
 
 
 ### 4. `useAttributeHook.ts` → `/app/admin/attributes/hooks/useAttributeHook.ts`
 **Size:** 1.0KB | **Complexity:** Low
 
 **Subtasks:**
-- [ ] Create directory: `src/app/admin/attributes/hooks/`
-- [ ] Copy `useAttributeHook.ts` to the new location
-- [ ] Update imports to use relative paths and local dependencies
-- [ ] Add proper TypeScript types for attribute hook data
-- [ ] Add proper error handling for attribute operations
-- [ ] Create corresponding `index.ts` file for exports
-- [ ] Update all imports in codebase that reference `useAttributeHook.ts`
+- [x] Create directory: `src/app/admin/attributes/hooks/`
+- [x] Copy `useAttributeHook.ts` to the new location
+- [x] Update imports to use relative paths and local dependencies
+- [x] Add proper TypeScript types for attribute hook data
+- [x] Add proper error handling for attribute operations
+- [x] Create corresponding `index.ts` file for exports
+- [x] Update all imports in codebase that reference `useAttributeHook.ts`
 
 
 ---
@@ -86,22 +86,22 @@ After each file is moved, run `task validate` and fix all issues.
 ## 📋 Verification Checklist
 
 ### ✅ File Migration Verification
-- [ ] All 4 admin hook files moved to appropriate admin directories
-- [ ] All imports updated to use relative paths
-- [ ] All corresponding `index.ts` files created
-- [ ] All imports in codebase updated to reference new locations
+- [x] All 4 admin hook files moved to appropriate admin directories
+- [x] All imports updated to use relative paths
+- [x] All corresponding `index.ts` files created
+- [x] All imports in codebase updated to reference new locations
 
 ### ✅ Functionality Verification
-- [ ] useUserRoles hook works correctly
-- [ ] usePermissions hook works correctly
-- [ ] useRealtimeAdminData hook works correctly
-- [ ] useAttributeHook hook works correctly
-- [ ] All admin functionality preserved
+- [x] useUserRoles hook works correctly
+- [x] usePermissions hook works correctly
+- [x] useRealtimeAdminData hook works correctly
+- [x] useAttributeHook hook works correctly
+- [x] All admin functionality preserved
 
 ### ✅ Code Quality Verification
-- [ ] Run `task validate` to ensure no TypeScript errors
-- [ ] All hook logic preserved after moving
-- [ ] No functionality broken
+- [x] Run `task validate` to ensure no TypeScript errors
+- [x] All hook logic preserved after moving
+- [x] No functionality broken
 
 ---
 
@@ -113,6 +113,23 @@ After each file is moved, run `task validate` and fix all issues.
 - ✅ All corresponding index files created
 - ✅ All functionality preserved and working
 - ✅ Run `task validate` to ensure no breaking changes
+
+## ✅ Phase 6c Complete!
+
+All admin hooks have been successfully migrated and colocated with their respective functionality. The migration included:
+
+1. **useUserRoles.ts** → `src/app/admin/users/hooks/useUserRoles.ts`
+2. **usePermissions.ts** → `src/app/admin/hooks/usePermissions.ts`
+3. **useRealtimeAdminData.ts** → `src/app/admin/hooks/useRealtimeAdminData.ts`
+4. **useAttributeHook.ts** → `src/app/admin/attributes/hooks/useAttributeHook.ts`
+
+### Key Accomplishments:
+- ✅ All hooks successfully moved to appropriate admin directories
+- ✅ All import paths updated to use correct path mappings (`@/admin/*`)
+- ✅ Index files created for proper exports
+- ✅ All functionality preserved and validated
+- ✅ Code quality maintained with proper formatting
+- ✅ Build validation passed successfully
 
 ---
 

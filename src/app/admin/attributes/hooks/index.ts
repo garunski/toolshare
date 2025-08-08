@@ -1,0 +1,1 @@
+export { useAttribute } from "./useAttributeHook";

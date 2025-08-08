@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { useUserRoles } from "@/common/hooks/useUserRoles";
+import { useUserRoles } from "@/admin/users/hooks";
 import type { PermissionCheck } from "@/types/roles";
 
 interface UsePermissionsReturn {
