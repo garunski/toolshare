@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 
 import { AdvancedFilters } from "./AdvancedFilters";
@@ -7,6 +8,7 @@ import { SearchActions } from "./AdvancedSearchActions";
 import { ActiveFilters, SaveSearchModal } from "./AdvancedSearchComponents";
 import { useFilterHandlers, useSearchHandler } from "./AdvancedSearchLogic";
 import { useSearchState } from "./AdvancedSearchState";
+import { useUrlParameterSync } from "./hooks/useUrlParameterSync";
 
 interface Props {
   onSearch: (filters: any) => void;
@@ -19,6 +21,7 @@ interface Props {
 }
 
 export function AdvancedSearchInterface({ onSearch, facets, loading }: Props) {
+  const searchParams = useSearchParams();
   const { searchState, actions, modalState, showFilters, setShowFilters } =
     useSearchState();
 
@@ -29,6 +32,9 @@ export function AdvancedSearchInterface({ onSearch, facets, loading }: Props) {
     clearAllFilters,
     getActiveFilterCount,
   } = useFilterHandlers(searchState, actions);
+
+  // Sync URL parameters with search state
+  useUrlParameterSync(searchParams, searchState, actions);
 
   const handleSaveSearch = useCallback(async () => {
     if (!modalState.saveSearchName.trim()) return;

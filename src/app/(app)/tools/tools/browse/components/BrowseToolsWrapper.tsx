@@ -1,12 +1,13 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
 
 import type { Database } from "@/types/supabase";
 
+import { AdvancedSearchInterface } from "./AdvancedSearchInterface";
 import { ToolGrid } from "./ToolGrid";
 import { ToolSearchForm } from "./ToolSearchForm";
+import { useSearchHandlers } from "./hooks/useSearchHandlers";
 
 type Tool = Database["public"]["Tables"]["items"]["Row"] & {
   categories: {
@@ -26,49 +27,62 @@ interface Pagination {
   totalPages: number;
 }
 
+interface SearchFacets {
+  categories: { id: number; name: string; count: number }[];
+  conditions: { value: string; count: number }[];
+  locations: { value: string; count: number }[];
+}
+
 interface BrowseToolsWrapperProps {
   tools: Tool[];
   pagination: Pagination;
+  facets: SearchFacets;
+  searchParams: {
+    query?: string;
+    category?: string;
+    availability?: string;
+    page?: string;
+    categories?: string;
+    conditions?: string;
+    location?: string;
+    sortBy?: string;
+    sortOrder?: "asc" | "desc";
+    tags?: string;
+  };
 }
 
 export function BrowseToolsWrapper({
   tools,
   pagination,
+  facets,
+  searchParams,
 }: BrowseToolsWrapperProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const urlSearchParams = useSearchParams();
 
-  const currentQuery = searchParams.get("query") || "";
-  const currentCategory = searchParams.get("category") || "";
-  const currentAvailability = searchParams.get("availability") || "";
+  const { handleSearch, handleAdvancedSearch } = useSearchHandlers(router);
 
-  const handleSearch = useCallback(
-    (searchData: any) => {
-      const params = new URLSearchParams();
-
-      if (searchData.query) params.set("query", searchData.query);
-      if (searchData.category) params.set("category", searchData.category);
-      if (searchData.is_available !== undefined) {
-        params.set(
-          "availability",
-          searchData.is_available ? "available" : "unavailable",
-        );
-      }
-
-      const queryString = params.toString();
-      const url = queryString
-        ? `/tools/browse?${queryString}`
-        : "/tools/browse";
-      router.push(url);
-    },
-    [router],
-  );
+  // Check if advanced search is being used
+  const hasAdvancedFilters =
+    searchParams.categories ||
+    searchParams.conditions ||
+    searchParams.location ||
+    searchParams.tags ||
+    searchParams.sortBy ||
+    searchParams.sortOrder;
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
       {/* Search Sidebar */}
       <div className="lg:col-span-1">
-        <ToolSearchForm onSearch={handleSearch} />
+        {hasAdvancedFilters ? (
+          <AdvancedSearchInterface
+            onSearch={handleAdvancedSearch}
+            facets={facets}
+          />
+        ) : (
+          <ToolSearchForm onSearch={handleSearch} />
+        )}
       </div>
 
       {/* Results */}
