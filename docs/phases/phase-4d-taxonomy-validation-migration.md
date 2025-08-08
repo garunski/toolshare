@@ -21,7 +21,6 @@ Move 3 taxonomy validator files from `src/common/validators/` to be colocated wi
 - [ ] Add taxonomy import/export validation
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `taxonomyValidator.ts`
-- [ ] Run `task validate` and fix all issues
 
 ### 2. `attributeSchemas.ts` → `/api/admin/taxonomy/attributes/validation/attributeSchemas.ts`
 **Size:** 1.3KB | **Complexity:** Low
@@ -35,7 +34,7 @@ Move 3 taxonomy validator files from `src/common/validators/` to be colocated wi
 - [ ] Add schema definition and validation logic
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `attributeSchemas.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. `attributeValidationHelpers.ts` → `/api/admin/taxonomy/attributes/validation/attributeValidationHelpers.ts`
 **Size:** 3.2KB | **Complexity:** Medium
@@ -48,7 +47,7 @@ Move 3 taxonomy validator files from `src/common/validators/` to be colocated wi
 - [ ] Add helper functions for attribute validation
 - [ ] Add validation utility functions
 - [ ] Update all imports in codebase that reference `attributeValidationHelpers.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

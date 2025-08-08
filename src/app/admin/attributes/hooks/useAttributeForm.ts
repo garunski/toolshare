@@ -5,8 +5,8 @@ import type { z } from "zod";
 
 // Removed direct operation import - now using API routes
 import {
-  AttributeValidator,
   attributeCreationSchema,
+  AttributeValidator,
 } from "@/common/validators/attributeValidator";
 import type { AttributeDefinition } from "@/types/categories";
 

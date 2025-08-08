@@ -24,7 +24,7 @@ export const userCreationSchema = z.object({
 export type UserCreationData = z.infer<typeof userCreationSchema>;
 
 /**
- * Validate user creation request
+ * Validate user creation request for admin API
  */
 export function validateUserCreation(data: unknown): UserCreationData {
   return userCreationSchema.parse(data);

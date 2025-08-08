@@ -50,31 +50,45 @@ export const permissionCreationSchema = z.object({
 });
 
 // Type inference from schemas
-export type RoleAssignmentInput = z.infer<typeof roleAssignmentSchema>;
-export type RoleRemovalInput = z.infer<typeof roleRemovalSchema>;
-export type PermissionCheckInput = z.infer<typeof permissionCheckSchema>;
-export type RoleCreationInput = z.infer<typeof roleCreationSchema>;
-export type PermissionCreationInput = z.infer<typeof permissionCreationSchema>;
+export type RoleAssignmentData = z.infer<typeof roleAssignmentSchema>;
+export type RoleRemovalData = z.infer<typeof roleRemovalSchema>;
+export type PermissionCheckData = z.infer<typeof permissionCheckSchema>;
+export type RoleCreationData = z.infer<typeof roleCreationSchema>;
+export type PermissionCreationData = z.infer<typeof permissionCreationSchema>;
 
-// Validation helper functions
-export class RoleValidator {
-  static validateRoleAssignment(data: unknown): RoleAssignmentInput {
-    return roleAssignmentSchema.parse(data);
-  }
+/**
+ * Validate role assignment request for admin API
+ */
+export function validateRoleAssignment(data: unknown): RoleAssignmentData {
+  return roleAssignmentSchema.parse(data);
+}
 
-  static validateRoleRemoval(data: unknown): RoleRemovalInput {
-    return roleRemovalSchema.parse(data);
-  }
+/**
+ * Validate role removal request for admin API
+ */
+export function validateRoleRemoval(data: unknown): RoleRemovalData {
+  return roleRemovalSchema.parse(data);
+}
 
-  static validatePermissionCheck(data: unknown): PermissionCheckInput {
-    return permissionCheckSchema.parse(data);
-  }
+/**
+ * Validate permission check request for admin API
+ */
+export function validatePermissionCheck(data: unknown): PermissionCheckData {
+  return permissionCheckSchema.parse(data);
+}
 
-  static validateRoleCreation(data: unknown): RoleCreationInput {
-    return roleCreationSchema.parse(data);
-  }
+/**
+ * Validate role creation request for admin API
+ */
+export function validateRoleCreation(data: unknown): RoleCreationData {
+  return roleCreationSchema.parse(data);
+}
 
-  static validatePermissionCreation(data: unknown): PermissionCreationInput {
-    return permissionCreationSchema.parse(data);
-  }
+/**
+ * Validate permission creation request for admin API
+ */
+export function validatePermissionCreation(
+  data: unknown,
+): PermissionCreationData {
+  return permissionCreationSchema.parse(data);
 }

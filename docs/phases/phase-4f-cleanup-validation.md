@@ -14,7 +14,7 @@ Complete the Phase 4 migration by cleaning up the empty validators directory and
 - [ ] Verify all validation files have been moved from `src/common/validators/`
 - [ ] Check for any remaining files in the validators directory
 - [ ] Remove the empty `src/common/validators/` directory
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. Update Remaining Import References
 **Priority:** Critical
@@ -23,7 +23,7 @@ Complete the Phase 4 migration by cleaning up the empty validators directory and
 - [ ] Search for any remaining imports referencing `@/common/validators/`
 - [ ] Update all remaining import statements to use new locations
 - [ ] Check for any TypeScript compilation errors
-- [ ] Run `task validate` and fix all issues
+
 
 ### 3. Verify All Validation Functions Work
 **Priority:** High
@@ -32,7 +32,7 @@ Complete the Phase 4 migration by cleaning up the empty validators directory and
 - [ ] Verify all form validation functions are properly imported
 - [ ] Verify all API validation functions are properly imported
 - [ ] Check that validation schemas are correctly exported
-- [ ] Run `task validate` and fix all issues
+
 
 ### 4. Clean Up Empty Directories
 **Priority:** Medium
@@ -40,7 +40,7 @@ Complete the Phase 4 migration by cleaning up the empty validators directory and
 **Subtasks:**
 - [ ] Find and remove any empty directories created during migration
 - [ ] Ensure directory structure is clean and organized
-- [ ] Run `task validate` and fix all issues
+
 
 ### 5. Final Validation and Testing
 **Priority:** Critical

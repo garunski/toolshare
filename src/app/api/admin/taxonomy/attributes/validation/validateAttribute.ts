@@ -1,19 +1,43 @@
 import { z } from "zod";
 
 import { createClient } from "@/common/supabase/client";
-
 import {
   attributeCreationSchema,
   attributeUpdateSchema,
-} from "./attributeSchemas";
-import { AttributeValidationHelpers } from "./attributeValidationHelpers";
+} from "@/common/validators/attributeSchemas";
+import { AttributeValidationHelpers } from "@/common/validators/attributeValidationHelpers";
 
-// Export schemas for use in other files
 export { attributeCreationSchema, attributeUpdateSchema };
-
-// Type inference from schemas
 export type AttributeCreationData = z.infer<typeof attributeCreationSchema>;
 export type AttributeUpdateData = z.infer<typeof attributeUpdateSchema>;
+
+export class AttributeValidator {
+  static validateAttributeCreation(data: unknown): AttributeCreationData {
+    return attributeCreationSchema.parse(data);
+  }
+
+  static validateAttributeUpdate(data: unknown): AttributeUpdateData {
+    return attributeUpdateSchema.parse(data);
+  }
+
+  static async isNameAvailable(
+    name: string,
+    excludeId?: string,
+  ): Promise<boolean> {
+    return isAttributeNameAvailable(name, excludeId);
+  }
+
+  static generateName(displayLabel: string): string {
+    return generateAttributeName(displayLabel);
+  }
+
+  static validateAttributeValue(
+    value: any,
+    attribute: any,
+  ): { isValid: boolean; error?: string } {
+    return validateAttributeValue(value, attribute);
+  }
+}
 
 // Helper functions for the class
 async function isAttributeNameAvailable(
@@ -117,33 +141,5 @@ function validateAttributeValue(
       );
     default:
       return { isValid: true };
-  }
-}
-
-export class AttributeValidator {
-  static validateAttributeCreation(data: unknown): AttributeCreationData {
-    return attributeCreationSchema.parse(data);
-  }
-
-  static validateAttributeUpdate(data: unknown): AttributeUpdateData {
-    return attributeUpdateSchema.parse(data);
-  }
-
-  static async isNameAvailable(
-    name: string,
-    excludeId?: string,
-  ): Promise<boolean> {
-    return isAttributeNameAvailable(name, excludeId);
-  }
-
-  static generateName(displayLabel: string): string {
-    return generateAttributeName(displayLabel);
-  }
-
-  static validateAttributeValue(
-    value: any,
-    attribute: any,
-  ): { isValid: boolean; error?: string } {
-    return validateAttributeValue(value, attribute);
   }
 }

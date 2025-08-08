@@ -9,4 +9,3 @@ export {
   type ProfileCreationData,
   type RegisterFormData,
 } from "./validateAuthentication";
-

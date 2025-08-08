@@ -20,7 +20,7 @@ Move 2 social feature validator files from `src/common/validators/` to be coloca
 - [ ] Add social feature validation logic
 - [ ] Create corresponding `index.ts` file for exports
 - [ ] Update all imports in codebase that reference `socialFeatureValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ### 2. `itemAttributeValueValidator.ts` → `/api/(app)/social/validation/validateSocialAttribute.ts`
 **Size:** 4.3KB | **Complexity:** High
@@ -34,7 +34,7 @@ Move 2 social feature validator files from `src/common/validators/` to be coloca
 - [ ] Add complex validation logic for social attributes
 - [ ] Add social attribute value validation
 - [ ] Update all imports in codebase that reference `itemAttributeValueValidator.ts`
-- [ ] Run `task validate` and fix all issues
+
 
 ---
 

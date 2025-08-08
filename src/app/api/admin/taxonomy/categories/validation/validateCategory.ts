@@ -56,16 +56,24 @@ export type CategoryCreationData = z.infer<typeof categoryCreationSchema>;
 export type CategoryUpdateData = z.infer<typeof categoryUpdateSchema>;
 export type CategorySlugData = z.infer<typeof categorySlugSchema>;
 
-// Validation helper functions
+/**
+ * Validate category creation request for admin API
+ */
 export function validateCategoryCreation(data: unknown): CategoryCreationData {
   return categoryCreationSchema.parse(data);
 }
 
+/**
+ * Validate category update request for admin API
+ */
 export function validateCategoryUpdate(data: unknown): CategoryUpdateData {
   return categoryUpdateSchema.parse(data);
 }
 
-export function validateSlug(data: unknown): CategorySlugData {
+/**
+ * Validate category slug request for admin API
+ */
+export function validateCategorySlug(data: unknown): CategorySlugData {
   return categorySlugSchema.parse(data);
 }
 
@@ -92,7 +100,7 @@ export async function isSlugAvailable(
 /**
  * Generate unique slug from name
  */
-export function generateSlug(name: string): string {
+export function generateCategorySlug(name: string): string {
   return name
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
@@ -104,7 +112,7 @@ export function generateSlug(name: string): string {
 /**
  * Validate category hierarchy (prevent circular references)
  */
-export async function validateHierarchy(
+export async function validateCategoryHierarchy(
   categoryId: string,
   parentId: string,
 ): Promise<boolean> {

@@ -74,4 +74,3 @@ export function validateToolSearch(data: unknown): ToolSearchData {
 export function validateToolFilter(data: unknown): ToolFilterData {
   return toolFilterSchema.parse(data);
 }
-
