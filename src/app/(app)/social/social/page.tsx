@@ -1,32 +1,10 @@
-"use client";
-
-import { useState } from "react";
-
-import { DiscoverTab } from "./components/DiscoverTab";
-import { FriendsTab } from "./components/FriendsTab";
-import { MessagesTab } from "./components/MessagesTab";
-import { RequestsTab } from "./components/RequestsTab";
 import { SocialHeader } from "./components/SocialHeader";
-import { SocialTabs } from "./components/SocialTabs";
+import { SocialTabsWrapper } from "./components/SocialTabsWrapper";
+import { getSocialFeedData } from "./getSocialFeedData";
 
-export default function SocialPage() {
-  const [activeTab, setActiveTab] = useState("friends");
-  const [socialStats, setSocialStats] = useState(null);
-
-  const renderActiveTab = () => {
-    switch (activeTab) {
-      case "friends":
-        return <FriendsTab />;
-      case "discover":
-        return <DiscoverTab />;
-      case "messages":
-        return <MessagesTab />;
-      case "requests":
-        return <RequestsTab />;
-      default:
-        return <FriendsTab />;
-    }
-  };
+export default async function SocialPage() {
+  const { friends, friendRequests, suggestedFriends, recentActivity } =
+    await getSocialFeedData();
 
   return (
     <div className="container mx-auto max-w-6xl p-6">
@@ -40,11 +18,13 @@ export default function SocialPage() {
       </div>
 
       <div className="space-y-6">
-        <SocialHeader socialStats={socialStats} />
-        <SocialTabs activeTab={activeTab} onTabChange={setActiveTab} />
-        <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
-          {renderActiveTab()}
-        </div>
+        <SocialHeader socialStats={null} />
+        <SocialTabsWrapper
+          friends={friends}
+          friendRequests={friendRequests}
+          suggestedFriends={suggestedFriends}
+          recentActivity={recentActivity}
+        />
       </div>
     </div>
   );
