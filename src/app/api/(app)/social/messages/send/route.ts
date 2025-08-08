@@ -1,91 +1,95 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
+
 import { PerformMessage } from "./performMessage";
 
 export async function GET(request: NextRequest) {
   try {
+    // Get user context from middleware headers
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated", "MISSING_USER_CONTEXT");
+    }
+
     const { searchParams } = new URL(request.url);
-    const userId = searchParams.get("userId");
     const otherUserId = searchParams.get("otherUserId");
 
-    if (!userId || !otherUserId) {
-      return NextResponse.json(
-        { error: "Missing required parameters: userId and otherUserId" },
-        { status: 400 },
+    if (!otherUserId) {
+      throw new ApiError(
+        400,
+        "Missing required parameter: otherUserId",
+        "MISSING_OTHER_USER_ID",
       );
     }
 
     const result = await PerformMessage.getMessages(userId, otherUserId);
 
     if (!result.success) {
-      return NextResponse.json(
-        { error: "Failed to fetch messages" },
-        { status: 500 },
+      throw new ApiError(
+        500,
+        "Failed to fetch messages",
+        "MESSAGES_FETCH_FAILED",
       );
     }
 
     return NextResponse.json({ data: result.data });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Failed to get messages",
-      },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { senderId, receiverId, content } = body;
+    // Get user context from middleware headers
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated", "MISSING_USER_CONTEXT");
+    }
 
-    if (!senderId || !receiverId || !content) {
-      return NextResponse.json(
-        {
-          error:
-            "Missing required parameters: senderId, receiverId, and content",
-        },
-        { status: 400 },
+    const body = await request.json();
+    const { receiverId, content } = body;
+
+    if (!receiverId || !content) {
+      throw new ApiError(
+        400,
+        "Missing required parameters: receiverId and content",
+        "MISSING_REQUIRED_PARAMS",
       );
     }
 
     const result = await PerformMessage.sendMessage(
-      senderId,
+      userId,
       receiverId,
       content,
     );
 
     if (!result.success) {
-      return NextResponse.json(
-        { error: "Failed to send message" },
-        { status: 500 },
-      );
+      throw new ApiError(500, "Failed to send message", "MESSAGE_SEND_FAILED");
     }
 
     return NextResponse.json({ data: result.data });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Failed to send message",
-      },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
 export async function DELETE(request: NextRequest) {
   try {
+    // Get user context from middleware headers
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated", "MISSING_USER_CONTEXT");
+    }
+
     const { searchParams } = new URL(request.url);
     const messageId = searchParams.get("messageId");
-    const userId = searchParams.get("userId");
 
-    if (!messageId || !userId) {
-      return NextResponse.json(
-        { error: "Missing required parameters: messageId and userId" },
-        { status: 400 },
+    if (!messageId) {
+      throw new ApiError(
+        400,
+        "Missing required parameter: messageId",
+        "MISSING_MESSAGE_ID",
       );
     }
 
@@ -93,12 +97,6 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Failed to delete message",
-      },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }

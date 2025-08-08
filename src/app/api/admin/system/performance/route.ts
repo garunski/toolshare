@@ -1,9 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
+
 import { PerformanceMonitor } from "./monitorPerformance";
 
 export async function GET(request: NextRequest) {
   try {
+    // Get admin context from middleware
+    const userRole = request.headers.get("x-user-role");
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+    }
+
+    const adminUserId = request.headers.get("x-user-id");
+    if (!adminUserId) {
+      throw new ApiError(
+        401,
+        "Admin user not authenticated",
+        "ADMIN_UNAUTHORIZED",
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const action = searchParams.get("action");
     const timeRange = parseInt(searchParams.get("timeRange") || "86400000"); // 24 hours default
@@ -27,15 +44,27 @@ export async function GET(request: NextRequest) {
     const data = await PerformanceMonitor.monitorPerformance();
     return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to get performance data" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
+    // Get admin context from middleware
+    const userRole = request.headers.get("x-user-role");
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+    }
+
+    const adminUserId = request.headers.get("x-user-id");
+    if (!adminUserId) {
+      throw new ApiError(
+        401,
+        "Admin user not authenticated",
+        "ADMIN_UNAUTHORIZED",
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const action = searchParams.get("action");
     const body = await request.json();
@@ -51,11 +80,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(analysis);
     }
 
-    return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+    throw new ApiError(400, "Invalid action", "INVALID_ACTION");
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to process performance request" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }

@@ -1,19 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
+
 import { PerformProfileOperation } from "./performProfileOperation";
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const userId = searchParams.get("userId");
-    const action = searchParams.get("action");
-
+    // Get user context from middleware headers
+    const userId = request.headers.get("x-user-id");
     if (!userId) {
-      return NextResponse.json(
-        { error: "Missing required parameter: userId" },
-        { status: 400 },
-      );
+      throw new ApiError(401, "User not authenticated", "MISSING_USER_CONTEXT");
     }
+
+    const { searchParams } = new URL(request.url);
+    const action = searchParams.get("action");
 
     let result;
 
@@ -25,9 +25,10 @@ export async function GET(request: NextRequest) {
         const query = searchParams.get("query");
         const limit = searchParams.get("limit");
         if (!query) {
-          return NextResponse.json(
-            { error: "Missing required parameter: query" },
-            { status: 400 },
+          throw new ApiError(
+            400,
+            "Missing required parameter: query",
+            "MISSING_QUERY",
           );
         }
         result = await PerformProfileOperation.searchUsers(
@@ -44,27 +45,19 @@ export async function GET(request: NextRequest) {
         );
         break;
       default:
-        return NextResponse.json(
-          { error: "Invalid action parameter" },
-          { status: 400 },
-        );
+        throw new ApiError(400, "Invalid action parameter", "INVALID_ACTION");
     }
 
     if (!result.success) {
-      return NextResponse.json(
-        { error: "Failed to process request" },
-        { status: 500 },
+      throw new ApiError(
+        500,
+        "Failed to process request",
+        "PROFILE_OPERATION_FAILED",
       );
     }
 
     return NextResponse.json({ data: result.data });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Failed to process profile",
-      },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }

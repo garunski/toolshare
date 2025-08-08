@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
+
 import {
   getLoanWithDetails,
   getUserLoans,
@@ -24,12 +26,14 @@ const loanDetailsSchema = z.object({
   loanId: z.string().uuid(),
 });
 
-const userLoansSchema = z.object({
-  userId: z.string().uuid(),
-});
-
 export async function POST(request: NextRequest) {
   try {
+    // Get user context from middleware headers
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated", "MISSING_USER_CONTEXT");
+    }
+
     const body = await request.json();
     const validatedData = statusUpdateSchema.parse(body);
 
@@ -41,41 +45,37 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error updating loan status:", error);
-    return NextResponse.json(
-      { error: "Failed to update loan status" },
-      { status: 500 },
-    );
+    if (error instanceof z.ZodError) {
+      throw new ApiError(400, "Invalid request data", "VALIDATION_ERROR");
+    }
+    return handleApiError(error);
   }
 }
 
 export async function GET(request: NextRequest) {
   try {
+    // Get user context from middleware headers
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated", "MISSING_USER_CONTEXT");
+    }
+
     const { searchParams } = new URL(request.url);
     const loanId = searchParams.get("loanId");
-    const userId = searchParams.get("userId");
 
     if (loanId) {
       const validatedData = loanDetailsSchema.parse({ loanId });
-      const loan = await getLoanWithDetails(validatedData.loanId);
-      return NextResponse.json(loan);
+      const result = await getLoanWithDetails(validatedData.loanId);
+      return NextResponse.json(result);
     }
 
-    if (userId) {
-      const validatedData = userLoansSchema.parse({ userId });
-      const loans = await getUserLoans(validatedData.userId);
-      return NextResponse.json(loans);
-    }
-
-    return NextResponse.json(
-      { error: "Either loanId or userId parameter is required" },
-      { status: 400 },
-    );
+    // Get user's loans
+    const result = await getUserLoans(userId);
+    return NextResponse.json(result);
   } catch (error) {
-    console.error("Error fetching loan data:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch loan data" },
-      { status: 500 },
-    );
+    if (error instanceof z.ZodError) {
+      throw new ApiError(400, "Invalid request data", "VALIDATION_ERROR");
+    }
+    return handleApiError(error);
   }
 }

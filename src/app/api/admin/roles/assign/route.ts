@@ -1,28 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { createClient } from "@/common/supabase/server";
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
 import type { RoleAssignmentRequest, RoleRemovalRequest } from "@/types/roles";
 
 import { RoleAssignmentOperations } from "./performRoleAssignment";
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    // Get admin context from middleware
+    const userRole = request.headers.get("x-user-role");
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+    }
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const adminUserId = request.headers.get("x-user-id");
+    if (!adminUserId) {
+      throw new ApiError(
+        401,
+        "Admin user not authenticated",
+        "ADMIN_UNAUTHORIZED",
+      );
     }
 
     const body: RoleAssignmentRequest = await request.json();
 
     // Validate required fields
     if (!body.userId || !body.roleId) {
-      return NextResponse.json(
-        { error: "Missing required fields: userId, roleId" },
-        { status: 400 },
+      throw new ApiError(
+        400,
+        "Missing required fields: userId, roleId",
+        "MISSING_REQUIRED_FIELDS",
       );
     }
 
@@ -30,32 +37,35 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, data: result });
   } catch (error) {
-    console.error("Role assignment error:", error);
-    return NextResponse.json(
-      { error: "Failed to assign role" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    // Get admin context from middleware
+    const userRole = request.headers.get("x-user-role");
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+    }
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const adminUserId = request.headers.get("x-user-id");
+    if (!adminUserId) {
+      throw new ApiError(
+        401,
+        "Admin user not authenticated",
+        "ADMIN_UNAUTHORIZED",
+      );
     }
 
     const body: RoleRemovalRequest = await request.json();
 
     // Validate required fields
     if (!body.userId || !body.roleId) {
-      return NextResponse.json(
-        { error: "Missing required fields: userId, roleId" },
-        { status: 400 },
+      throw new ApiError(
+        400,
+        "Missing required fields: userId, roleId",
+        "MISSING_REQUIRED_FIELDS",
       );
     }
 
@@ -63,10 +73,6 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Role removal error:", error);
-    return NextResponse.json(
-      { error: "Failed to remove role" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }

@@ -1,9 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
+
 import { OfflineStorageManager } from "./manageOfflineStorage";
 
 export async function GET(request: NextRequest) {
   try {
+    // Get admin context from middleware
+    const userRole = request.headers.get("x-user-role");
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+    }
+
+    const adminUserId = request.headers.get("x-user-id");
+    if (!adminUserId) {
+      throw new ApiError(
+        401,
+        "Admin user not authenticated",
+        "ADMIN_UNAUTHORIZED",
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const action = searchParams.get("action");
     const type = searchParams.get("type");
@@ -27,17 +44,29 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(result);
     }
 
-    return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+    throw new ApiError(400, "Invalid action", "INVALID_ACTION");
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to handle offline storage request" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
+    // Get admin context from middleware
+    const userRole = request.headers.get("x-user-role");
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+    }
+
+    const adminUserId = request.headers.get("x-user-id");
+    if (!adminUserId) {
+      throw new ApiError(
+        401,
+        "Admin user not authenticated",
+        "ADMIN_UNAUTHORIZED",
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const action = searchParams.get("action");
     const body = await request.json();
@@ -69,11 +98,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(result);
     }
 
-    return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+    throw new ApiError(400, "Invalid action", "INVALID_ACTION");
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to process offline storage request" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }

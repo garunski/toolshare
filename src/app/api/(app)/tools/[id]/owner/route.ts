@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
+
 import {
   getItemsByOwner,
   getItemsByOwnerWithFilters,
@@ -11,7 +13,19 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    // Get user context from middleware headers
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated", "MISSING_USER_CONTEXT");
+    }
+
     const { id } = await params;
+
+    // Validate dynamic parameter
+    if (!id) {
+      throw new ApiError(400, "Invalid ID parameter", "INVALID_ID");
+    }
+
     const { searchParams } = new URL(request.url);
 
     // Check if filters are provided
@@ -34,7 +48,11 @@ export async function GET(
       const result = await getItemsByOwnerWithFilters(id, filters);
 
       if (!result.success) {
-        return NextResponse.json({ error: result.error }, { status: 400 });
+        throw new ApiError(
+          400,
+          result.error || "Failed to get filtered items",
+          "FILTERED_ITEMS_FAILED",
+        );
       }
 
       return NextResponse.json(result.data);
@@ -43,17 +61,17 @@ export async function GET(
       const result = await getItemsByOwner(id);
 
       if (!result.success) {
-        return NextResponse.json({ error: result.error }, { status: 400 });
+        throw new ApiError(
+          400,
+          result.error || "Failed to get items",
+          "ITEMS_FETCH_FAILED",
+        );
       }
 
       return NextResponse.json(result.data);
     }
   } catch (error) {
-    console.error("Get owner items route error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
@@ -62,29 +80,38 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    // Get user context from middleware headers
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated", "MISSING_USER_CONTEXT");
+    }
+
     const { id } = await params;
+
+    // Validate dynamic parameter
+    if (!id) {
+      throw new ApiError(400, "Invalid ID parameter", "INVALID_ID");
+    }
+
     const body = await request.json();
     const { newOwnerId } = body;
 
     if (!newOwnerId) {
-      return NextResponse.json(
-        { error: "newOwnerId is required" },
-        { status: 400 },
-      );
+      throw new ApiError(400, "newOwnerId is required", "MISSING_NEW_OWNER_ID");
     }
 
     const result = await updateItemOwner(id, newOwnerId);
 
     if (!result.success) {
-      return NextResponse.json({ error: result.error }, { status: 400 });
+      throw new ApiError(
+        400,
+        result.error || "Failed to update item owner",
+        "OWNER_UPDATE_FAILED",
+      );
     }
 
     return NextResponse.json(result.data);
   } catch (error) {
-    console.error("Update owner route error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }

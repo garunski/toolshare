@@ -1,18 +1,24 @@
 import { NextRequest } from "next/server";
 
-import { createClient } from "@/common/supabase/server";
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
 
 import { ApiResponseHandlerOperations } from "./responseHandler";
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    // Get admin context from middleware
+    const userRole = request.headers.get("x-user-role");
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+    }
 
-    if (!user) {
-      return ApiResponseHandlerOperations.handleUnauthorized();
+    const adminUserId = request.headers.get("x-user-id");
+    if (!adminUserId) {
+      throw new ApiError(
+        401,
+        "Admin user not authenticated",
+        "ADMIN_UNAUTHORIZED",
+      );
     }
 
     // This endpoint can be used to test response handlers
@@ -21,23 +27,25 @@ export async function GET(request: NextRequest) {
       "Response handler test successful",
     );
   } catch (error) {
-    return ApiResponseHandlerOperations.handleApiError(
-      error as Error,
-      500,
-      "Response handler test",
-    );
+    return handleApiError(error);
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    // Get admin context from middleware
+    const userRole = request.headers.get("x-user-role");
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+    }
 
-    if (!user) {
-      return ApiResponseHandlerOperations.handleUnauthorized();
+    const adminUserId = request.headers.get("x-user-id");
+    if (!adminUserId) {
+      throw new ApiError(
+        401,
+        "Admin user not authenticated",
+        "ADMIN_UNAUTHORIZED",
+      );
     }
 
     const body = await request.json();
@@ -72,17 +80,9 @@ export async function POST(request: NextRequest) {
           60,
         );
       default:
-        return ApiResponseHandlerOperations.handleApiError(
-          "Invalid test type",
-          400,
-          "Response handler test",
-        );
+        throw new ApiError(400, "Invalid test type", "INVALID_TEST_TYPE");
     }
   } catch (error) {
-    return ApiResponseHandlerOperations.handleApiError(
-      error as Error,
-      500,
-      "Response handler test",
-    );
+    return handleApiError(error);
   }
 }

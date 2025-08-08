@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
+
 import { buildSearchQuery, getSearchFacets } from "./performAdvancedSearch";
 
 export async function GET(request: NextRequest) {
   try {
+    // Get user context from middleware headers
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated", "MISSING_USER_CONTEXT");
+    }
+
     const { searchParams } = new URL(request.url);
 
     // Parse search filters from query parameters
@@ -31,12 +39,20 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "20");
     const offset = parseInt(searchParams.get("offset") || "0");
 
+    // Validate pagination parameters
+    if (limit < 1 || limit > 100) {
+      throw new ApiError(400, "Invalid limit parameter", "INVALID_LIMIT");
+    }
+    if (offset < 0) {
+      throw new ApiError(400, "Invalid offset parameter", "INVALID_OFFSET");
+    }
+
     // Build and execute search query
     const query = buildSearchQuery(filters, limit, offset);
     const { data: items, error, count } = await query;
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      throw new ApiError(500, "Search query failed", "SEARCH_QUERY_FAILED");
     }
 
     return NextResponse.json({
@@ -46,15 +62,18 @@ export async function GET(request: NextRequest) {
       pagination: { limit, offset },
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to perform search" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
+    // Get user context from middleware headers
+    const userId = request.headers.get("x-user-id");
+    if (!userId) {
+      throw new ApiError(401, "User not authenticated", "MISSING_USER_CONTEXT");
+    }
+
     const { searchParams } = new URL(request.url);
     const action = searchParams.get("action");
 
@@ -63,11 +82,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(facets);
     }
 
-    return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+    throw new ApiError(400, "Invalid action", "INVALID_ACTION");
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to get search facets" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }

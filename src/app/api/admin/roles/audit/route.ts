@@ -1,19 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { createClient } from "@/common/supabase/server";
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
 
 import { AuditLoggingOperations, AuditQueryOperations } from "./auditLogger";
 
+// Helper function to validate admin context
+function validateAdminContext(request: NextRequest) {
+  const userRole = request.headers.get("x-user-role");
+  if (userRole !== "admin") {
+    throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+  }
+
+  const adminUserId = request.headers.get("x-user-id");
+  if (!adminUserId) {
+    throw new ApiError(
+      401,
+      "Admin user not authenticated",
+      "ADMIN_UNAUTHORIZED",
+    );
+  }
+
+  return adminUserId;
+}
+
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const adminUserId = validateAdminContext(request);
 
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
@@ -54,9 +66,10 @@ export async function GET(request: NextRequest) {
         offset,
       );
     } else {
-      return NextResponse.json(
-        { error: "Missing required parameters" },
-        { status: 400 },
+      throw new ApiError(
+        400,
+        "Missing required parameters",
+        "MISSING_REQUIRED_PARAMETERS",
       );
     }
 
@@ -65,38 +78,28 @@ export async function GET(request: NextRequest) {
       data: auditLogs,
     });
   } catch (error) {
-    console.error("API Error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const adminUserId = validateAdminContext(request);
 
     const body = await request.json();
     const { action, resourceType, resourceId, details, ipAddress, userAgent } =
       body;
 
     if (!action || !resourceType) {
-      return NextResponse.json(
-        { error: "Missing required fields: action, resourceType" },
-        { status: 400 },
+      throw new ApiError(
+        400,
+        "Missing required fields: action, resourceType",
+        "MISSING_REQUIRED_FIELDS",
       );
     }
 
     await AuditLoggingOperations.logAuditEvent(
-      user.id,
+      adminUserId,
       action,
       resourceType,
       resourceId,
@@ -110,24 +113,13 @@ export async function POST(request: NextRequest) {
       message: "Audit event logged successfully",
     });
   } catch (error) {
-    console.error("API Error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    validateAdminContext(request);
 
     const { searchParams } = new URL(request.url);
     const olderThanDays = parseInt(searchParams.get("olderThanDays") || "90");
@@ -141,10 +133,6 @@ export async function DELETE(request: NextRequest) {
       deletedCount,
     });
   } catch (error) {
-    console.error("API Error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }

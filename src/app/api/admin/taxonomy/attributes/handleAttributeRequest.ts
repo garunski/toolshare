@@ -1,8 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import { ApiError, handleApiError } from "@/lib/api-error-handler";
 
-import { PerformCategory } from "./performCategory";
+import { handleAttributeDelete } from "./handlers/handleAttributeDelete";
+import { handleAttributeGet } from "./handlers/handleAttributeGet";
+import { handleAttributePost } from "./handlers/handleAttributePost";
+import { handleAttributePut } from "./handlers/handleAttributePut";
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,29 +16,11 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url);
-    const categoryId = searchParams.get("id");
-    const withAttributes = searchParams.get("withAttributes");
+    const categoryId = searchParams.get("categoryId");
+    const dataType = searchParams.get("dataType");
+    const attributeId = searchParams.get("attributeId");
 
-    if (categoryId) {
-      if (withAttributes === "true") {
-        const result =
-          await PerformCategory.getCategoryWithAttributes(categoryId);
-
-        if (!result) {
-          throw new ApiError(404, "Category not found", "CATEGORY_NOT_FOUND");
-        }
-
-        return NextResponse.json(result);
-      } else {
-        const result = await PerformCategory.getCategoryPath(categoryId);
-
-        return NextResponse.json({ path: result });
-      }
-    }
-
-    const result = await PerformCategory.getAllCategoriesTree();
-
-    return NextResponse.json(result);
+    return await handleAttributeGet(categoryId, dataType, attributeId);
   } catch (error) {
     return handleApiError(error);
   }
@@ -50,9 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const result = await PerformCategory.createCategory(body);
-
-    return NextResponse.json(result);
+    return await handleAttributePost(body);
   } catch (error) {
     return handleApiError(error);
   }
@@ -67,9 +50,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const result = await PerformCategory.updateCategory(body);
-
-    return NextResponse.json(result);
+    return await handleAttributePut(body);
   } catch (error) {
     return handleApiError(error);
   }
@@ -84,15 +65,10 @@ export async function DELETE(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url);
-    const categoryId = searchParams.get("id");
+    const categoryId = searchParams.get("categoryId");
+    const attributeId = searchParams.get("attributeId");
 
-    if (!categoryId) {
-      throw new ApiError(400, "Category ID is required", "MISSING_CATEGORY_ID");
-    }
-
-    await PerformCategory.deleteCategory(categoryId);
-
-    return NextResponse.json({ success: true });
+    return await handleAttributeDelete(categoryId, attributeId);
   } catch (error) {
     return handleApiError(error);
   }

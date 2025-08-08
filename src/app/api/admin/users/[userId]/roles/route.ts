@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { createClient } from "@/common/supabase/server";
+import { ApiError, handleApiError } from "@/lib/api-error-handler";
 
 import { RoleAssignmentOperations } from "../../../roles/assign/performRoleAssignment";
 import {
@@ -23,7 +24,7 @@ async function validateUserPermission(permission: string) {
     error: authError,
   } = await supabase.auth.getUser();
   if (authError || !user) {
-    throw new Error("Unauthorized");
+    throw new ApiError(401, "Unauthorized", "UNAUTHORIZED");
   }
 
   const hasPermission = await RolePermissionOperations.managePermissions(
@@ -32,7 +33,11 @@ async function validateUserPermission(permission: string) {
   );
 
   if (!hasPermission.hasPermission) {
-    throw new Error("Insufficient permissions");
+    throw new ApiError(
+      403,
+      "Insufficient permissions",
+      "INSUFFICIENT_PERMISSIONS",
+    );
   }
 
   return user;
@@ -40,37 +45,46 @@ async function validateUserPermission(permission: string) {
 
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
+    // Get admin context from middleware headers
+    const userRole = request.headers.get("x-user-role");
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+    }
+
     const { userId } = await params;
+
+    // Validate dynamic parameter
+    if (!userId) {
+      throw new ApiError(400, "Invalid user ID parameter", "INVALID_USER_ID");
+    }
+
     await validateUserPermission("manage_users");
     const userRoles = await RoleQueryOperations.getUserRoles(userId);
+
     return NextResponse.json({
       success: true,
       data: userRoles,
     });
   } catch (error) {
-    console.error("API Error:", error);
-    if (error instanceof Error && error.message === "Unauthorized") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    if (
-      error instanceof Error &&
-      error.message === "Insufficient permissions"
-    ) {
-      return NextResponse.json(
-        { error: "Insufficient permissions" },
-        { status: 403 },
-      );
-    }
-    return NextResponse.json(
-      { error: "Failed to fetch user roles" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
 export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
+    // Get admin context from middleware headers
+    const userRole = request.headers.get("x-user-role");
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+    }
+
     const { userId } = await params;
+
+    // Validate dynamic parameter
+    if (!userId) {
+      throw new ApiError(400, "Invalid user ID parameter", "INVALID_USER_ID");
+    }
+
     await validateUserPermission("assign_roles");
     const body = await request.json();
     const validatedData = validateRoleAssignment({
@@ -78,44 +92,37 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       roleId: body.roleId,
       expiresAt: body.expiresAt,
     });
-    const userRole =
+    const assignedRole =
       await RoleAssignmentOperations.performRoleAssignment(validatedData);
     return NextResponse.json({
       success: true,
-      data: userRole,
+      data: assignedRole,
     });
   } catch (error) {
-    console.error("API Error:", error);
-    if (error instanceof Error && error.message === "Unauthorized") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    if (
-      error instanceof Error &&
-      error.message === "Insufficient permissions"
-    ) {
-      return NextResponse.json(
-        { error: "Insufficient permissions" },
-        { status: 403 },
-      );
-    }
-    return NextResponse.json(
-      { error: "Failed to assign role" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
 
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
+    // Get admin context from middleware headers
+    const userRole = request.headers.get("x-user-role");
+    if (userRole !== "admin") {
+      throw new ApiError(403, "Admin access required", "ADMIN_REQUIRED");
+    }
+
     const { userId } = await params;
+
+    // Validate dynamic parameter
+    if (!userId) {
+      throw new ApiError(400, "Invalid user ID parameter", "INVALID_USER_ID");
+    }
+
     await validateUserPermission("assign_roles");
     const { searchParams } = new URL(request.url);
     const roleId = searchParams.get("roleId");
     if (!roleId) {
-      return NextResponse.json(
-        { error: "Role ID is required" },
-        { status: 400 },
-      );
+      throw new ApiError(400, "Role ID is required", "MISSING_ROLE_ID");
     }
     const validatedData = validateRoleRemoval({
       userId,
@@ -127,22 +134,6 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       message: "Role removed successfully",
     });
   } catch (error) {
-    console.error("API Error:", error);
-    if (error instanceof Error && error.message === "Unauthorized") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    if (
-      error instanceof Error &&
-      error.message === "Insufficient permissions"
-    ) {
-      return NextResponse.json(
-        { error: "Insufficient permissions" },
-        { status: 403 },
-      );
-    }
-    return NextResponse.json(
-      { error: "Failed to remove role" },
-      { status: 500 },
-    );
+    return handleApiError(error);
   }
 }
