@@ -16,15 +16,17 @@ export default async function ToolDetailPage({ params }: ToolDetailPageProps) {
 
   // Fetch tool data
   const { data: tool, error } = await supabase
-    .from("tools")
+    .from("items")
     .select(
       `
       *,
-      profiles!tools_owner_id_fkey (
+      categories(name, slug),
+      profiles!items_owner_id_fkey (
         id,
         first_name,
         last_name,
-        bio
+        bio,
+        avatar_url
       )
     `,
     )

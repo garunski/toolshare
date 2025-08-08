@@ -1,9 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
 
-import { useCategories } from "@/common/supabase/hooks/useCategories";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 
@@ -14,36 +12,27 @@ import { ToolDescriptionField } from "./ToolDescriptionField";
 import { ToolLocationField } from "./ToolLocationField";
 import { ToolNameField } from "./ToolNameField";
 
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  parent_id: string | null;
+  sort_order: number;
+  children?: Category[];
+}
+
 interface AddToolFormProps {
-  userId: string;
+  categories: Category[];
+  categoryOptions: Array<{ value: string; label: string }>;
   onSuccess: () => void;
 }
 
-export function AddToolForm({ userId, onSuccess }: AddToolFormProps) {
+export function AddToolForm({
+  categories,
+  categoryOptions,
+  onSuccess,
+}: AddToolFormProps) {
   const router = useRouter();
-  const { categories, loading: categoriesLoading } = useCategories();
-
-  // Convert category tree to flat options for select
-  const categoryOptions = useMemo(() => {
-    const options: Array<{ value: string; label: string }> = [];
-
-    const addCategory = (category: any, level = 0) => {
-      const indent = "  ".repeat(level);
-      options.push({
-        value: category.id,
-        label: `${indent}${category.name}`,
-      });
-
-      if (category.children && category.children.length > 0) {
-        category.children.forEach((child: any) =>
-          addCategory(child, level + 1),
-        );
-      }
-    };
-
-    categories.forEach((category) => addCategory(category));
-    return options;
-  }, [categories]);
 
   const handleComplete = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,7 +46,7 @@ export function AddToolForm({ userId, onSuccess }: AddToolFormProps) {
       const response = await fetch("/api/tools", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...allData, userId }),
+        body: JSON.stringify(allData),
       });
 
       if (response.ok) {
@@ -88,7 +77,7 @@ export function AddToolForm({ userId, onSuccess }: AddToolFormProps) {
           <ToolDescriptionField />
           <ToolCategoryField
             categoryOptions={categoryOptions}
-            categoriesLoading={categoriesLoading}
+            categoriesLoading={false}
           />
           <ToolConditionField />
           <ToolLocationField />

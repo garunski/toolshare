@@ -13,11 +13,14 @@ import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 import type { Database } from "@/types/supabase";
 
-type Tool = Database["public"]["Tables"]["tools"]["Row"] & {
+type Tool = Database["public"]["Tables"]["items"]["Row"] & {
+  categories: {
+    name: string;
+    slug: string;
+  };
   profiles: {
-    id: string;
-    first_name: string;
-    last_name: string;
+    name: string;
+    avatar_url: string;
   };
 };
 
@@ -75,7 +78,7 @@ export function ToolCard({ tool }: ToolCardProps) {
                 {tool.name}
               </Heading>
               <Text className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                {tool.category}
+                {tool.categories.name}
               </Text>
             </div>
             <Badge
@@ -114,9 +117,7 @@ export function ToolCard({ tool }: ToolCardProps) {
 
           {/* Owner */}
           <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-            <span>
-              Owner: {tool.profiles.first_name} {tool.profiles.last_name}
-            </span>
+            <span>Owner: {tool.profiles.name}</span>
             <span>Added {formatDate(tool.created_at)}</span>
           </div>
 
