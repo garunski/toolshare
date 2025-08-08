@@ -3,14 +3,17 @@ import { Suspense } from "react";
 import { Heading } from "@/primitives/heading";
 
 import { AdminUsersList } from "./components/AdminUsersList";
+import { getUsers } from "./getUsers";
 
-export default function AdminUsersPage() {
+export default async function AdminUsersPage() {
+  const { users, roles, roleStats } = await getUsers();
+
   return (
     <div className="space-y-8">
       <Heading level={1}>User Management</Heading>
 
       <Suspense fallback={<div>Loading users...</div>}>
-        <AdminUsersList />
+        <AdminUsersList users={users} roles={roles} roleStats={roleStats} />
       </Suspense>
     </div>
   );
