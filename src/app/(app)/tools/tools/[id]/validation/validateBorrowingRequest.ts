@@ -37,3 +37,4 @@ export function validateLoanStatusUpdate(data: unknown): LoanStatusUpdateData {
 export function validateLoanReturn(data: unknown): LoanReturnData {
   return loanReturnSchema.parse(data);
 }
+

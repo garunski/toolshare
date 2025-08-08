@@ -41,3 +41,4 @@ export function validateRegister(data: unknown): RegisterFormData {
 export function validateProfileCreation(data: unknown): ProfileCreationData {
   return profileCreationSchema.parse(data);
 }
+

@@ -12,3 +12,4 @@ export {
   type CategorySlugData,
   type CategoryUpdateData,
 } from "./validateCategory";
+

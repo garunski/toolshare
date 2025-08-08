@@ -139,3 +139,4 @@ export async function validateHierarchy(
   const ancestors = buildAncestors(parentId);
   return !ancestors.includes(categoryId);
 }
+
