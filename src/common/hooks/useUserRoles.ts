@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { useAuth } from "@/common/hooks/useAuth";
-import { RolePermissionOperations } from "@/common/operations/rolePermissions";
-import { RoleQueryOperations } from "@/common/operations/roleQueries";
+// Removed direct operation imports - now using API routes
 import type { PermissionCheck, Role } from "@/types/roles";
 
 interface UseUserRolesReturn {
@@ -31,7 +30,16 @@ export function useUserRoles(userId?: string): UseUserRolesReturn {
     try {
       setLoading(true);
       setError(null);
-      const userRoles = await RoleQueryOperations.getUserRoles(targetUserId);
+
+      const response = await fetch(
+        `/api/admin/roles/queries?userId=${targetUserId}`,
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch roles");
+      }
+
+      const userRoles = await response.json();
       setRoles(userRoles);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch roles");
@@ -62,10 +70,22 @@ export function useUserRoles(userId?: string): UseUserRolesReturn {
       }
 
       try {
-        return await RolePermissionOperations.hasPermission(
-          targetUserId,
-          permissionName,
-        );
+        const response = await fetch("/api/admin/roles/permissions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: targetUserId,
+            permissionName,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Permission check failed");
+        }
+
+        return await response.json();
       } catch (err) {
         return {
           hasPermission: false,

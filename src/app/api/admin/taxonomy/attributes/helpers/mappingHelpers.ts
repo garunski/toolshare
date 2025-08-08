@@ -1,6 +1,6 @@
-import { AttributeValidationHelper } from "@/common/operations/attributeValidationHelper";
-
+import { MappingConflictResolution } from "./mappingConflictResolution";
 import { AttributeMapping } from "./mappingTypes";
+import { MappingValidation } from "./mappingValidation";
 
 /**
  * Mapping helpers class for managing attribute mappings
@@ -25,7 +25,7 @@ export class MappingHelpers {
           mappingType: "direct",
           isRequired: attr.is_required,
           defaultValue: attr.attribute_definitions?.default_value,
-          validation: AttributeValidationHelper.createValidator(
+          validation: MappingValidation.createValidator(
             attr.attribute_definitions?.validation_rules,
           ),
         };
@@ -90,26 +90,7 @@ export class MappingHelpers {
   static validateAttributeMapping(
     mappings: Record<string, AttributeMapping>,
   ): boolean {
-    for (const [key, mapping] of Object.entries(mappings)) {
-      if (!mapping.externalAttribute || !mapping.internalField) {
-        throw new Error(
-          `Invalid mapping for ${key}: missing externalAttribute or internalField`,
-        );
-      }
-
-      if (mapping.validation && typeof mapping.validation !== "function") {
-        throw new Error(`Invalid validation function for ${key}`);
-      }
-
-      if (
-        mapping.transformation &&
-        typeof mapping.transformation !== "function"
-      ) {
-        throw new Error(`Invalid transformation function for ${key}`);
-      }
-    }
-
-    return true;
+    return MappingValidation.validateAttributeMapping(mappings);
   }
 
   /**
@@ -119,25 +100,10 @@ export class MappingHelpers {
     mappings1: Record<string, AttributeMapping>,
     mappings2: Record<string, AttributeMapping>,
   ): Record<string, AttributeMapping> {
-    const resolved: Record<string, AttributeMapping> = { ...mappings1 };
-
-    Object.entries(mappings2).forEach(([key, mapping]) => {
-      if (resolved[key]) {
-        // Conflict resolution: prefer the more specific mapping
-        if (
-          mapping.mappingType === "transform" &&
-          resolved[key].mappingType === "direct"
-        ) {
-          resolved[key] = mapping;
-        } else if (mapping.isRequired && !resolved[key].isRequired) {
-          resolved[key] = mapping;
-        }
-      } else {
-        resolved[key] = mapping;
-      }
-    });
-
-    return resolved;
+    return MappingConflictResolution.resolveAttributeMappingConflicts(
+      mappings1,
+      mappings2,
+    );
   }
 }
 

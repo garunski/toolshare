@@ -1,6 +1,8 @@
-import { ExternalTaxonomyQueries } from "@/common/operations/externalTaxonomyQueries";
 import { createClient } from "@/common/supabase/client";
 import type { ExternalTaxonomyNode } from "@/types/categories";
+
+import { CategoryTreeOperations } from "./categoryTreeOperations";
+import { ExternalTaxonomyOperations } from "./externalTaxonomyOperations";
 
 interface GetCategoriesOptions {
   page?: number;
@@ -83,43 +85,47 @@ export class PerformExternalTaxonomy {
   static async getCategoryById(
     externalId: number,
   ): Promise<ExternalTaxonomyNode | null> {
-    return ExternalTaxonomyQueries.getCategoryById(externalId);
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("external_product_taxonomy")
+      .select("*")
+      .eq("external_id", externalId)
+      .eq("is_active", true)
+      .single();
+
+    if (error || !data) {
+      return null;
+    }
+
+    return {
+      external_id: data.external_id,
+      category_path: data.category_path,
+      parent_id: data.parent_id,
+      level: data.level,
+      is_active: data.is_active,
+      last_updated: data.last_updated,
+      children: [],
+    };
   }
 
   static async getCategoryChildren(
     parentId: number,
   ): Promise<ExternalTaxonomyNode[]> {
-    return ExternalTaxonomyQueries.getCategoryChildren(parentId);
+    return CategoryTreeOperations.getCategoryChildren(parentId);
   }
 
   static async getCategoryTree(
     externalId: number,
     maxDepth: number = 3,
   ): Promise<ExternalTaxonomyNode | null> {
-    const category = await this.getCategoryById(externalId);
-    if (!category) return null;
-
-    if (maxDepth > 0) {
-      const children = await this.getCategoryChildren(externalId);
-      category.children = await Promise.all(
-        children.map(async (child) => {
-          const childTree = await this.getCategoryTree(
-            child.external_id,
-            maxDepth - 1,
-          );
-          return childTree || child;
-        }),
-      );
-    }
-
-    return category;
+    return CategoryTreeOperations.getCategoryTree(externalId, maxDepth);
   }
 
   static async searchCategories(
     searchTerm: string,
     limit: number = 20,
   ): Promise<ExternalTaxonomyNode[]> {
-    return ExternalTaxonomyQueries.searchCategories(searchTerm, limit);
+    return ExternalTaxonomyOperations.searchCategories(searchTerm, limit);
   }
 
   static async getCategoryStats(): Promise<{
@@ -127,6 +133,6 @@ export class PerformExternalTaxonomy {
     levels: Record<number, number>;
     activeCategories: number;
   }> {
-    return ExternalTaxonomyQueries.getCategoryStats();
+    return ExternalTaxonomyOperations.getCategoryStats();
   }
 }

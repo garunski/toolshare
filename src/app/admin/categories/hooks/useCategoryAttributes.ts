@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useAttributes } from "@/common/hooks/useAttributes";
-import { CategoryOperations } from "@/common/operations/categoryOperations";
+// Removed direct operation import - now using API routes
 import { createClient } from "@/common/supabase/client";
 import type { Category } from "@/types/categories";
 
@@ -23,10 +23,18 @@ export function useCategoryAttributes(category: Category) {
   useEffect(() => {
     const loadCategoryAttributes = async () => {
       try {
-        const categoryWithAttrs =
-          await CategoryOperations.getCategoryWithAttributes(category.id);
+        const response = await fetch(
+          `/api/admin/taxonomy/categories?id=${category.id}`,
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to load category attributes");
+        }
+
+        const categoryWithAttrs = await response.json();
+
         if (categoryWithAttrs) {
-          const attrs = categoryWithAttrs.attributes.map((attr) => ({
+          const attrs = categoryWithAttrs.attributes.map((attr: any) => ({
             attribute_definition_id: attr.id,
             is_required: attr.is_required,
             display_order: attr.display_order,
@@ -35,7 +43,7 @@ export function useCategoryAttributes(category: Category) {
           setCategoryAttributes(attrs);
 
           const assignedIds = new Set(
-            attrs.map((ca) => ca.attribute_definition_id),
+            attrs.map((ca: any) => ca.attribute_definition_id),
           );
           setAvailableAttributes(
             allAttributes.filter((attr) => !assignedIds.has(attr.id)),

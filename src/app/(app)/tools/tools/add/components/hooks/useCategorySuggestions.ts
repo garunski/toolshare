@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { CategorySuggestionEngine } from "@/common/operations/categorySuggestionEngine";
+// Removed direct operation import - now using API routes
 
 interface CategorySuggestion {
   external_id: number;
@@ -31,13 +31,25 @@ export function useCategorySuggestions(
     const getSuggestions = async () => {
       setLoading(true);
       try {
-        const result = await CategorySuggestionEngine.suggestCategories({
-          name: itemName,
-          description: itemDescription,
-          attributes,
-          tags,
-          existingCategory: selectedCategoryId || undefined,
+        const response = await fetch("/api/admin/taxonomy/suggestions/engine", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: itemName,
+            description: itemDescription,
+            attributes,
+            tags,
+            existingCategory: selectedCategoryId || undefined,
+          }),
         });
+
+        if (!response.ok) {
+          throw new Error("Failed to get category suggestions");
+        }
+
+        const result = await response.json();
 
         setSuggestions(result);
 

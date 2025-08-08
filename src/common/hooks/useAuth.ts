@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { type SessionState } from "@/common/operations/authListener";
-import { SessionStateHandler } from "@/common/operations/sessionStateHandler";
-import { SessionValidation } from "@/common/operations/sessionValidation";
+// Removed direct operation imports - now using API routes
+
+interface SessionState {
+  user: any | null;
+  session: any | null;
+  loading: boolean;
+  error: string | null;
+}
 
 export function useAuth() {
   const [authState, setAuthState] = useState<SessionState>({
@@ -13,28 +18,84 @@ export function useAuth() {
   });
 
   useEffect(() => {
-    const sessionManager = SessionStateHandler.getInstance();
-    const unsubscribe = sessionManager.subscribe(setAuthState);
+    const loadSession = async () => {
+      try {
+        const response = await fetch("/api/auth/session");
+        if (response.ok) {
+          const sessionState = await response.json();
+          setAuthState(sessionState);
+        } else {
+          setAuthState({
+            user: null,
+            session: null,
+            loading: false,
+            error: "Failed to load session",
+          });
+        }
+      } catch (error) {
+        setAuthState({
+          user: null,
+          session: null,
+          loading: false,
+          error: error instanceof Error ? error.message : "Unknown error",
+        });
+      }
+    };
 
-    return unsubscribe;
+    loadSession();
   }, []);
 
   const signOut = async () => {
-    const sessionManager = SessionStateHandler.getInstance();
-    await sessionManager.signOut();
+    try {
+      const response = await fetch("/api/auth/signout", { method: "POST" });
+      if (response.ok) {
+        setAuthState({
+          user: null,
+          session: null,
+          loading: false,
+          error: null,
+        });
+      }
+    } catch (error) {
+      setAuthState((prev) => ({
+        ...prev,
+        error: error instanceof Error ? error.message : "Sign out failed",
+      }));
+    }
   };
 
   const refreshSession = async () => {
-    const sessionManager = SessionStateHandler.getInstance();
-    await sessionManager.refreshSession();
+    try {
+      const response = await fetch("/api/auth/refresh", { method: "POST" });
+      if (response.ok) {
+        const sessionState = await response.json();
+        setAuthState(sessionState);
+      }
+    } catch (error) {
+      setAuthState((prev) => ({
+        ...prev,
+        error: error instanceof Error ? error.message : "Refresh failed",
+      }));
+    }
   };
 
   const validateSession = async () => {
-    return await SessionValidation.validateSession();
+    try {
+      const response = await fetch("/api/auth/validate");
+      return response.ok;
+    } catch {
+      return false;
+    }
   };
 
   const needsRefresh = async () => {
-    return await SessionValidation.needsRefresh();
+    try {
+      const response = await fetch("/api/auth/needs-refresh");
+      const result = await response.json();
+      return result.needsRefresh;
+    } catch {
+      return false;
+    }
   };
 
   const clearError = () => {

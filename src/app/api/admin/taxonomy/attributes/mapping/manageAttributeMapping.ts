@@ -1,8 +1,8 @@
-import { AttributeMappingHelper } from "@/common/operations/attributeMappingHelper";
-import { createClient } from "@/common/supabase/client";
-
-import { CORE_MAPPINGS, MappingHelpers } from "../helpers/mappingHelpers";
+import { CORE_MAPPINGS } from "../helpers/mappingHelpers";
 import { ValidateAttributes } from "../validation/validateAttributes";
+
+import { MappingQueries } from "./mappingQueries";
+import { AttributeMappingHelper } from "./mappingSuggestions";
 
 interface AttributeMapping {
   externalAttribute: string;
@@ -22,7 +22,8 @@ export class ManageAttributeMapping {
     categoryId: number,
     externalData: Record<string, any>,
   ): Promise<Record<string, any>> {
-    const categoryMappings = await this.getCategorySpecificMappings(categoryId);
+    const categoryMappings =
+      await MappingQueries.getCategorySpecificMappings(categoryId);
     const allMappings = { ...CORE_MAPPINGS, ...categoryMappings };
 
     const mappedData: Record<string, any> = {};
@@ -30,10 +31,7 @@ export class ManageAttributeMapping {
     // Apply core mappings
     Object.entries(allMappings).forEach(([internalField, mapping]) => {
       const externalValue = externalData[mapping.externalAttribute];
-      const mappedValue = AttributeMappingHelper.applyMapping(
-        mapping,
-        externalValue,
-      );
+      const mappedValue = this.applyMapping(mapping, externalValue);
 
       if (mappedValue !== undefined) {
         mappedData[internalField] = mappedValue;
@@ -43,7 +41,8 @@ export class ManageAttributeMapping {
     });
 
     // Add category-specific attributes
-    const categoryAttributes = await this.getCategoryAttributes(categoryId);
+    const categoryAttributes =
+      await MappingQueries.getCategoryAttributes(categoryId);
     categoryAttributes.forEach((attr) => {
       if (!mappedData[attr.name] && attr.defaultValue) {
         mappedData[attr.name] = attr.defaultValue;
@@ -54,59 +53,28 @@ export class ManageAttributeMapping {
   }
 
   /**
-   * Get category-specific attribute mappings
+   * Apply mapping transformation to a value
    */
-  private static async getCategorySpecificMappings(
-    categoryId: number,
-  ): Promise<Record<string, AttributeMapping>> {
-    const supabase = createClient();
+  private static applyMapping(mapping: AttributeMapping, value: any): any {
+    if (value === undefined || value === null) {
+      return mapping.defaultValue;
+    }
 
-    const { data: categoryAttrs } = await supabase
-      .from("category_attributes")
-      .select(
-        `
-        attribute_definitions (
-          name,
-          display_label,
-          data_type,
-          validation_rules,
-          default_value
-        ),
-        is_required,
-        external_mapping
-      `,
-      )
-      .eq("category_id", categoryId);
+    let mappedValue = value;
 
-    return MappingHelpers.processCategoryAttributes(categoryAttrs || []);
-  }
+    // Apply transformation if defined
+    if (mapping.transformation) {
+      mappedValue = mapping.transformation(value);
+    }
 
-  /**
-   * Get category attributes for validation
-   */
-  private static async getCategoryAttributes(
-    categoryId: number,
-  ): Promise<any[]> {
-    const supabase = createClient();
+    // Apply validation if defined
+    if (mapping.validation && !mapping.validation(mappedValue)) {
+      throw new Error(
+        `Validation failed for ${mapping.internalField}: ${mappedValue}`,
+      );
+    }
 
-    const { data: attributes } = await supabase
-      .from("category_attributes")
-      .select(
-        `
-        attribute_definitions (
-          name,
-          data_type,
-          validation_rules,
-          default_value
-        ),
-        is_required
-      `,
-      )
-      .eq("category_id", categoryId);
-
-    return MappingHelpers.processCategoryAttributesForValidation(
-      attributes || [],
-    );
+    return mappedValue;
   }
 
   /**
@@ -116,7 +84,8 @@ export class ManageAttributeMapping {
     categoryId: number,
     mappedData: Record<string, any>,
   ): Promise<{ isValid: boolean; errors: string[] }> {
-    const categoryAttributes = await this.getCategoryAttributes(categoryId);
+    const categoryAttributes =
+      await MappingQueries.getCategoryAttributes(categoryId);
     return ValidateAttributes.validateData(categoryAttributes, mappedData);
   }
 
@@ -127,7 +96,8 @@ export class ManageAttributeMapping {
     categoryId: number,
     externalData: Record<string, any>,
   ): Promise<Record<string, string>> {
-    const categoryMappings = await this.getCategorySpecificMappings(categoryId);
+    const categoryMappings =
+      await MappingQueries.getCategorySpecificMappings(categoryId);
     return AttributeMappingHelper.getSuggestions(
       categoryMappings,
       externalData,

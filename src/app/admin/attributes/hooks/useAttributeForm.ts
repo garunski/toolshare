@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { AttributeOperations } from "@/common/operations/attributeOperations";
+// Removed direct operation import - now using API routes
 import {
   AttributeValidator,
   attributeCreationSchema,
@@ -73,14 +73,26 @@ export function useAttributeForm(attribute?: AttributeDefinition | null) {
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
     try {
-      if (attribute) {
-        await AttributeOperations.updateAttribute({
-          id: attribute.id,
-          ...data,
-        });
-      } else {
-        await AttributeOperations.createAttribute(data);
+      const url = attribute
+        ? `/api/admin/taxonomy/attributes?id=${attribute.id}`
+        : "/api/admin/taxonomy/attributes";
+
+      const method = attribute ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to ${attribute ? "update" : "create"} attribute`,
+        );
       }
+
       return true;
     } catch (error) {
       alert(

@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { buildSearchQuery } from "@/common/operations/toolSearchOperations";
+// Removed direct database access - now using API routes
 import { createClient } from "@/common/supabase/client";
 import type { Database } from "@/types/supabase";
 
@@ -21,14 +21,20 @@ export function useToolSearch() {
     setLoading(true);
     setError(null);
     try {
-      const query = buildSearchQuery({});
-      const { data, error: queryError } = await query;
+      const response = await fetch("/api/tools/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      });
 
-      if (queryError) {
-        setError(queryError.message || "Failed to load tools");
-      } else {
-        await fetchAndCombineProfiles(data || []);
+      if (!response.ok) {
+        throw new Error("Failed to load tools");
       }
+
+      const data = await response.json();
+      await fetchAndCombineProfiles(data || []);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to load tools";
@@ -41,14 +47,20 @@ export function useToolSearch() {
     setLoading(true);
     setError(null);
     try {
-      const query = buildSearchQuery(searchParams);
-      const { data, error: queryError } = await query;
+      const response = await fetch("/api/tools/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(searchParams),
+      });
 
-      if (queryError) {
-        setError(queryError.message || "Search failed");
-      } else {
-        await fetchAndCombineProfiles(data || []);
+      if (!response.ok) {
+        throw new Error("Search failed");
       }
+
+      const data = await response.json();
+      await fetchAndCombineProfiles(data || []);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Search failed";
       setError(errorMessage);

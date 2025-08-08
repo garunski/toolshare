@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { CategoryOperations } from "@/common/operations/categoryOperations";
+// Removed direct operation import - now using API routes
 import {
   CategoryValidator,
   categoryCreationSchema,
@@ -61,11 +61,24 @@ export function useCategoryForm(category?: Category | null) {
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
     try {
-      if (category) {
-        await CategoryOperations.updateCategory({ id: category.id, ...data });
-      } else {
-        await CategoryOperations.createCategory(data);
+      const url = category
+        ? `/api/admin/taxonomy/categories/crud?id=${category.id}`
+        : "/api/admin/taxonomy/categories/crud";
+
+      const method = category ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to ${category ? "update" : "create"} category`);
       }
+
       return true;
     } catch (error) {
       alert(

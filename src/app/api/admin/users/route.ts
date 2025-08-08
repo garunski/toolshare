@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server";
 
-import { UserCreationOperations } from "@/common/operations/userCreation";
 import { createClient } from "@/common/supabase/server";
 import { UserCreationValidator } from "@/common/validators/userCreationValidator";
 
@@ -10,6 +9,8 @@ import {
   createApiResponse,
   handleApiError,
 } from "../roles/responses/responseHandler";
+
+import { performUserCreation } from "./create/performUser";
 
 export async function GET(request: NextRequest) {
   try {
@@ -90,8 +91,7 @@ export async function POST(request: NextRequest) {
       UserCreationValidator.validateUserCreationWithGeneratedPassword(body);
 
     // Create the user with roles
-    const newUser =
-      await UserCreationOperations.createUserWithRoles(validatedData);
+    const newUser = await performUserCreation(validatedData);
 
     return createApiResponse({
       message: "User created successfully",

@@ -1,4 +1,4 @@
-import { AttributeMappingHelper } from "@/common/operations/attributeMappingHelper";
+// Removed direct operation import - now using direct mapping logic
 
 export interface AttributeMapping {
   externalAttribute: string;
@@ -61,9 +61,32 @@ export const CORE_MAPPINGS: Record<string, AttributeMapping> = {
     externalAttribute: "condition",
     internalField: "condition",
     mappingType: "transform",
-    transformation: (value: string) =>
-      AttributeMappingHelper.normalizeCondition(value),
+    transformation: (value: string) => normalizeCondition(value),
     isRequired: false,
     defaultValue: "good",
   },
 };
+
+/**
+ * Normalize condition values to standard format
+ */
+export function normalizeCondition(value: string): string {
+  if (!value) return "good";
+
+  const normalized = value.toLowerCase().trim();
+
+  if (normalized.includes("new") || normalized.includes("mint")) {
+    return "new";
+  }
+  if (normalized.includes("excellent") || normalized.includes("like new")) {
+    return "excellent";
+  }
+  if (normalized.includes("good") || normalized.includes("fair")) {
+    return "good";
+  }
+  if (normalized.includes("poor") || normalized.includes("damaged")) {
+    return "poor";
+  }
+
+  return "good";
+}

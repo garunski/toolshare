@@ -4,8 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { ToolDataProcessor } from "@/common/operations/toolDataProcessor";
-import { ToolImageUploader } from "@/common/operations/toolImageUploader";
+// Removed direct operation imports - now using API routes
 import { toolCreationSchema } from "@/common/validators/toolCreationValidator";
 
 type FormStep = "basic" | "details" | "images" | "review";
@@ -67,23 +66,28 @@ export function useAddToolForm(userId: string, onSuccess: () => void) {
     setError(null);
 
     try {
-      const tempToolId = `temp-${Date.now()}`;
-      const uploadResults = await ToolImageUploader.uploadMultipleImages(
-        files,
-        tempToolId,
-        userId,
-      );
+      const formData = new FormData();
+      files.forEach((file) => {
+        formData.append("images", file);
+      });
+      formData.append("userId", userId);
 
-      const successfulUploads = uploadResults
-        .filter((result) => result.success)
-        .map((result) => result.url!)
-        .filter(Boolean);
+      const response = await fetch("/api/tools/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload images");
+      }
+
+      const result = await response.json();
+      const successfulUploads = result.urls || [];
 
       setUploadedImages((prev) => [...prev, ...successfulUploads]);
 
-      const failedUploads = uploadResults.filter((result) => !result.success);
-      if (failedUploads.length > 0) {
-        setError(`Failed to upload ${failedUploads.length} image(s)`);
+      if (result.failedCount > 0) {
+        setError(`Failed to upload ${result.failedCount} image(s)`);
       }
     } catch (err) {
       setError("Failed to upload images");
@@ -97,7 +101,23 @@ export function useAddToolForm(userId: string, onSuccess: () => void) {
     setError(null);
 
     try {
-      const result = await ToolDataProcessor.createTool(data, userId);
+      const response = await fetch("/api/tools/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          images: uploadedImages,
+          userId,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create tool");
+      }
+
+      const result = await response.json();
 
       if (result.success) {
         onSuccess();

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { ItemOwnerOperations } from "@/common/operations/itemOwnerOperations";
+// Removed direct operation import - now using API routes
 import type { ItemWithCategory } from "@/types/categories";
 
 export function useItemsByOwner(ownerId: string) {
@@ -18,7 +18,14 @@ export function useItemsByOwner(ownerId: string) {
     try {
       setLoading(true);
       setError(null);
-      const data = await ItemOwnerOperations.getItemsByOwner(ownerId);
+
+      const response = await fetch(`/api/tools/owner?ownerId=${ownerId}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to load owner items");
+      }
+
+      const data = await response.json();
       setItems(data);
     } catch (err) {
       setError(

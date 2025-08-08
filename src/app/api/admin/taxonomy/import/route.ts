@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { TaxonomyImporter } from "@/common/operations/taxonomyImporter";
 import { createClient } from "@/common/supabase/server";
+
+import { PerformTaxonomyImport } from "./performTaxonomyImport";
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,7 +55,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Start import process
-    const result = await TaxonomyImporter.importFromTSV(sourceUrl);
+    const result = await PerformTaxonomyImport.importFromTSV(sourceUrl);
 
     if (result.success) {
       return NextResponse.json({
@@ -129,7 +130,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get import statistics
-    const stats = await TaxonomyImporter.getImportStats();
+    const stats = await PerformTaxonomyImport.getImportStats();
 
     return NextResponse.json({
       success: true,

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { CategoryOperations } from "@/common/operations/categoryOperations";
 import type {
   Category,
   CategoryCreationRequest,
@@ -8,6 +7,8 @@ import type {
   CategoryUpdateRequest,
   CategoryWithAttributes,
 } from "@/types/categories";
+
+import { useCategoryOperations } from "./useCategoryOperations";
 
 interface UseCategoriesReturn {
   categories: CategoryTreeNode[];
@@ -28,7 +29,14 @@ export function useCategories(): UseCategoriesReturn {
     try {
       setLoading(true);
       setError(null);
-      const data = await CategoryOperations.getAllCategoriesTree();
+
+      const response = await fetch("/api/admin/taxonomy/categories/tree");
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch categories");
+      }
+
+      const data = await response.json();
       setCategories(data);
     } catch (err) {
       setError(
@@ -43,52 +51,8 @@ export function useCategories(): UseCategoriesReturn {
     fetchCategories();
   }, [fetchCategories]);
 
-  const createCategory = useCallback(
-    async (data: CategoryCreationRequest): Promise<Category> => {
-      try {
-        const newCategory = await CategoryOperations.createCategory(data);
-        await fetchCategories(); // Refresh list
-        return newCategory;
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Failed to create category";
-        setError(message);
-        throw new Error(message);
-      }
-    },
-    [fetchCategories],
-  );
-
-  const updateCategory = useCallback(
-    async (data: CategoryUpdateRequest): Promise<Category> => {
-      try {
-        const updatedCategory = await CategoryOperations.updateCategory(data);
-        await fetchCategories(); // Refresh list
-        return updatedCategory;
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Failed to update category";
-        setError(message);
-        throw new Error(message);
-      }
-    },
-    [fetchCategories],
-  );
-
-  const deleteCategory = useCallback(
-    async (id: string): Promise<void> => {
-      try {
-        await CategoryOperations.deleteCategory(id);
-        await fetchCategories(); // Refresh list
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Failed to delete category";
-        setError(message);
-        throw new Error(message);
-      }
-    },
-    [fetchCategories],
-  );
+  const { createCategory, updateCategory, deleteCategory } =
+    useCategoryOperations(fetchCategories);
 
   return {
     categories,
@@ -123,8 +87,16 @@ export function useCategory(categoryId: string | null): UseCategoryReturn {
     try {
       setLoading(true);
       setError(null);
-      const data =
-        await CategoryOperations.getCategoryWithAttributes(categoryId);
+
+      const response = await fetch(
+        `/api/admin/taxonomy/categories/route?id=${categoryId}`,
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch category");
+      }
+
+      const data = await response.json();
       setCategory(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch category");
