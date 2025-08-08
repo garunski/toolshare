@@ -2,7 +2,7 @@ import { Suspense } from "react";
 
 import { Heading } from "@/primitives/heading";
 
-import { AdminDashboardStats } from "./components/AdminDashboardStats";
+import { AdminDashboardStats } from "./components/AdminDashboardStats/index";
 import { AdminProtection } from "./components/AdminProtection";
 import { AdminRecentActivity } from "./components/AdminRecentActivity";
 import { AttributeMetrics } from "./components/AttributeMetrics";
@@ -10,8 +10,11 @@ import { CategoryMetrics } from "./components/CategoryMetrics";
 import { LiveActivityFeed } from "./components/LiveActivityFeed";
 import { QuickActionsPanel } from "./components/QuickActionsPanel";
 import { SystemHealthMonitor } from "./components/SystemHealthMonitor";
+import { getAdminDashboardData } from "./getAdminDashboardData";
 
-export default function AdminDashboardPage() {
+export default async function AdminDashboardPage() {
+  const stats = await getAdminDashboardData();
+
   return (
     <AdminProtection>
       <div className="space-y-8 p-6">
@@ -23,9 +26,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Stats Overview */}
-        <Suspense fallback={<div>Loading stats...</div>}>
-          <AdminDashboardStats />
-        </Suspense>
+        <AdminDashboardStats stats={stats} />
 
         {/* System Health */}
         <SystemHealthMonitor />
