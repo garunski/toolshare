@@ -1,12 +1,13 @@
 "use client";
 
+import { Button } from "@/primitives/button";
+import { Text } from "@/primitives/text";
+
 import {
   useProfileActions,
   type FriendshipStatus,
   type ProfileActionHandlers,
-} from "@/common/hooks/useProfileActions";
-import { Button } from "@/primitives/button";
-import { Text } from "@/primitives/text";
+} from "../../hooks/useProfileActions";
 
 interface ProfileActionButtonsProps {
   isOwnProfile: boolean;

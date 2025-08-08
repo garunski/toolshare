@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 import { AdminProtection } from "@/admin/components/AdminProtection";
-import { useAttributes } from "@/common/hooks/useAttributes";
 import { Button } from "@/primitives/button";
 import { Heading } from "@/primitives/heading";
 import type { AttributeDefinition } from "@/types/categories";
@@ -11,6 +10,7 @@ import type { AttributeDefinition } from "@/types/categories";
 import { AttributeFormModal } from "./components/AttributeFormModal";
 import { AttributeListView } from "./components/AttributeListView";
 import { AttributePreviewModal } from "./components/AttributePreviewModal";
+import { useAttributes } from "./hooks/useAttributes";
 
 export default function AdminAttributesPage() {
   const { attributes, loading, error, refresh } = useAttributes();

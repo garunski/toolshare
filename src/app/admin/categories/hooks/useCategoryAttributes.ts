@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { useAttributes } from "@/common/hooks/useAttributes";
 // Removed direct operation import - now using API routes
 import { createClient } from "@/common/supabase/client";
 import type { Category } from "@/types/categories";
+
+import { useAttributes } from "../../attributes/hooks/useAttributes";
 
 interface CategoryAttribute {
   attribute_definition_id: string;

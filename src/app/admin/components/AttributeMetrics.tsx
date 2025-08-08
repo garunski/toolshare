@@ -7,9 +7,10 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 
-import { useAttributes } from "@/common/hooks/useAttributes";
 import { Badge } from "@/primitives/badge";
 import { Heading } from "@/primitives/heading";
+
+import { useAttributes } from "../attributes/hooks/useAttributes";
 
 import { DataTypeDistribution } from "./DataTypeDistribution";
 import { RecentAttributesList } from "./RecentAttributesList";

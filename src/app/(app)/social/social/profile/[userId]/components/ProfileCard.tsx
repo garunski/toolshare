@@ -4,13 +4,14 @@ import { useCallback, useEffect, useState } from "react";
 
 import { ProcessConnections } from "@/apiApp/social/connections/processConnections";
 import { useAuth } from "@/common/hooks/useAuth";
-import type {
-  FriendshipStatus,
-  ProfileActionHandlers,
-} from "@/common/hooks/useProfileActions";
 import { Heading } from "@/primitives/heading";
 import { Text } from "@/primitives/text";
 import type { SocialProfile } from "@/types/social";
+
+import type {
+  FriendshipStatus,
+  ProfileActionHandlers,
+} from "../hooks/useProfileActions";
 
 import { ProfileActionButtons } from "./shared/ProfileActionButtons";
 
