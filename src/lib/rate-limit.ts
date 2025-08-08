@@ -1,5 +1,11 @@
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
+export const RATE_LIMIT_CONFIGS = {
+  standard: { max: 100, window: 60000 }, // 100 requests per minute
+  strict: { max: 10, window: 60000 }, // 10 requests per minute
+  lenient: { max: 500, window: 60000 }, // 500 requests per minute
+} as const;
+
 export async function rateLimit(
   identifier: string,
   options: { max?: number; window?: number } = {},
